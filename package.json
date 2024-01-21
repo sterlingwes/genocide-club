@@ -1,0 +1,23 @@
+{
+  "name": "genocide-club",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "site"
+  ],
+  "scripts": {
+    "dev": "cd site && bun run dev",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "d3-node": "^3.0.0",
+    "date-fns": "^3.3.0",
+    "vitest": "^1.2.1"
+  }
+}

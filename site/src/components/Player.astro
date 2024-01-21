@@ -1,0 +1,33 @@
+---
+import AreaGraph from './AreaGraph.astro';
+
+interface Props {
+  playDurationSeconds?: number
+}
+
+const { playDurationSeconds } = Astro.props;
+---
+
+<AreaGraph playDurationSeconds={playDurationSeconds} />
+
+<div class="grid-container">
+  <div>Left</div>
+  <div>Right</div>
+</div>
+
+<style>
+	.grid-container {
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .grid-container > div {
+    align-self: center;
+    font-size: 50px;
+    color: white;
+    font-weight: 500;
+  }
+</style>

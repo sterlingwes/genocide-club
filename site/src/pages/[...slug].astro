@@ -1,0 +1,124 @@
+---
+import type {Enabler, EnablerPost} from '../schemas/enabler'
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Player from '../components/Player.astro'
+import OpacityOverlay from '../components/OpacityOverlay.astro';
+import {getTimelineConfig} from '../lib/timeline'
+import {orderEarliestToLatest} from '../lib/posts'
+import data from '../generated/data.json'
+
+export async function getStaticPaths() {
+  const enablerEntries = await getCollection('enabler');
+  return enablerEntries.map(enabler => ({
+    params: { slug: enabler.id }, props: {enabler: enabler.data},
+  }));
+}
+
+interface Props {
+  enabler: Enabler
+}
+
+const { enabler } = Astro.props;
+const {dates} = data
+const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip)
+const {dayDuration, postDelays} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts })
+console.log(postDelays, posts)
+
+const postAnimStyle = (post: EnablerPost, index: number) => {
+  const baseStyle = `animation-delay: ${postDelays[index]}s`
+  if (post.duration) {
+    return `${baseStyle}; animation-name: slidein-${post.duration}; animation-duration: ${post.duration}`
+  }
+
+  return baseStyle
+}
+
+---
+<Layout clip title={`genocide.club • ${enabler.name}`}>
+  <main>
+		<OpacityOverlay />
+    <Player playDurationSeconds={enabler.playDurationSeconds} />
+    <div class="posts">
+      {posts.map((post, i) => (
+        <div class="post" style={postAnimStyle(post, i)}>{post.text}</div>
+      ))}
+    </div>
+	</main>
+</Layout>
+
+<style>
+  .posts {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .post {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    opacity: 0;
+    background-color: #eee;
+    border-radius: 3px;
+    width: 400px;
+    padding: 10px;
+    animation-duration: 5s;
+    animation-name: slidein-5s;
+    box-shadow: 5px 5px 10px rgba(10,10,10,0.1);
+  }
+
+  @keyframes slidein-5s {
+    0% {
+      top: 100px;
+      opacity: 0;
+    }
+
+    20%, 80% {
+      top: 50px;
+      opacity: 1;
+    }
+
+    100% {
+      top: -100px;
+      opacity: 0;
+    }
+  }
+
+  @keyframes slidein-10s {
+    0% {
+      top: 100px;
+      opacity: 0;
+    }
+
+    10%, 90% {
+      top: 50px;
+      opacity: 1;
+    }
+
+    100% {
+      top: -100px;
+      opacity: 0;
+    }
+  }
+
+  @keyframes slidein-20s {
+    0% {
+      top: 100px;
+      opacity: 0;
+    }
+
+    5%, 95% {
+      top: 50px;
+      opacity: 1;
+    }
+
+    100% {
+      top: -100px;
+      opacity: 0;
+    }
+  }
+</style>
