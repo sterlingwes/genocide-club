@@ -2,7 +2,7 @@
 import type {Enabler, EnablerPost} from '../schemas/enabler'
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import Player from '../components/Player.astro'
+import AreaGraph from '../components/AreaGraph.astro'
 import OpacityOverlay from '../components/OpacityOverlay.astro';
 import {getTimelineConfig} from '../lib/timeline'
 import {orderEarliestToLatest} from '../lib/posts'
@@ -26,23 +26,19 @@ const {dayDuration, postDelays} = getTimelineConfig({durationSeconds: enabler.pl
 console.log(postDelays, posts)
 
 const postAnimStyle = (post: EnablerPost, index: number) => {
-  const baseStyle = `animation-delay: ${postDelays[index]}s`
-  if (post.duration) {
-    return `${baseStyle}; animation-name: slidein-${post.duration}; animation-duration: ${post.duration}`
-  }
-
-  return baseStyle
+  return `animation-delay: ${postDelays[index]}s`
 }
 
 ---
 <Layout clip title={`genocide.club • ${enabler.name}`}>
   <main>
 		<OpacityOverlay />
-    <Player playDurationSeconds={enabler.playDurationSeconds} />
+    <AreaGraph playDurationSeconds={enabler.playDurationSeconds} />
+    <div class="scroll-top-fade" />
     <div class="posts">
       {posts.map((post, i) => (
         <div class="post" style={postAnimStyle(post, i)}>{post.text}</div>
-      ))}
+        ))}
     </div>
 	</main>
 </Layout>
@@ -50,75 +46,69 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 <style>
   .posts {
     z-index: 100;
+    padding: 50px;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    padding-bottom: 700px;
+    overflow: scroll;
+  }
+
+  .scroll-top-fade {
+    z-index: 101;
+    position: absolute;
+    top: -200px;
+    left: 0;
+    right: 0;
+    height: 200px;
+    box-shadow: 10px 10px 50px rgba(10,10,10,1);
   }
 
   .post {
-    position: absolute;
-    top: 50px;
-    left: 50px;
     opacity: 0;
     background-color: #eee;
     border-radius: 3px;
+    margin-bottom: 20px;
+    position: relative;
+    left: -500px;
     width: 400px;
     padding: 10px;
-    animation-duration: 5s;
-    animation-name: slidein-5s;
+    animation-duration: 1s;
+    animation-name: fadein;
+    animation-fill-mode: forwards;
     box-shadow: 5px 5px 10px rgba(10,10,10,0.1);
   }
 
-  @keyframes slidein-5s {
-    0% {
-      top: 100px;
+  @keyframes fadein {
+    from {
       opacity: 0;
+      left: -500px;
     }
 
-    20%, 80% {
-      top: 50px;
+    to {
       opacity: 1;
-    }
-
-    100% {
-      top: -100px;
-      opacity: 0;
+      left: 0;
     }
   }
 
-  @keyframes slidein-10s {
-    0% {
-      top: 100px;
-      opacity: 0;
-    }
-
-    10%, 90% {
-      top: 50px;
-      opacity: 1;
-    }
-
-    100% {
-      top: -100px;
-      opacity: 0;
-    }
-  }
-
-  @keyframes slidein-20s {
-    0% {
-      top: 100px;
-      opacity: 0;
-    }
-
-    5%, 95% {
-      top: 50px;
-      opacity: 1;
-    }
-
-    100% {
-      top: -100px;
-      opacity: 0;
-    }
-  }
 </style>
+
+<script>
+  const posts = document.querySelectorAll('.post')
+  const postContainer = document.querySelector('.posts')
+  if (postContainer) {
+    posts.forEach(post => {
+      post.addEventListener('animationstart', (event) => {
+        // @ts-expect-error its ok
+        const top = event.target.getBoundingClientRect().top - 50 + postContainer.scrollTop
+        console.log('scroll>>', top, postContainer.scrollTop)
+        postContainer.scrollTo({
+          behavior: 'smooth',
+          top
+        })
+      })
+    })
+  }
+</script>

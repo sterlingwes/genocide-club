@@ -10,7 +10,6 @@ export const enablerSchema = z.object({
       text: z.string(),
       date: z.string(),
       skip: z.boolean().optional(),
-      duration: z.enum(["5s", "10s", "20s"]).optional(),
     })
   ),
 });
