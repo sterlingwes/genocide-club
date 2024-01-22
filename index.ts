@@ -1,3 +1,4 @@
+const cp = require("child_process");
 const fs = require("fs");
 const D3Node = require("d3-node");
 const d3n = new D3Node();
@@ -100,6 +101,7 @@ ${svgStr
   )}
 `;
 
+  cp.execSync("mkdir -p site/src/generated");
   fs.writeFileSync("site/src/generated/killed.astro", astroDoc);
 
   delete data.chart;
