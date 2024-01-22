@@ -7,7 +7,9 @@ const oneDecimal = (value: number) => {
 export const defaultPlaybackDurationSeconds = 10;
 export const labelUpdateInterval = 0.1; // seconds
 
-const minimumPostDelaySeconds = 0.5;
+// if posts presented in within this time period (in seconds)
+// just show them at the same time as the one(s) prior
+const postConsolidationThreshold = 0.5;
 
 export const getTimelineConfig = ({
   durationSeconds,
@@ -53,8 +55,8 @@ export const getTimelineConfig = ({
     let delaySeconds = oneDecimal(
       (millisecondsIn / millisecondsBetween) * playDuration
     );
-    if (delaySeconds - lastDelay < minimumPostDelaySeconds) {
-      delaySeconds = lastDelay + minimumPostDelaySeconds;
+    if (delaySeconds - lastDelay < postConsolidationThreshold) {
+      delaySeconds = lastDelay;
     }
     lastDelay = delaySeconds;
     return delaySeconds;

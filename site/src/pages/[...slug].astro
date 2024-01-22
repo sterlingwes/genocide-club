@@ -47,6 +47,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     <div class="posts">
       {posts.map((post, i) => (
         <div class="post" style={postAnimStyle(post, i)}>
+          <div class="post-card">
           {post.text}
           <div class="post-meta">
             <div>{post.formattedDate}</div>
@@ -54,11 +55,13 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
               <a href={post.href}>
                 <PostTypeIcon icon={post.type} />
               </a>
-            </div>
           </div>
           {enabler.image && <div class="post-avatar">
             <img src={enabler.image} />
           </div>}
+            </div>
+            </div>
+            {post.commentary && <div class="post-commentary">{post.commentary}</div>}
         </div>
         ))}
     </div>
@@ -74,6 +77,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
   @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@600;700&display=swap');
 
   header {
+    z-index: 200;
     position: absolute;
     top: 0;
     left: 0;
@@ -133,7 +137,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 
   .posts {
     z-index: 100;
-    padding: 150px;
+    padding: 200px 100px;
     position: absolute;
     top: 0;
     left: 0;
@@ -146,26 +150,39 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
   .scroll-top-fade {
     z-index: 101;
     position: absolute;
-    top: -200px;
+    top: -300px;
     left: -50px;
     right: -50px;
-    height: 200px;
-    box-shadow: 0px 50px 100px rgba(10,10,10,0.7);
+    height: 300px;
+    box-shadow: 0px 150px 100px rgba(10,10,10,0.8);
   }
 
   .post {
     opacity: 0;
-    background-color: #eee;
-    border-radius: 3px;
-    margin-bottom: 20px;
     position: relative;
     left: -500px;
     width: 400px;
-    padding: 10px;
+    
     animation-duration: 1s;
     animation-name: fadein;
     animation-fill-mode: forwards;
+    cursor: pointer;
+  }
+  
+  .post-card {
     box-shadow: 0px 10px 10px rgba(10,10,10,0.5);
+    position: relative;
+    background-color: #eee;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+  .post-commentary {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
   }
 
   .post-avatar {
@@ -218,8 +235,8 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 </style>
 
 <script>
-  const postTopOffset = 150
-  const posts = document.querySelectorAll('.post')
+  const postTopOffset = 200
+  const posts: NodeListOf< HTMLElement> = document.querySelectorAll('.post')
   const postContainer = document.querySelector('.posts')
   if (postContainer) {
     posts.forEach(post => {
