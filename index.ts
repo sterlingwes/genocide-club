@@ -81,7 +81,8 @@ const render = async () => {
     .append("animate")
     .attr("attributeName", "width")
     .attr("values", `0;${width}`)
-    .attr("dur", defaultAnimationDuration);
+    .attr("dur", defaultAnimationDuration)
+    .attr("id", "svganim");
 
   const svgStr = d3n.svgString();
   const astroDoc = `---

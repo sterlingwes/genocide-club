@@ -7,6 +7,8 @@ export const enablerSchema = z.object({
   playDurationSeconds: z.number().optional(),
   posts: z.array(
     z.object({
+      type: z.enum(["twitter"]),
+      href: z.string(),
       text: z.string(),
       date: z.string(),
       skip: z.boolean().optional(),

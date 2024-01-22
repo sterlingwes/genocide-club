@@ -3,10 +3,12 @@ import type {Enabler, EnablerPost} from '../schemas/enabler'
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import AreaGraph from '../components/AreaGraph.astro'
+import PostTypeIcon from '../components/PostTypeIcon.astro';
 import OpacityOverlay from '../components/OpacityOverlay.astro';
 import {getTimelineConfig} from '../lib/timeline'
 import {orderEarliestToLatest} from '../lib/posts'
 import data from '../generated/data.json'
+import { format, parseISO } from 'date-fns';
 
 export async function getStaticPaths() {
   const enablerEntries = await getCollection('enabler');
@@ -21,9 +23,8 @@ interface Props {
 
 const { enabler } = Astro.props;
 const {dates} = data
-const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip)
-const {dayDuration, postDelays} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts })
-console.log(postDelays, posts)
+const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip).map(post => ({...post, formattedDate: format(parseISO(post.date), 'MMMM do yyyy')}))
+const {dayDuration, postDelays, labelUpdateIntervalMs, killedLabels} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts, killedPerDay: data.killed })
 
 const postAnimStyle = (post: EnablerPost, index: number) => {
   return `animation-delay: ${postDelays[index]}s`
@@ -35,18 +36,104 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 		<OpacityOverlay />
     <AreaGraph playDurationSeconds={enabler.playDurationSeconds} />
     <div class="scroll-top-fade" />
+    <header>
+      <div class="logo">
+        Genocide Club • {enabler.name}
+      </div>
+      <div class="bio">
+        {enabler.bio}
+      </div>
+    </header>
     <div class="posts">
       {posts.map((post, i) => (
-        <div class="post" style={postAnimStyle(post, i)}>{post.text}</div>
+        <div class="post" style={postAnimStyle(post, i)}>
+          {post.text}
+          <div class="post-meta">
+            <div>{post.formattedDate}</div>
+            <div class="post-meta-type">
+              <a href={post.href}>
+                <PostTypeIcon icon={post.type} />
+              </a>
+            </div>
+          </div>
+          {enabler.image && <div class="post-avatar">
+            <img src={enabler.image} />
+          </div>}
+        </div>
         ))}
     </div>
+    <div id="label-killed" data-labels={JSON.stringify(killedLabels)} data-interval={labelUpdateIntervalMs}>
+      <span></span>
+      <span></span>
+    </div>
+    <div id="label-killed-context">killed in <span id="label-killed-context-value" data-days={dates.length} data-daydur={dayDuration}>1</span> <span id="label-killed-context-unit">day</span></div>
 	</main>
 </Layout>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@600;700&display=swap');
+
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+  }
+
+  header .logo {
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+  }
+
+  header .bio {
+    margin-top: 10px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  #label-killed {
+    font-family: 'Martian Mono', monospace;
+    font-weight: 700;
+    position: absolute;
+    bottom: 110px;
+    right: 50px;
+    font-size: 15vh;
+    opacity: 0.7;
+    color: white;
+  }
+
+  #label-killed span {
+    display: inline-block;
+  }
+
+  #label-killed span:first-of-type {
+    margin-right: -40px;
+  }
+
+  #label-killed-context {
+    position: absolute;
+    bottom: 40px;
+    right: 55px;
+    font-size: 8vh;
+    opacity: 0.7;
+    color: white;
+    font-weight: bold;
+    text-transform: lowercase;
+  }
+
+
+  #label-killed-context-value {
+    font-family: 'Martian Mono', monospace;
+    font-weight: 600;
+    font-size: 7vh;
+  }
+
   .posts {
     z-index: 100;
-    padding: 50px;
+    padding: 150px;
     position: absolute;
     top: 0;
     left: 0;
@@ -60,10 +147,10 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     z-index: 101;
     position: absolute;
     top: -200px;
-    left: 0;
-    right: 0;
+    left: -50px;
+    right: -50px;
     height: 200px;
-    box-shadow: 10px 10px 50px rgba(10,10,10,1);
+    box-shadow: 0px 50px 100px rgba(10,10,10,0.7);
   }
 
   .post {
@@ -78,7 +165,42 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     animation-duration: 1s;
     animation-name: fadein;
     animation-fill-mode: forwards;
-    box-shadow: 5px 5px 10px rgba(10,10,10,0.1);
+    box-shadow: 0px 10px 10px rgba(10,10,10,0.5);
+  }
+
+  .post-avatar {
+    position: absolute;
+    left: -65px;
+    bottom: -1px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 25px;
+    box-shadow: 0px 10px 10px rgba(10,10,10,0.5);
+  }
+
+  .post-avatar > img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .post-meta {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .post-meta > div {
+    align-self: center;
+  }
+
+  .post-meta-type {
+    text-align: right;
+  }
+
+  .post-meta-type > a {
+    display: inline-block;
   }
 
   @keyframes fadein {
@@ -96,19 +218,70 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 </style>
 
 <script>
+  const postTopOffset = 150
   const posts = document.querySelectorAll('.post')
   const postContainer = document.querySelector('.posts')
   if (postContainer) {
     posts.forEach(post => {
       post.addEventListener('animationstart', (event) => {
-        // @ts-expect-error its ok
-        const top = event.target.getBoundingClientRect().top - 50 + postContainer.scrollTop
-        console.log('scroll>>', top, postContainer.scrollTop)
+        // @ts-expect-error incorrect type
+        const top = event.target.getBoundingClientRect().top - postTopOffset + postContainer.scrollTop
         postContainer.scrollTo({
           behavior: 'smooth',
           top
         })
       })
+    })
+  }
+
+  const svgAnim = document.querySelector('#svganim')
+  const killedLabel: HTMLElement | null = document.querySelector('#label-killed')
+  const killedLabelContext: HTMLElement | null = document.querySelector('#label-killed-context-value')
+  const killedLabelContextUnit: HTMLElement | null = document.querySelector('#label-killed-context-unit')
+
+  if (svgAnim && killedLabel) {
+    const labelSteps = JSON.parse(killedLabel.dataset.labels ?? '')
+    const intervalTime = +(killedLabel.dataset.interval ?? 0)
+    svgAnim.addEventListener('beginEvent', event => {
+      if (killedLabelContext) {
+        const dayDuration = +(killedLabelContext.dataset.daydur ?? 0)
+        const days = +(killedLabelContext.dataset.days ?? 0)
+        let day = 1
+        const dayInterval = setInterval(() => {
+          if (day === 1 && killedLabelContextUnit) {
+            killedLabelContextUnit.innerHTML = 'days'
+          }
+
+          if (day >= days) {
+            clearInterval(dayInterval)
+          } else {
+            day++
+            killedLabelContext.innerHTML = `${day}`
+          }
+        }, dayDuration * 1000)
+      }
+      
+      let step = 0
+      const countInterval = setInterval(() => {
+        if (!labelSteps[step]) {
+          clearInterval(countInterval)
+          return
+        }
+        const value = labelSteps[step]
+        if (value > 9999) {
+          const [firstDigit, secondDigit, ...rest] = value.toString().split('')
+          killedLabel.firstElementChild!.innerHTML = `${firstDigit}${secondDigit}`
+          killedLabel.lastElementChild!.innerHTML = rest.join('')
+        } else if (value > 999) {
+          const [firstDigit, ...rest] = value.toString().split('')
+          killedLabel.firstElementChild!.innerHTML = firstDigit
+          killedLabel.lastElementChild!.innerHTML = rest.join('')
+        } else {
+          killedLabel.firstElementChild!.innerHTML = ''
+          killedLabel.lastElementChild!.innerHTML = value
+        }
+        step++
+      }, intervalTime)
     })
   }
 </script>
