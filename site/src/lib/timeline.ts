@@ -16,11 +16,13 @@ export const getTimelineConfig = ({
   posts,
   dates,
   killedPerDay,
+  wcKilledPerDay,
 }: {
   durationSeconds: number | undefined;
   posts: Array<{ date: string }>;
   dates: string[];
   killedPerDay: number[];
+  wcKilledPerDay: number[];
 }) => {
   const days = dates.length;
   const playDuration = durationSeconds ?? defaultPlaybackDurationSeconds;
@@ -97,10 +99,39 @@ export const getTimelineConfig = ({
     return stepValueLow + stepDistance;
   });
 
+  const wcKilledLabels = labelIterator.map((_, index) => {
+    const stepTime = index * labelRealTimeStep + firstDateVal;
+    let nextDay = findNextDateIndex(stepTime);
+    if (nextDay === -1) {
+      nextDay = dateIntervals.length;
+    }
+    const stepTimeLow = dateIntervals[nextDay - 1];
+    const stepTimeHigh = dateIntervals[nextDay];
+    const stepValueLow = wcKilledPerDay[nextDay - 1];
+    const stepValueHigh = wcKilledPerDay[nextDay];
+
+    if (!stepValueHigh || !stepTimeHigh) {
+      return stepValueLow;
+    }
+
+    const progressBetween =
+      (stepTime - stepTimeLow) / (stepTimeHigh - stepTimeLow);
+
+    if (progressBetween >= 0.9) {
+      return stepValueHigh;
+    }
+
+    const stepDistance = Math.round(
+      (stepValueHigh - stepValueLow) * progressBetween
+    );
+    return stepValueLow + stepDistance;
+  });
+
   return {
     dayDuration,
     postDelays,
     killedLabels,
+    wcKilledLabels,
     labelUpdateIntervalMs,
     firstDateVal,
     lastDateVal,

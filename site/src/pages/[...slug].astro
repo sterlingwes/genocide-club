@@ -36,6 +36,7 @@ const {
   postDelays,
   labelUpdateIntervalMs,
   killedLabels,
+  wcKilledLabels,
   firstDateVal,
   lastDateVal,
 } = getTimelineConfig({
@@ -43,6 +44,7 @@ const {
   dates,
   posts,
   killedPerDay: data.killed,
+  wcKilledPerDay: data.wcKilled,
 });
 
 const postDates = posts.map((post) => post.dateValue);
@@ -118,19 +120,29 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
         </div>
       </div>
       <div id="label-killed-context">
-        killed in <span
-          id="label-killed-context-value"
-          data-days={dates.length}
-          data-daydur={dayDuration}>1</span
+        <div>
+          killed in <span
+            id="label-killed-context-value"
+            data-days={dates.length}
+            data-daydur={dayDuration}>1</span
+          >
+          <span id="label-killed-context-unit">day</span>
+        </div>
+        <div
+          id="label-killed-context-2"
+          data-labels={JSON.stringify(wcKilledLabels)}
         >
-        <span id="label-killed-context-unit">day</span>
+          <span>(</span>
+          <span></span>
+          <span> women & children)</span>
+        </div>
       </div>
     </div>
   </main>
 </Layout>
 
 <style define:vars={{ aspectRatio }}>
-  @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@600;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600;700&display=swap");
 
   main {
     position: absolute;
@@ -213,6 +225,20 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     color: white;
     font-weight: bold;
     text-transform: lowercase;
+  }
+
+  #label-killed-context-2 {
+    margin-top: 10px;
+    font-size: 2.5vw;
+    font-weight: 500;
+  }
+
+  #label-killed-context-2 > span:nth-of-type(2) {
+    margin-top: 10px;
+    font-size: 2vw;
+    font-weight: 400;
+    font-family: "Martian Mono", monospace;
+    margin-right: 5px;
   }
 
   #label-killed-context-value {
@@ -396,6 +422,9 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
   const svgAnim = document.querySelector("#svganim");
   const killedLabel: HTMLElement | null =
     document.querySelector("#label-killed");
+  const wcKilledLabel: HTMLElement | null = document.querySelector(
+    "#label-killed-context-2"
+  );
   const killedLabelContext: HTMLElement | null = document.querySelector(
     "#label-killed-context-value"
   );
@@ -403,8 +432,9 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     "#label-killed-context-unit"
   );
 
-  if (svgAnim && killedLabel) {
+  if (svgAnim && killedLabel && wcKilledLabel) {
     const labelSteps = JSON.parse(killedLabel.dataset.labels ?? "");
+    const wcLabelSteps = JSON.parse(wcKilledLabel.dataset.labels ?? "");
     const intervalTime = +(killedLabel.dataset.interval ?? 0);
     svgAnim.addEventListener("beginEvent", (event) => {
       if (killedLabelContext) {
@@ -448,6 +478,12 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
           spanContainer.firstElementChild!.innerHTML = "";
           spanContainer.lastElementChild!.innerHTML = value;
         }
+
+        // women & children row
+        const wcValue = wcLabelSteps[step];
+        wcKilledLabel.firstElementChild!.nextElementSibling!.innerHTML =
+          new Intl.NumberFormat().format(wcValue);
+
         step++;
       }, intervalTime);
     });
