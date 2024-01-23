@@ -115,7 +115,7 @@ export const setLineMarkersForPosts = ({
     marker.style.height = `${markerSize}px`;
     marker.style.borderRadius = `${markerBorderRadius}px`;
     marker.style.backgroundColor = "rgb(137,49,46)";
-    marker.style.zIndex = "200";
+    marker.style.zIndex = "1";
     marker.style.opacity = "0";
     marker.style.transition = "opacity 0.5s";
     markerHolder.appendChild(marker);
