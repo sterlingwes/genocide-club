@@ -21,9 +21,10 @@ test("getTimelineConfig", () => {
       "2024-01-05",
     ],
     killedPerDay,
+    wcKilledPerDay: killedPerDay,
   });
   expect(dayDuration).toBe(durationSeconds / 5);
-  expect(postDelays).toEqual([24, 24.5, 25, 115, 120]);
+  expect(postDelays).toEqual([24, 24, 24, 115, 120]);
   expect(killedLabels).toHaveLength(durationSeconds / labelUpdateInterval);
   expect(killedLabels[0]).toEqual(1000);
   expect(killedLabels[killedLabels.length - 1]).toEqual(5000);

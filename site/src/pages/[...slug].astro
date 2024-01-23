@@ -1,5 +1,5 @@
 ---
-import type { Enabler, EnablerPost } from "../schemas/enabler";
+import type { Enabler } from "../schemas/enabler";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import KilledGraph from "../generated/killed.astro";
@@ -50,7 +50,7 @@ const {
 const postDates = posts.map((post) => post.dateValue);
 const markerConfig = { postDates, minTime: firstDateVal, maxTime: lastDateVal };
 
-const postAnimStyle = (post: EnablerPost, index: number) => {
+const postAnimStyle = (index: number) => {
   return `animation-delay: ${postDelays[index]}s`;
 };
 
@@ -88,7 +88,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
           <div
             class="post"
             data-dateval={post.dateValue}
-            style={postAnimStyle(post, i)}
+            style={postAnimStyle(i)}
           >
             <div class="post-card">
               {post.text}
@@ -493,7 +493,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
   const posts: NodeListOf<HTMLElement> = document.querySelectorAll(".post");
   const postContainer = document.querySelector(".posts");
   if (postContainer) {
-    postContainer.addEventListener("scroll", (event) => {
+    postContainer.addEventListener("scroll", () => {
       // console.log('>', event)
     });
 
@@ -549,7 +549,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     const labelSteps = JSON.parse(killedLabel.dataset.labels ?? "");
     const wcLabelSteps = JSON.parse(wcKilledLabel.dataset.labels ?? "");
     const intervalTime = +(killedLabel.dataset.interval ?? 0);
-    svgAnim.addEventListener("beginEvent", (event) => {
+    svgAnim.addEventListener("beginEvent", () => {
       if (killedLabelContext) {
         const dayDuration = +(killedLabelContext.dataset.daydur ?? 0);
         const days = +(killedLabelContext.dataset.days ?? 0);
@@ -579,20 +579,30 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
         if (!spanContainer) {
           throw new Error("No label span container");
         }
-        spanContainer.firstElementChild!.style.opacity = "1";
+
+        const firstSpan = spanContainer.firstElementChild as HTMLElement | null;
+        const lastSpan = spanContainer.lastElementChild as HTMLElement | null;
+        if (!firstSpan || !lastSpan) {
+          throw new Error(
+            "Unexpected label element composition (spans not found)"
+          );
+        }
+
+        // reset
+        firstSpan.style.opacity = "1";
 
         if (value > 9999) {
           const [firstDigit, secondDigit, ...rest] = value.toString().split("");
-          spanContainer.firstElementChild!.innerHTML = `${firstDigit}${secondDigit}`;
-          spanContainer.lastElementChild!.innerHTML = rest.join("");
+          firstSpan.innerHTML = `${firstDigit}${secondDigit}`;
+          lastSpan.innerHTML = rest.join("");
         } else if (value > 999) {
           const [firstDigit, ...rest] = value.toString().split("");
-          spanContainer.firstElementChild!.innerHTML = firstDigit;
-          spanContainer.lastElementChild!.innerHTML = rest.join("");
+          firstSpan.innerHTML = firstDigit;
+          lastSpan.innerHTML = rest.join("");
         } else {
-          spanContainer.firstElementChild!.style.opacity = "0";
-          spanContainer.firstElementChild!.innerHTML = "";
-          spanContainer.lastElementChild!.innerHTML = value;
+          firstSpan.style.opacity = "0";
+          firstSpan.innerHTML = "";
+          lastSpan.innerHTML = value;
         }
 
         // women & children row
