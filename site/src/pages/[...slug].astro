@@ -2,7 +2,7 @@
 import type { Enabler, EnablerPost } from "../schemas/enabler";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import AreaGraph from "../components/AreaGraph.astro";
+import KilledGraph from "../generated/killed.astro";
 import PostTypeIcon from "../components/PostTypeIcon.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
 import { getTimelineConfig } from "../lib/timeline";
@@ -60,7 +60,13 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
 <Layout clip title={`genocide.club • ${enabler.name}`}>
   <main>
     <OpacityOverlay />
-    <AreaGraph playDurationSeconds={enabler.playDurationSeconds} />
+    <div class="graph">
+      <KilledGraph
+        playDuration={enabler.playDurationSeconds
+          ? `${enabler.playDurationSeconds}s`
+          : undefined}
+      />
+    </div>
     <div
       id="markers"
       data-viewbox={JSON.stringify(svgViewbox)}
@@ -180,7 +186,22 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     font-weight: 500;
   }
 
+  .graph {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  :global(path#chartpath) {
+    fill: rgba(100, 40, 40, 0.8);
+  }
+
   .graph-labels {
+    pointer-events: none;
     position: absolute;
     right: 40px;
     margin: auto;
@@ -189,6 +210,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     display: flex;
     flex-direction: column;
     text-align: right;
+    z-index: 5;
   }
 
   .graph-labels > div {
@@ -218,7 +240,14 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
   }
 
   #label-killed span:first-of-type {
-    margin-right: -40px;
+    margin-right: -6vw;
+  }
+
+  #label-killed span:first-of-type::after {
+    position: relative;
+    content: ",";
+    z-index: 999;
+    font-size: 5vw;
   }
 
   #label-killed-context {
@@ -286,7 +315,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     position: absolute;
     height: 5px;
     width: 100%;
-    background-color: rgb(10, 10, 10);
+    background-color: rgb(47, 24, 24);
     bottom: 0px;
     left: 0;
   }
@@ -364,6 +393,67 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     to {
       opacity: 0.8;
       left: 0;
+    }
+  }
+
+  @media (max-aspect-ratio: 800/900) {
+    main {
+      aspect-ratio: none;
+      height: 100vh;
+    }
+
+    .posts {
+      z-index: 2;
+      padding-right: 50px;
+    }
+
+    .post {
+      max-width: none;
+      width: 100%;
+    }
+
+    .graph {
+      z-index: 3;
+      top: auto;
+      bottom: 0;
+    }
+
+    :global(path#chartpath) {
+      stroke-width: 3;
+      fill: rgba(100, 40, 40, 1);
+    }
+
+    .graph-labels {
+      top: 50%;
+      height: 50%;
+    }
+
+    .graph-labels > div:first-of-type {
+      flex-grow: 3;
+    }
+
+    #label-killed {
+      font-size: 9vw;
+    }
+
+    #label-killed-context {
+      font-size: 5vw;
+    }
+
+    #label-killed-context-2 {
+      font-size: 3vw;
+    }
+
+    #label-killed-context-2 > span:nth-of-type(2) {
+      font-size: 2.5vw;
+    }
+
+    #label-killed-context-value {
+      font-size: 4vw;
+    }
+
+    .posts {
+      bottom: 50%;
     }
   }
 </style>
@@ -489,6 +579,8 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
         if (!spanContainer) {
           throw new Error("No label span container");
         }
+        spanContainer.firstElementChild!.style.opacity = "1";
+
         if (value > 9999) {
           const [firstDigit, secondDigit, ...rest] = value.toString().split("");
           spanContainer.firstElementChild!.innerHTML = `${firstDigit}${secondDigit}`;
@@ -498,6 +590,7 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
           spanContainer.firstElementChild!.innerHTML = firstDigit;
           spanContainer.lastElementChild!.innerHTML = rest.join("");
         } else {
+          spanContainer.firstElementChild!.style.opacity = "0";
           spanContainer.firstElementChild!.innerHTML = "";
           spanContainer.lastElementChild!.innerHTML = value;
         }

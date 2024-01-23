@@ -8,13 +8,16 @@ const exportSvgPathApi = ({
   maxPathLength,
   widthFactor,
   heightFactor,
+  svgViewbox,
 }: {
   svgPath: SVGPathElement;
   maxPathLength: number;
   widthFactor: number;
   heightFactor: number;
+  svgViewbox: SvgViewBox;
 }) => {
   return {
+    getRealGraphHeight: () => svgViewbox.height * heightFactor,
     getCoordinateForProgress: (progress: number) => {
       const pathLength = Math.round(maxPathLength * progress);
       const point = svgPath.getPointAtLength(pathLength);
@@ -58,6 +61,7 @@ const calculateSvgPathDomain = ({ svgViewbox }: { svgViewbox: SvgViewBox }) => {
     maxPathLength,
     widthFactor,
     heightFactor,
+    svgViewbox,
   });
 };
 
@@ -96,7 +100,8 @@ export const setLineMarkersForPosts = ({
   // clear existing before filling to allow for re-run
   markerHolder.innerHTML = "";
 
-  const { getCoordinateForProgress } = calculateSvgPathDomain({ svgViewbox });
+  const { getCoordinateForProgress, getRealGraphHeight } =
+    calculateSvgPathDomain({ svgViewbox });
   const uniqueDates = new Set<number>(postDates);
   const markerMap = new Map<number, HTMLElement>();
 
@@ -109,13 +114,13 @@ export const setLineMarkersForPosts = ({
     const marker = document.createElement("div");
     markerMap.set(date, marker);
     marker.style.position = "absolute";
-    marker.style.top = `${y - markerSize / 2}px`;
+    marker.style.bottom = `${getRealGraphHeight() - y - markerSize / 2}px`;
     marker.style.left = `${x - markerSize / 2}px`;
     marker.style.width = `${markerSize}px`;
     marker.style.height = `${markerSize}px`;
     marker.style.borderRadius = `${markerBorderRadius}px`;
-    marker.style.backgroundColor = "rgb(137,49,46)";
-    marker.style.zIndex = "1";
+    marker.style.backgroundColor = "rgba(168, 44, 44, 1)";
+    marker.style.zIndex = "5";
     marker.style.opacity = "0";
     marker.style.transition = "opacity 0.5s";
     markerHolder.appendChild(marker);

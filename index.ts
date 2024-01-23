@@ -58,8 +58,8 @@ const render = async () => {
     .append("path")
     .datum(data.chart)
     .attr("id", "chartpath")
-    .attr("fill", "rgba(216, 56, 56, 0.3)")
-    .attr("stroke", "rgba(168, 44, 44, 0.9)")
+    .attr("fill", "rgba(100,40,40,1)")
+    .attr("stroke", "rgba(168, 44, 44, 1)")
     .attr("stroke-width", 2)
     .attr("clip-path", "url(#curtain)")
     .attr(
