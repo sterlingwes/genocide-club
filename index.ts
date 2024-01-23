@@ -17,6 +17,10 @@ const render = async () => {
   const data: Record<string, any[]> = (await response.json()).reduce(
     (acc, d, day) => ({
       ...acc,
+      svgViewbox: {
+        width,
+        height,
+      },
       days: acc.days.concat(day + 1),
       dates: acc.dates.concat(d.report_date),
       killed: acc.killed.concat(d.ext_killed_cum),
@@ -50,6 +54,7 @@ const render = async () => {
   svg
     .append("path")
     .datum(data.chart)
+    .attr("id", "chartpath")
     .attr("fill", "rgba(216, 56, 56, 0.3)")
     .attr("stroke", "rgba(168, 44, 44, 0.9)")
     .attr("stroke-width", 2)

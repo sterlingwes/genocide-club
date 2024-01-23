@@ -97,5 +97,12 @@ export const getTimelineConfig = ({
     return stepValueLow + stepDistance;
   });
 
-  return { dayDuration, postDelays, killedLabels, labelUpdateIntervalMs };
+  return {
+    dayDuration,
+    postDelays,
+    killedLabels,
+    labelUpdateIntervalMs,
+    firstDateVal,
+    lastDateVal,
+  };
 };

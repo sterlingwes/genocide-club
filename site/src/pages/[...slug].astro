@@ -22,9 +22,12 @@ interface Props {
 }
 
 const { enabler } = Astro.props;
-const {dates} = data
-const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip).map(post => ({...post, formattedDate: format(parseISO(post.date), 'MMMM do yyyy')}))
-const {dayDuration, postDelays, labelUpdateIntervalMs, killedLabels} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts, killedPerDay: data.killed })
+const {dates, svgViewbox} = data
+const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip).map(post => ({...post, dateValue: parseISO(post.date).valueOf(), formattedDate: format(parseISO(post.date), 'MMMM do yyyy')}))
+const {dayDuration, postDelays, labelUpdateIntervalMs, killedLabels, firstDateVal, lastDateVal} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts, killedPerDay: data.killed })
+
+const postDates = posts.map(post => post.dateValue)
+const markerConfig = {postDates, minTime: firstDateVal, maxTime: lastDateVal}
 
 const postAnimStyle = (post: EnablerPost, index: number) => {
   return `animation-delay: ${postDelays[index]}s`
@@ -35,6 +38,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
   <main>
 		<OpacityOverlay />
     <AreaGraph playDurationSeconds={enabler.playDurationSeconds} />
+    <div id="markers" data-viewbox={JSON.stringify(svgViewbox)} data-markerconfig={JSON.stringify(markerConfig)} />
     <div class="scroll-top-fade" />
     <header>
       <div class="logo">
@@ -46,19 +50,19 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     </header>
     <div class="posts">
       {posts.map((post, i) => (
-        <div class="post" style={postAnimStyle(post, i)}>
+        <div class="post" data-dateval={post.dateValue} style={postAnimStyle(post, i)}>
           <div class="post-card">
-          {post.text}
-          <div class="post-meta">
-            <div>{post.formattedDate}</div>
-            <div class="post-meta-type">
-              <a href={post.href}>
-                <PostTypeIcon icon={post.type} />
-              </a>
-          </div>
-          {enabler.image && <div class="post-avatar">
-            <img src={enabler.image} />
-          </div>}
+            {post.text}
+            <div class="post-meta">
+              <div>{post.formattedDate}</div>
+              <div class="post-meta-type">
+                <a href={post.href}>
+                  <PostTypeIcon icon={post.type} />
+                </a>
+              </div>
+              {enabler.image && <div class="post-avatar">
+                <img src={enabler.image} />
+              </div>}
             </div>
             </div>
             {post.commentary && <div class="post-commentary">{post.commentary}</div>}
@@ -227,7 +231,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     }
 
     to {
-      opacity: 1;
+      opacity: 0.8;
       left: 0;
     }
   }
@@ -235,14 +239,46 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
 </style>
 
 <script>
+  import { setLineMarkersForPosts } from "../lib/browser/markers"
+
+  const markerHolder: HTMLElement | null = document.querySelector("#markers");
+  if (!markerHolder) {
+    throw new Error("No marker holder element found");
+  }
+  const svgViewbox =  JSON.parse(markerHolder.dataset.viewbox ?? '') 
+  const markerConfig: {postDates: number[], minTime: number, maxTime: number} = JSON.parse(markerHolder.dataset.markerconfig ?? '')
+  const markers = setLineMarkersForPosts({...markerConfig, markerHolder, svgViewbox})
+
   const postTopOffset = 200
   const posts: NodeListOf< HTMLElement> = document.querySelectorAll('.post')
   const postContainer = document.querySelector('.posts')
   if (postContainer) {
+    postContainer.addEventListener('scroll', event => {
+      // console.log('>', event)
+    })
+
     posts.forEach(post => {
+      post.addEventListener('click', () => {
+        post.style.animationName = 'none'
+        post.style.left = '0'
+        post.style.opacity = '1';
+        post.style.backgroundColor = '#fff'
+      })
       post.addEventListener('animationstart', (event) => {
-        // @ts-expect-error incorrect type
-        const top = event.target.getBoundingClientRect().top - postTopOffset + postContainer.scrollTop
+        const postDiv = event.target as HTMLDivElement | null
+        if (!postDiv) {
+          console.warn('no post div')
+          return;
+        }
+
+        const postDate = +(postDiv.dataset.dateval ?? 0)
+        if (typeof postDate === 'number' && postDate) {
+          markers.showOne(postDate)
+        } else {
+          console.log('no postDate')
+        }
+
+        const top = postDiv.getBoundingClientRect().top - postTopOffset + postContainer.scrollTop - 100
         postContainer.scrollTo({
           behavior: 'smooth',
           top
