@@ -1,17 +1,18 @@
 ---
-import twitter from './icons/twitterx.astro'
+import twitter from "./icons/twitterx.astro";
 
 const icons = {
-  twitter
-}
+  twitter,
+};
 
 interface Props {
-  icon: keyof typeof icons
+  icon: keyof typeof icons;
 }
 
-const {icon} = Astro.props
-const Icon = icons[icon]
+const { icon } = Astro.props;
+const Icon = icons[icon];
 ---
+
 <div class="post-type-icon">
   <Icon />
 </div>

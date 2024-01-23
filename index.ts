@@ -12,7 +12,7 @@ const render = async () => {
     .createSVG(width, height)
     .attr("viewBox", `0 0 ${width} ${height}`);
   const response = await fetch(
-    "https://data.techforpalestine.org/api/v2/casualties_daily.json"
+    "https://data.techforpalestine.org/api/v2/casualties_daily.json",
   );
   const data: Record<string, any[]> = (await response.json()).reduce(
     (acc, d, day) => ({
@@ -29,7 +29,7 @@ const render = async () => {
         value: d.ext_killed_cum,
       }),
     }),
-    { chart: [], days: [], dates: [], killed: [] }
+    { chart: [], days: [], dates: [], killed: [] },
   );
 
   var x = d3
@@ -37,7 +37,7 @@ const render = async () => {
     .domain(
       d3.extent(data.chart, function (d) {
         return d.date;
-      })
+      }),
     )
     .range([0, width]);
 
@@ -69,7 +69,7 @@ const render = async () => {
         .y0(y(0))
         .y1(function (d) {
           return y(d.value);
-        })
+        }),
     );
 
   const defaultAnimationDuration = "10s";
@@ -102,7 +102,7 @@ ${svgStr
   .replace(`width="${width}" height="${height}"`, "")
   .replace(
     `"${defaultAnimationDuration}"`,
-    `{playDuration ?? "${defaultAnimationDuration}"}`
+    `{playDuration ?? "${defaultAnimationDuration}"}`,
   )}
 `;
 

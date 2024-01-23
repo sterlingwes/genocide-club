@@ -1,12 +1,11 @@
 ---
-import AreaGraph from './AreaGraph.astro';
+import AreaGraph from "./AreaGraph.astro";
 
 interface Props {
-  playDurationSeconds?: number
+  playDurationSeconds?: number;
 }
 
 const { playDurationSeconds } = Astro.props;
 ---
 
 <AreaGraph playDurationSeconds={playDurationSeconds} />
-

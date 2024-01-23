@@ -1,45 +1,69 @@
 ---
-import type {Enabler, EnablerPost} from '../schemas/enabler'
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import AreaGraph from '../components/AreaGraph.astro'
-import PostTypeIcon from '../components/PostTypeIcon.astro';
-import OpacityOverlay from '../components/OpacityOverlay.astro';
-import {getTimelineConfig} from '../lib/timeline'
-import {orderEarliestToLatest} from '../lib/posts'
-import data from '../generated/data.json'
-import { format, parseISO } from 'date-fns';
+import type { Enabler, EnablerPost } from "../schemas/enabler";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import AreaGraph from "../components/AreaGraph.astro";
+import PostTypeIcon from "../components/PostTypeIcon.astro";
+import OpacityOverlay from "../components/OpacityOverlay.astro";
+import { getTimelineConfig } from "../lib/timeline";
+import { orderEarliestToLatest } from "../lib/posts";
+import data from "../generated/data.json";
+import { format, parseISO } from "date-fns";
 
 export async function getStaticPaths() {
-  const enablerEntries = await getCollection('enabler');
-  return enablerEntries.map(enabler => ({
-    params: { slug: enabler.id }, props: {enabler: enabler.data},
+  const enablerEntries = await getCollection("enabler");
+  return enablerEntries.map((enabler) => ({
+    params: { slug: enabler.id },
+    props: { enabler: enabler.data },
   }));
 }
 
 interface Props {
-  enabler: Enabler
+  enabler: Enabler;
 }
 
 const { enabler } = Astro.props;
-const {dates, svgViewbox} = data
-const posts = orderEarliestToLatest(enabler.posts).filter(post => !post.skip).map(post => ({...post, dateValue: parseISO(post.date).valueOf(), formattedDate: format(parseISO(post.date), 'MMMM do yyyy')}))
-const {dayDuration, postDelays, labelUpdateIntervalMs, killedLabels, firstDateVal, lastDateVal} = getTimelineConfig({durationSeconds: enabler.playDurationSeconds, dates, posts, killedPerDay: data.killed })
+const { dates, svgViewbox } = data;
+const posts = orderEarliestToLatest(enabler.posts)
+  .filter((post) => !post.skip)
+  .map((post) => ({
+    ...post,
+    dateValue: parseISO(post.date).valueOf(),
+    formattedDate: format(parseISO(post.date), "MMMM do yyyy"),
+  }));
+const {
+  dayDuration,
+  postDelays,
+  labelUpdateIntervalMs,
+  killedLabels,
+  firstDateVal,
+  lastDateVal,
+} = getTimelineConfig({
+  durationSeconds: enabler.playDurationSeconds,
+  dates,
+  posts,
+  killedPerDay: data.killed,
+});
 
-const postDates = posts.map(post => post.dateValue)
-const markerConfig = {postDates, minTime: firstDateVal, maxTime: lastDateVal}
+const postDates = posts.map((post) => post.dateValue);
+const markerConfig = { postDates, minTime: firstDateVal, maxTime: lastDateVal };
 
 const postAnimStyle = (post: EnablerPost, index: number) => {
-  return `animation-delay: ${postDelays[index]}s`
-}
-
+  return `animation-delay: ${postDelays[index]}s`;
+};
 ---
+
 <Layout clip title={`genocide.club • ${enabler.name}`}>
   <main>
-		<OpacityOverlay />
+    <OpacityOverlay />
     <AreaGraph playDurationSeconds={enabler.playDurationSeconds} />
-    <div id="markers" data-viewbox={JSON.stringify(svgViewbox)} data-markerconfig={JSON.stringify(markerConfig)} />
-    <div class="scroll-top-fade" />
+    <div
+      id="markers"
+      data-viewbox={JSON.stringify(svgViewbox)}
+      data-markerconfig={JSON.stringify(markerConfig)}
+    >
+    </div>
+    <div class="scroll-top-fade"></div>
     <header>
       <div class="logo">
         Genocide Club • {enabler.name}
@@ -49,36 +73,57 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
       </div>
     </header>
     <div class="posts">
-      {posts.map((post, i) => (
-        <div class="post" data-dateval={post.dateValue} style={postAnimStyle(post, i)}>
-          <div class="post-card">
-            {post.text}
-            <div class="post-meta">
-              <div>{post.formattedDate}</div>
-              <div class="post-meta-type">
-                <a href={post.href}>
-                  <PostTypeIcon icon={post.type} />
-                </a>
+      {
+        posts.map((post, i) => (
+          <div
+            class="post"
+            data-dateval={post.dateValue}
+            style={postAnimStyle(post, i)}
+          >
+            <div class="post-card">
+              {post.text}
+              <div class="post-meta">
+                <div>{post.formattedDate}</div>
+                <div class="post-meta-type">
+                  <a href={post.href}>
+                    <PostTypeIcon icon={post.type} />
+                  </a>
+                </div>
+                {enabler.image && (
+                  <div class="post-avatar">
+                    <img src={enabler.image} />
+                  </div>
+                )}
               </div>
-              {enabler.image && <div class="post-avatar">
-                <img src={enabler.image} />
-              </div>}
             </div>
-            </div>
-            {post.commentary && <div class="post-commentary">{post.commentary}</div>}
-        </div>
-        ))}
+            {post.commentary && (
+              <div class="post-commentary">{post.commentary}</div>
+            )}
+          </div>
+        ))
+      }
     </div>
-    <div id="label-killed" data-labels={JSON.stringify(killedLabels)} data-interval={labelUpdateIntervalMs}>
+    <div
+      id="label-killed"
+      data-labels={JSON.stringify(killedLabels)}
+      data-interval={labelUpdateIntervalMs}
+    >
       <span></span>
       <span></span>
     </div>
-    <div id="label-killed-context">killed in <span id="label-killed-context-value" data-days={dates.length} data-daydur={dayDuration}>1</span> <span id="label-killed-context-unit">day</span></div>
-	</main>
+    <div id="label-killed-context">
+      killed in <span
+        id="label-killed-context-value"
+        data-days={dates.length}
+        data-daydur={dayDuration}>1</span
+      >
+      <span id="label-killed-context-unit">day</span>
+    </div>
+  </main>
 </Layout>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@600;700&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@600;700&display=swap");
 
   header {
     z-index: 200;
@@ -103,7 +148,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
   }
 
   #label-killed {
-    font-family: 'Martian Mono', monospace;
+    font-family: "Martian Mono", monospace;
     font-weight: 700;
     position: absolute;
     bottom: 110px;
@@ -132,9 +177,8 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     text-transform: lowercase;
   }
 
-
   #label-killed-context-value {
-    font-family: 'Martian Mono', monospace;
+    font-family: "Martian Mono", monospace;
     font-weight: 600;
     font-size: 7vh;
   }
@@ -158,7 +202,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     left: -50px;
     right: -50px;
     height: 300px;
-    box-shadow: 0px 150px 100px rgba(10,10,10,0.8);
+    box-shadow: 0px 150px 100px rgba(10, 10, 10, 0.8);
   }
 
   .post {
@@ -166,15 +210,15 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     position: relative;
     left: -500px;
     width: 400px;
-    
+
     animation-duration: 1s;
     animation-name: fadein;
     animation-fill-mode: forwards;
     cursor: pointer;
   }
-  
+
   .post-card {
-    box-shadow: 0px 10px 10px rgba(10,10,10,0.5);
+    box-shadow: 0px 10px 10px rgba(10, 10, 10, 0.5);
     position: relative;
     background-color: #eee;
     border-radius: 3px;
@@ -197,7 +241,7 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
     height: 50px;
     overflow: hidden;
     border-radius: 25px;
-    box-shadow: 0px 10px 10px rgba(10,10,10,0.5);
+    box-shadow: 0px 10px 10px rgba(10, 10, 10, 0.5);
   }
 
   .post-avatar > img {
@@ -235,106 +279,122 @@ const postAnimStyle = (post: EnablerPost, index: number) => {
       left: 0;
     }
   }
-
 </style>
 
 <script>
-  import { setLineMarkersForPosts } from "../lib/browser/markers"
+  import { setLineMarkersForPosts } from "../lib/browser/markers";
 
   const markerHolder: HTMLElement | null = document.querySelector("#markers");
   if (!markerHolder) {
     throw new Error("No marker holder element found");
   }
-  const svgViewbox =  JSON.parse(markerHolder.dataset.viewbox ?? '') 
-  const markerConfig: {postDates: number[], minTime: number, maxTime: number} = JSON.parse(markerHolder.dataset.markerconfig ?? '')
-  const markers = setLineMarkersForPosts({...markerConfig, markerHolder, svgViewbox})
+  const svgViewbox = JSON.parse(markerHolder.dataset.viewbox ?? "");
+  const markerConfig: {
+    postDates: number[];
+    minTime: number;
+    maxTime: number;
+  } = JSON.parse(markerHolder.dataset.markerconfig ?? "");
+  const markers = setLineMarkersForPosts({
+    ...markerConfig,
+    markerHolder,
+    svgViewbox,
+  });
 
-  const postTopOffset = 200
-  const posts: NodeListOf< HTMLElement> = document.querySelectorAll('.post')
-  const postContainer = document.querySelector('.posts')
+  const postTopOffset = 200;
+  const posts: NodeListOf<HTMLElement> = document.querySelectorAll(".post");
+  const postContainer = document.querySelector(".posts");
   if (postContainer) {
-    postContainer.addEventListener('scroll', event => {
+    postContainer.addEventListener("scroll", (event) => {
       // console.log('>', event)
-    })
+    });
 
-    posts.forEach(post => {
-      post.addEventListener('click', () => {
-        post.style.animationName = 'none'
-        post.style.left = '0'
-        post.style.opacity = '1';
-        post.style.backgroundColor = '#fff'
-      })
-      post.addEventListener('animationstart', (event) => {
-        const postDiv = event.target as HTMLDivElement | null
+    posts.forEach((post) => {
+      post.addEventListener("click", () => {
+        post.style.animationName = "none";
+        post.style.left = "0";
+        post.style.opacity = "1";
+        post.style.backgroundColor = "#fff";
+      });
+      post.addEventListener("animationstart", (event) => {
+        const postDiv = event.target as HTMLDivElement | null;
         if (!postDiv) {
-          console.warn('no post div')
+          console.warn("no post div");
           return;
         }
 
-        const postDate = +(postDiv.dataset.dateval ?? 0)
-        if (typeof postDate === 'number' && postDate) {
-          markers.showOne(postDate)
+        const postDate = +(postDiv.dataset.dateval ?? 0);
+        if (typeof postDate === "number" && postDate) {
+          markers.showOne(postDate);
         } else {
-          console.log('no postDate')
+          console.log("no postDate");
         }
 
-        const top = postDiv.getBoundingClientRect().top - postTopOffset + postContainer.scrollTop - 100
+        const top =
+          postDiv.getBoundingClientRect().top -
+          postTopOffset +
+          postContainer.scrollTop -
+          100;
         postContainer.scrollTo({
-          behavior: 'smooth',
-          top
-        })
-      })
-    })
+          behavior: "smooth",
+          top,
+        });
+      });
+    });
   }
 
-  const svgAnim = document.querySelector('#svganim')
-  const killedLabel: HTMLElement | null = document.querySelector('#label-killed')
-  const killedLabelContext: HTMLElement | null = document.querySelector('#label-killed-context-value')
-  const killedLabelContextUnit: HTMLElement | null = document.querySelector('#label-killed-context-unit')
+  const svgAnim = document.querySelector("#svganim");
+  const killedLabel: HTMLElement | null =
+    document.querySelector("#label-killed");
+  const killedLabelContext: HTMLElement | null = document.querySelector(
+    "#label-killed-context-value"
+  );
+  const killedLabelContextUnit: HTMLElement | null = document.querySelector(
+    "#label-killed-context-unit"
+  );
 
   if (svgAnim && killedLabel) {
-    const labelSteps = JSON.parse(killedLabel.dataset.labels ?? '')
-    const intervalTime = +(killedLabel.dataset.interval ?? 0)
-    svgAnim.addEventListener('beginEvent', event => {
+    const labelSteps = JSON.parse(killedLabel.dataset.labels ?? "");
+    const intervalTime = +(killedLabel.dataset.interval ?? 0);
+    svgAnim.addEventListener("beginEvent", (event) => {
       if (killedLabelContext) {
-        const dayDuration = +(killedLabelContext.dataset.daydur ?? 0)
-        const days = +(killedLabelContext.dataset.days ?? 0)
-        let day = 1
+        const dayDuration = +(killedLabelContext.dataset.daydur ?? 0);
+        const days = +(killedLabelContext.dataset.days ?? 0);
+        let day = 1;
         const dayInterval = setInterval(() => {
           if (day === 1 && killedLabelContextUnit) {
-            killedLabelContextUnit.innerHTML = 'days'
+            killedLabelContextUnit.innerHTML = "days";
           }
 
           if (day >= days) {
-            clearInterval(dayInterval)
+            clearInterval(dayInterval);
           } else {
-            day++
-            killedLabelContext.innerHTML = `${day}`
+            day++;
+            killedLabelContext.innerHTML = `${day}`;
           }
-        }, dayDuration * 1000)
+        }, dayDuration * 1000);
       }
-      
-      let step = 0
+
+      let step = 0;
       const countInterval = setInterval(() => {
         if (!labelSteps[step]) {
-          clearInterval(countInterval)
-          return
+          clearInterval(countInterval);
+          return;
         }
-        const value = labelSteps[step]
+        const value = labelSteps[step];
         if (value > 9999) {
-          const [firstDigit, secondDigit, ...rest] = value.toString().split('')
-          killedLabel.firstElementChild!.innerHTML = `${firstDigit}${secondDigit}`
-          killedLabel.lastElementChild!.innerHTML = rest.join('')
+          const [firstDigit, secondDigit, ...rest] = value.toString().split("");
+          killedLabel.firstElementChild!.innerHTML = `${firstDigit}${secondDigit}`;
+          killedLabel.lastElementChild!.innerHTML = rest.join("");
         } else if (value > 999) {
-          const [firstDigit, ...rest] = value.toString().split('')
-          killedLabel.firstElementChild!.innerHTML = firstDigit
-          killedLabel.lastElementChild!.innerHTML = rest.join('')
+          const [firstDigit, ...rest] = value.toString().split("");
+          killedLabel.firstElementChild!.innerHTML = firstDigit;
+          killedLabel.lastElementChild!.innerHTML = rest.join("");
         } else {
-          killedLabel.firstElementChild!.innerHTML = ''
-          killedLabel.lastElementChild!.innerHTML = value
+          killedLabel.firstElementChild!.innerHTML = "";
+          killedLabel.lastElementChild!.innerHTML = value;
         }
-        step++
-      }, intervalTime)
-    })
+        step++;
+      }, intervalTime);
+    });
   }
 </script>
