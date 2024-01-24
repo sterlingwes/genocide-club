@@ -6,6 +6,7 @@
     "site"
   ],
   "scripts": {
+    "data": "bun run scripts/data-renderer.ts",
     "dev": "cd site && bun run dev",
     "start": "bun run dev",
     "build": "cd site && bun run build",
