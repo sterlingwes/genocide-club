@@ -5,10 +5,9 @@ import Layout from "../layouts/Layout.astro";
 import KilledGraph from "../generated/killed.astro";
 import PostTypeIcon from "../components/PostTypeIcon.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
-import { getTimelineConfig } from "../lib/timeline";
-import { orderEarliestToLatest } from "../lib/posts";
-import data from "../generated/data.json";
-import { format, parseISO } from "date-fns";
+import { getTimeline } from "../lib/timeline";
+import { getSvgDomain } from "../lib/server/svg";
+import { getEnhancedPosts } from "../lib/server/posts";
 
 export async function getStaticPaths() {
   const enablerEntries = await getCollection("enabler");
@@ -23,72 +22,187 @@ interface Props {
 }
 
 const { enabler } = Astro.props;
-const { dates, svgViewbox } = data;
-const posts = orderEarliestToLatest(enabler.posts)
-  .filter((post) => !post.skip)
-  .map((post) => ({
-    ...post,
-    dateValue: parseISO(post.date).valueOf(),
-    formattedDate: format(parseISO(post.date), "MMMM do yyyy"),
-  }));
-const {
-  dayDuration,
-  postDelays,
-  labelUpdateIntervalMs,
-  killedLabels,
-  wcKilledLabels,
-  firstDateVal,
-  lastDateVal,
-} = getTimelineConfig({
-  durationSeconds: enabler.playDurationSeconds,
-  dates,
-  posts,
-  killedPerDay: data.killed,
-  wcKilledPerDay: data.wcKilled,
-});
 
-const postDates = posts.map((post) => post.dateValue);
-const markerConfig = { postDates, minTime: firstDateVal, maxTime: lastDateVal };
-
-const postAnimStyle = (index: number) => {
-  return `animation-delay: ${postDelays[index]}s`;
-};
-
-const aspectRatio = svgViewbox.width / svgViewbox.height;
+const posts = getEnhancedPosts(enabler.posts);
+const svgDomain = getSvgDomain();
+const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
 ---
 
 <Layout clip title={`genocide.club • ${enabler.name}`}>
   <main>
     <OpacityOverlay />
     <div class="graph">
-      <KilledGraph
-        playDuration={enabler.playDurationSeconds
-          ? `${enabler.playDurationSeconds}s`
-          : undefined}
-      />
-    </div>
-    <div
-      id="markers"
-      data-viewbox={JSON.stringify(svgViewbox)}
-      data-markerconfig={JSON.stringify(markerConfig)}
-    >
-    </div>
-    <div class="scroll-top-fade"></div>
-    <header>
-      <div class="logo">
-        {enabler.name}
+      <div style={{ position: "relative" }}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 400 235"
+          style="width: 100vw; opacity: 0.9"
+        >
+          <KilledGraph />
+          {
+            graphConfig.steps.map(({ markerPoint, markerTooltip, postTime }) =>
+              markerPoint ? (
+                <circle
+                  cx={markerPoint[0]}
+                  cy={markerPoint[1]}
+                  r={3}
+                  fill="rgba(168, 44, 44, 1)"
+                  opacity="0"
+                >
+                  <title>{markerTooltip}</title>
+                  <animate
+                    begin={`${graphConfig.postDelayLookup[postTime]}s`}
+                    attributeName="opacity"
+                    from="0"
+                    to="1"
+                    fill="freeze"
+                    dur="0.5s"
+                  />
+                </circle>
+              ) : null
+            )
+          }
+
+          <defs>
+            <clipPath id="curtain">
+              <rect x="0" y="0" width="0" height="235">
+                <animate
+                  id="curtain-anim"
+                  attributeName="width"
+                  begin="0s"
+                  from="0"
+                  to="400"
+                  fill="freeze"
+                  dur={`${graphConfig.totalDuration / 1_000}s`}
+                  values={"0;" +
+                    graphConfig.steps
+                      .map((step) => step.distance + step.distanceBefore)
+                      .join(";")}
+                  keyTimes={"0;" +
+                    graphConfig.steps
+                      .map((_, i) => (i + 1) / graphConfig.steps.length)
+                      .join(";")}></animate>
+              </rect>
+            </clipPath>
+          </defs>
+          <g style="transform: translate(95%,70%)">
+            <g>
+              {
+                svgTexts.map(
+                  ({
+                    count,
+                    freeze,
+                    countAnimId,
+                    countDuration,
+                    lastCountAnimId,
+                  }) => (
+                    <text
+                      text-anchor="end"
+                      font-family="Martian Mono, monospace"
+                      font-weight="600"
+                      font-size="2.4vw"
+                      opacity="0"
+                      fill="white"
+                    >
+                      <tspan>{count}</tspan>
+                      <animate
+                        id={countAnimId}
+                        attributeName="opacity"
+                        from="0"
+                        to={freeze ? "0.9" : "0"}
+                        fill={freeze ? "freeze" : undefined}
+                        values="0;0.9;0.9"
+                        keyTimes="0;0.1;1"
+                        dur={`${countDuration / 1_000}s`}
+                        begin={
+                          lastCountAnimId ? `${lastCountAnimId}.end` : "0s"
+                        }
+                      />
+                    </text>
+                  )
+                )
+              }
+            </g>
+            <g transform="translate(0,24)">
+              <g style="transform: translate(-5.6vw,0)">
+                <text
+                  text-anchor="end"
+                  font-weight="700"
+                  font-size="1.2vw"
+                  opacity="0.9"
+                  fill="white"
+                >
+                  killed in
+                </text>
+              </g>
+              <g style="transform: translate(-5.3vw,0);">
+                {
+                  dayTexts.map(
+                    ({
+                      dayNumber,
+                      duration,
+                      dayAnimId,
+                      lastDayAnimId,
+                      freeze,
+                    }) => (
+                      <text
+                        fill="white"
+                        opacity="0"
+                        font-size="1.1vw"
+                        font-weight="600"
+                        font-family="Martian Mono, monospace"
+                      >
+                        <tspan>{dayNumber}</tspan>
+                        <animate
+                          id={dayAnimId}
+                          attributeName="opacity"
+                          from="0"
+                          to={freeze ? "0.9" : "0"}
+                          fill={freeze ? "freeze" : undefined}
+                          values="0;0.9;0.9"
+                          keyTimes="0;0.1;1"
+                          dur={`${duration / 1_000}s`}
+                          begin={lastDayAnimId ? `${lastDayAnimId}.end` : "0s"}
+                        />
+                      </text>
+                    )
+                  )
+                }
+              </g>
+              <g>
+                <text
+                  text-anchor="end"
+                  font-weight="700"
+                  font-size="1.2vw"
+                  opacity="0.9"
+                  fill="white"
+                >
+                  days
+                </text>
+              </g>
+            </g>
+          </g>
+        </svg>
       </div>
-      <div class="bio">
-        {enabler.bio}
-      </div>
-    </header>
-    <div class="posts">
-      {
-        posts.map((post, i) => (
+    </div>
+  </main>
+  <div class="scroll-top-fade"></div>
+  <header>
+    <div class="logo">
+      {enabler.name}
+    </div>
+    <div class="bio">
+      {enabler.bio}
+    </div>
+  </header>
+  <div class="posts">
+    {
+      posts.map((post, i) => (
+        <div class="post-wrapper">
           <div
             class="post"
             data-dateval={post.dateValue}
-            style={postAnimStyle(i)}
+            style={`animation-delay: ${graphConfig.postDelayLookup[post.dateValue]}s`}
           >
             <div class="post-card">
               {post.text}
@@ -110,46 +224,15 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
               <div class="post-commentary">{post.commentary}</div>
             )}
           </div>
-        ))
-      }
-    </div>
-    <div class="graph-labels">
-      <div
-        id="label-killed"
-        data-labels={JSON.stringify(killedLabels)}
-        data-interval={labelUpdateIntervalMs}
-      >
-        <div class="flex-spacer"></div>
-        <div>
-          <span></span>
-          <span></span>
         </div>
-      </div>
-      <div id="label-killed-context">
-        <div>
-          killed in <span
-            id="label-killed-context-value"
-            data-days={dates.length}
-            data-daydur={dayDuration}>1</span
-          >
-          <span id="label-killed-context-unit">day</span>
-        </div>
-        <div
-          id="label-killed-context-2"
-          data-labels={JSON.stringify(wcKilledLabels)}
-        >
-          <span>(</span>
-          <span></span>
-          <span> women & children)</span>
-        </div>
-      </div>
-    </div>
-    <div class="bottom-line"></div>
-    <div class="scroll-bottom-fade"></div>
-  </main>
+      ))
+    }
+  </div>
+  <div class="bottom-line"></div>
+  <div class="scroll-bottom-fade"></div>
 </Layout>
 
-<style define:vars={{ aspectRatio }}>
+<style define:vars={{ aspectRatio: svgDomain.aspectRatio }}>
   @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600;700&display=swap");
 
   main {
@@ -193,92 +276,14 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     left: 0;
     right: 0;
     bottom: 0;
-    pointer-events: none;
   }
 
   :global(path#chartpath) {
     fill: rgba(100, 40, 40, 0.8);
   }
 
-  .graph-labels {
-    pointer-events: none;
-    position: absolute;
-    right: 40px;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    z-index: 5;
-  }
-
-  .graph-labels > div {
-    flex-grow: 1;
-  }
-
-  .graph-labels > div:first-of-type {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 2;
-  }
-
-  .flex-spacer {
-    flex-grow: 1;
-  }
-
-  #label-killed {
-    font-family: "Martian Mono", monospace;
-    font-weight: 700;
-    font-size: 8vw;
-    opacity: 0.7;
-    color: white;
-  }
-
-  #label-killed span {
-    display: inline-block;
-  }
-
-  #label-killed span:first-of-type {
-    margin-right: -6vw;
-  }
-
-  #label-killed span:first-of-type::after {
-    position: relative;
-    content: ",";
-    z-index: 999;
-    font-size: 5vw;
-  }
-
-  #label-killed-context {
-    font-size: 4vw;
-    opacity: 0.7;
-    color: white;
-    font-weight: bold;
-    text-transform: lowercase;
-  }
-
-  #label-killed-context-2 {
-    margin-top: 10px;
-    font-size: 2.5vw;
-    font-weight: 500;
-  }
-
-  #label-killed-context-2 > span:nth-of-type(2) {
-    margin-top: 10px;
-    font-size: 2vw;
-    font-weight: 400;
-    font-family: "Martian Mono", monospace;
-    margin-right: 5px;
-  }
-
-  #label-killed-context-value {
-    font-family: "Martian Mono", monospace;
-    font-weight: 600;
-    font-size: 3.5vw;
-  }
-
   .posts {
+    pointer-events: none;
     z-index: 100;
     padding: 200px 100px;
     position: absolute;
@@ -332,12 +337,17 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
     animation-fill-mode: forwards;
   }
 
+  .post-wrapper {
+    pointer-events: auto;
+    padding-bottom: 20px;
+  }
+
   .post-card {
     box-shadow: 0px 10px 10px rgba(10, 10, 10, 0.5);
     position: relative;
     background-color: #eee;
     border-radius: 3px;
-    margin-bottom: 20px;
+
     padding: 10px;
   }
 
@@ -422,35 +432,6 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
       fill: rgba(100, 40, 40, 1);
     }
 
-    .graph-labels {
-      top: 50%;
-      height: 50%;
-    }
-
-    .graph-labels > div:first-of-type {
-      flex-grow: 3;
-    }
-
-    #label-killed {
-      font-size: 9vw;
-    }
-
-    #label-killed-context {
-      font-size: 5vw;
-    }
-
-    #label-killed-context-2 {
-      font-size: 3vw;
-    }
-
-    #label-killed-context-2 > span:nth-of-type(2) {
-      font-size: 2.5vw;
-    }
-
-    #label-killed-context-value {
-      font-size: 4vw;
-    }
-
     .posts {
       bottom: 50%;
     }
@@ -458,47 +439,8 @@ const aspectRatio = svgViewbox.width / svgViewbox.height;
 </style>
 
 <script>
-  import { setLineMarkersForPosts } from "../lib/browser/markers";
-  import { startCounterLabels } from "../lib/browser/graph-labels";
   import { handlePostEvents } from "../lib/browser/posts";
 
-  const markerHolder: HTMLElement | null = document.querySelector("#markers");
-  if (!markerHolder) {
-    throw new Error("No marker holder element found");
-  }
-  const svgViewbox = JSON.parse(markerHolder.dataset.viewbox ?? "");
-  const markerConfig: {
-    postDates: number[];
-    minTime: number;
-    maxTime: number;
-  } = JSON.parse(markerHolder.dataset.markerconfig ?? "");
-  let markers = setLineMarkersForPosts({
-    ...markerConfig,
-    markerHolder,
-    svgViewbox,
-  });
-  const shownMarkers = new Set<number>();
-
-  window.onresize = () => {
-    markers = setLineMarkersForPosts({
-      ...markerConfig,
-      markerHolder,
-      svgViewbox,
-    });
-    Array.from(shownMarkers).forEach((markerTime) =>
-      markers.showOne(markerTime)
-    );
-  };
-
-  /**
-   * ideas for refactoring out javascript logic:
-   *
-   * - render all "steps" in labels to the DOM and tie-in with CSS animation "keyframing"
-   * - keep keyframing for posts but update delay logic to make the posts appear less quickly
-   * - setup companion keyframe animation for markers (with delays, like posts)
-   * - setup companion keyframe animation for graph (add a clippath for each speed segment ?)
-   */
-
-  handlePostEvents({ markers, shownMarkers });
-  startCounterLabels();
+  handlePostEvents();
 </script>
+../lib/server/posts

@@ -54,7 +54,17 @@ const render = async () => {
     ])
     .range([height, 0]);
 
-  svg
+  const pathData = d3
+    .area()
+    .x(function (d) {
+      return x(d.date);
+    })
+    .y0(y(0))
+    .y1(function (d) {
+      return y(d.value);
+    });
+
+  const retval = svg
     .append("path")
     .datum(data.chart)
     .attr("id", "chartpath")
@@ -62,51 +72,17 @@ const render = async () => {
     .attr("stroke", "rgba(168, 44, 44, 1)")
     .attr("stroke-width", 2)
     .attr("clip-path", "url(#curtain)")
-    .attr(
-      "d",
-      d3
-        .area()
-        .x(function (d) {
-          return x(d.date);
-        })
-        .y0(y(0))
-        .y1(function (d) {
-          return y(d.value);
-        })
-    );
+    .attr("d", pathData);
 
-  const defaultAnimationDuration = "10s";
-
-  svg.attr("style", "width: 100vw; opacity: 0.9");
-  svg
-    .append("defs")
-    .append("clipPath")
-    .attr("id", "curtain")
-    .append("rect")
-    .attr("x", "0")
-    .attr("y", "0")
-    .attr("width", width)
-    .attr("height", height)
-    .append("animate")
-    .attr("attributeName", "width")
-    .attr("values", `0;${width}`)
-    .attr("dur", defaultAnimationDuration)
-    .attr("id", "svganim");
+  data.pathData = svg.select("path").attr("d");
 
   const svgStr = d3n.svgString();
+  const [, pathStartPart] = svgStr.split("><path");
+  const [pathAttributes] = pathStartPart.split("></path>");
   const astroDoc = `---
-interface Props {
-  playDuration?: string
-}
-const { playDuration } = Astro.props;
 ---
 
-${svgStr
-  .replace(`width="${width}" height="${height}"`, "")
-  .replace(
-    `"${defaultAnimationDuration}"`,
-    `{playDuration ?? "${defaultAnimationDuration}"}`
-  )}
+<path${pathAttributes}></path>
 `;
 
   cp.execSync("mkdir -p site/src/generated");
