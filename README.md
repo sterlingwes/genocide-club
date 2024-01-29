@@ -38,5 +38,5 @@ Note the following guiding principles: the core animation (graph reveal, post ap
 Where to find / place things:
 
 - [site/src/pages/[...slug].astro](site/src/pages/[...slug].astro) is the main template used to generate the visualization pages
-- [site/src/lib/server/timeline.ts](site/src/lib/timeline) is the core animation sequencing logic, run at build ("server") time
+- [site/src/lib/server/timeline](site/src/lib/server/timeline.ts) is the core animation sequencing logic, run at build ("server") time
 - [site/src/lib/browser](site/src/lib/browser) has any javascript we run in the browser or referenced in a script tag in the page template

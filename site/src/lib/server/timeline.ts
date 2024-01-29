@@ -4,15 +4,7 @@ import type { getEnhancedPosts } from "./posts";
 import { leftPadTwoDigits } from "../formatting";
 import type { getSvgDomain } from "./svg";
 
-// if posts presented in within this time period (in seconds)
-// just show them at the same time as the one(s) prior
-const postConsolidationThreshold = 0.5;
-
 const { dates, killed } = generatedData;
-
-const minimumPostTime = 3 * 1_000;
-const minimumTotalAnimTime = 10 * 1_000;
-const minimumDayDuration = minimumTotalAnimTime / dates.length;
 
 const getTimelineBounds = () => {
   const firstDate = startOfDay(parseISO(dates[0]));
@@ -26,6 +18,23 @@ const getTimelineBounds = () => {
 const graphStepDuration = 0.5 * 1_000;
 const bookendStepCount = 2;
 
+/**
+ * primary logic for generating the animation sequencing / keyframes
+ *
+ * there's four separate animations happening:
+ *
+ * 1. an svg <path/> clipping transition for the filled line chart background
+ * 2. svg <text/> keyframe animations for the day & killed count labels
+ * 3. CSS keyframe animations for the post / statement cards
+ * 4. CSS keyframe animation for the "display time" progress bar on each post card
+ *
+ * the aim is to have the following general progression:
+ *
+ * 1. chart fills until the next post time and stops
+ * 2. during that graph "step", the counter labels count up for each day in that chart segment
+ * 2. during the fill chart pause, a post shows and stays visible for an appropriate "read time" duration (progress bar fills during this time)
+ * 3. chart starts filling again until the next post display time
+ */
 export const getTimeline = ({
   posts,
   svgDomain,
