@@ -23,6 +23,6 @@ jobs:
       - name: install dependencies
         run: bun install
       - name: stub generated data file
-        run: echo '{}' > site/src/generated/data.json
+        run: mkdir -p site/src/generated && echo '{}' > site/src/generated/data.json
       - name: run unit tests
         run: bun run test
