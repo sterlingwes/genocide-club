@@ -72,6 +72,33 @@ const {
           }
 
           <defs>
+            <linearGradient id="maskgradient">
+              <stop offset="0" stop-color="white"></stop>
+              <stop offset="0.5" stop-color="#CCC"></stop>
+              <stop offset="0.7" stop-color="#AAA"></stop>
+              <stop offset="0.9" stop-color="#999"></stop>
+              <stop offset="1" stop-color="black"></stop>
+            </linearGradient>
+            <mask id="curtainfade">
+              <rect
+                x="0"
+                y="0"
+                width="0"
+                height="235"
+                fill="url(#maskgradient)"
+              >
+                <animate
+                  id="curtainfade-anim"
+                  attributeName="width"
+                  begin="0s"
+                  from="0"
+                  to="400"
+                  fill="freeze"
+                  dur={`${expectedDuration / 1_000}s`}
+                  values={clipPathValues}
+                  keyTimes={clipPathTimes}></animate>
+              </rect>
+            </mask>
             <clipPath id="curtain">
               <rect x="0" y="0" width="0" height="235">
                 <animate

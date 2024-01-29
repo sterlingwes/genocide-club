@@ -72,6 +72,7 @@ const render = async () => {
     .attr("stroke", "rgba(168, 44, 44, 1)")
     .attr("stroke-width", 2)
     .attr("clip-path", "url(#curtain)")
+    .attr("mask", "url(#curtainfade)")
     .attr("d", pathData);
 
   data.pathData = svg.select("path").attr("d");
