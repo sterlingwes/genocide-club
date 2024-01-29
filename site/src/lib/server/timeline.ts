@@ -4,9 +4,12 @@ import type { getEnhancedPosts } from "./posts";
 import { leftPadTwoDigits } from "../formatting";
 import type { getSvgDomain } from "./svg";
 
-const { dates, killed } = generatedData;
+const getData = () => {
+  return generatedData;
+};
 
-const getTimelineBounds = () => {
+const getTimelineBounds = (dataFetcher = getData) => {
+  const { dates } = dataFetcher();
   const firstDate = startOfDay(parseISO(dates[0]));
   const lastDate = endOfDay(parseISO(dates[dates.length - 1]));
   const firstDateVal = firstDate.valueOf();
@@ -38,11 +41,14 @@ const bookendStepCount = 2;
 export const getTimeline = ({
   posts,
   svgDomain,
+  dataFetcher,
 }: {
   posts: ReturnType<typeof getEnhancedPosts>;
   svgDomain: ReturnType<typeof getSvgDomain>;
+  dataFetcher?: typeof getData;
 }) => {
   const { firstDateVal, realTimeDuration } = getTimelineBounds();
+  const { dates, killed } = dataFetcher ? dataFetcher() : getData();
   const postDates = posts.map((post) => post.dateValue).sort();
   const allDates = dates.map((date) => parseISO(date).valueOf());
   const uniqueDates = new Set<number>(postDates);
