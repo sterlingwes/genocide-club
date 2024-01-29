@@ -10,8 +10,10 @@ const getData = () => {
 
 const getTimelineBounds = (dataFetcher = getData) => {
   const { dates } = dataFetcher();
-  const firstDate = startOfDay(parseISO(dates[0]));
-  const lastDate = endOfDay(parseISO(dates[dates.length - 1]));
+  const headDate = dates[0];
+  const tailDate = dates[dates.length - 1];
+  const firstDate = startOfDay(parseISO(headDate));
+  const lastDate = endOfDay(parseISO(tailDate));
   const firstDateVal = firstDate.valueOf();
   const lastDateVal = lastDate.valueOf();
   const realTimeDuration = lastDateVal - firstDateVal;
@@ -47,7 +49,7 @@ export const getTimeline = ({
   svgDomain: ReturnType<typeof getSvgDomain>;
   dataFetcher?: typeof getData;
 }) => {
-  const { firstDateVal, realTimeDuration } = getTimelineBounds();
+  const { firstDateVal, realTimeDuration } = getTimelineBounds(dataFetcher);
   const { dates, killed } = dataFetcher ? dataFetcher() : getData();
   const postDates = posts.map((post) => post.dateValue).sort();
   const allDates = dates.map((date) => parseISO(date).valueOf());
@@ -104,8 +106,6 @@ export const getTimeline = ({
     {}
   );
 
-  console.log("svgDomain: ", svgDomain);
-
   const graphConfig = sortedMarkerTimes.reduce(
     (acc, postTime, postIndex) => {
       const currentTimeInterval = acc.lastPostTime
@@ -114,13 +114,6 @@ export const getTimeline = ({
 
       const distance =
         (currentTimeInterval / realTimeDuration) * svgDomain.svgViewbox.width;
-      console.log({
-        postTime,
-        firstDateVal,
-        distance,
-        currentTimeInterval,
-        realTimeDuration,
-      });
 
       const distanceBefore = acc.totalDistance;
 

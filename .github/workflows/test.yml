@@ -26,4 +26,4 @@ jobs:
       - name: setup data fixture
         run: mkdir -p site/src/generated && cp site/src/lib/server/__fixtures__/data.json site/src/generated/data.json
       - name: run unit tests
-        run: TZ=America/New_York bun run test
+        run: bun run test
