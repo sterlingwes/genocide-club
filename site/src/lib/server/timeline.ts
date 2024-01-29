@@ -114,7 +114,13 @@ export const getTimeline = ({
 
       const distance =
         (currentTimeInterval / realTimeDuration) * svgDomain.svgViewbox.width;
-      console.log({ distance, currentTimeInterval, realTimeDuration });
+      console.log({
+        postTime,
+        firstDateVal,
+        distance,
+        currentTimeInterval,
+        realTimeDuration,
+      });
 
       const distanceBefore = acc.totalDistance;
 
