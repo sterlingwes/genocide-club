@@ -12,6 +12,8 @@ jobs:
           bun-version: 1.0.22
       - name: install dependencies
         run: bun install
+      - name: pull latest data
+        run: bun run data
       - name: build site
         run: bun run build
       - name: deploy
