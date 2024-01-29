@@ -1,4 +1,14 @@
-on: [push]
+on:
+  push:
+    paths:
+      - "**.json"
+      - "**.js"
+      - "**.jsx"
+      - "**.mjs"
+      - "**.ts"
+      - "**.tsx"
+      - "**.astro"
+      - "**.lockb"
 
 jobs:
   deploy:
