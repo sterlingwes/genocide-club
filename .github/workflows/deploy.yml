@@ -17,8 +17,21 @@ jobs:
       - name: build site
         run: bun run build
       - name: deploy
+        id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=genocide-club site/dist
+      - uses: actions/github-script@v6
+        if: ${{ github.ref != 'refs/heads/main' }}
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Preview build deployed to: ${process.env.DEPLOYMENT_URL}`
+            })
