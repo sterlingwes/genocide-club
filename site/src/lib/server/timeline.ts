@@ -98,6 +98,8 @@ export const getTimeline = ({
     {}
   );
 
+  console.log("svgDomain: ", svgDomain);
+
   const graphConfig = sortedMarkerTimes.reduce(
     (acc, postTime, postIndex) => {
       const currentTimeInterval = acc.lastPostTime
