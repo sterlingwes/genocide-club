@@ -11,6 +11,7 @@ on:
       - "**.astro"
       - "**.lockb"
       - "!**.test.ts"
+      - "!**.d.ts"
   push:
     branches:
       - main
@@ -24,6 +25,7 @@ on:
       - "**.astro"
       - "**.lockb"
       - "!**.test.ts"
+      - "!**.d.ts"
 
 jobs:
   deploy:
