@@ -541,6 +541,17 @@ const {
       fill: rgba(100, 40, 40, 1);
     }
 
+    /* 
+      chart overlays posts at bottom 
+      so make it more opaque so that the counts contrast better 
+    */
+    #maskgradient stop {
+      stop-color: white;
+    }
+    #maskgradient stop:last-of-type {
+      stop-color: black;
+    }
+
     .marker {
       r: 8;
     }
