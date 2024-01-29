@@ -64,7 +64,7 @@ const render = async () => {
       return y(d.value);
     });
 
-  const retval = svg
+  svg
     .append("path")
     .datum(data.chart)
     .attr("id", "chartpath")

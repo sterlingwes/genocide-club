@@ -9,6 +9,7 @@ on:
       - "**.tsx"
       - "**.astro"
       - "**.lockb"
+      - ".github/workflows/test.yml"
 
 jobs:
   deploy:
@@ -22,7 +23,7 @@ jobs:
           bun-version: 1.0.22
       - name: install dependencies
         run: bun install
-      - name: pull latest data
-        run: bun run data
+      - name: setup data fixture
+        run: mkdir -p site/src/generated && cp site/src/lib/server/__fixtures__/data.json site/src/generated/data.json
       - name: run unit tests
         run: bun run test
