@@ -176,4 +176,4 @@ dist
 
 # bun artifact ignore
 # https://github.com/withastro/astro/issues/6013#issuecomment-1421281742
-src/
+/src/
