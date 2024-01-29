@@ -179,6 +179,12 @@ const {
               style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s`}
             >
               <div class="post-card">
+                <div class="post-load-bar">
+                  <div
+                    class="post-load-bar-fill"
+                    style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s; animation-duration: ${post.readTime.time / 1_000}s`}
+                  />
+                </div>
                 {post.text}
                 <div class="post-meta">
                   <div>{post.formattedDate}</div>
@@ -363,6 +369,37 @@ const {
     border-radius: 3px;
 
     padding: 10px;
+  }
+
+  .post-load-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .post-load-bar-fill {
+    height: 4px;
+    width: 0%;
+    opacity: 1;
+    animation-name: post-load-fill;
+    animation-timing-function: ease-out;
+    background-color: rgba(168, 44, 44, 1);
+  }
+
+  @keyframes post-load-fill {
+    0% {
+      width: 0%;
+      opacity: 1;
+    }
+    80% {
+      width: 100%;
+      opacity: 1;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
   }
 
   .post-commentary {
