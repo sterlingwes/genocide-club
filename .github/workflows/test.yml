@@ -1,0 +1,28 @@
+on:
+  push:
+    paths:
+      - "**.json"
+      - "**.js"
+      - "**.jsx"
+      - "**.mjs"
+      - "**.ts"
+      - "**.tsx"
+      - "**.astro"
+      - "**.lockb"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+        name: setup bun
+        with:
+          bun-version: 1.0.22
+      - name: install dependencies
+        run: bun install
+      - name: pull latest data
+        run: bun run data
+      - name: run unit tests
+        run: bun run test
