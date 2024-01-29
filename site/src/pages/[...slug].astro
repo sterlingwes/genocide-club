@@ -119,14 +119,11 @@ const {
                 )
               }
             </g>
-            <g style="transform: translate(0,1.6vw)">
-              <g
-                class="svg-days-bookends"
-                style="transform: translate(-5.6vw,0)"
-              >
+            <g class="svg-days-container">
+              <g class="svg-days-bookends">
                 <text text-anchor="end"> killed in </text>
               </g>
-              <g class="svg-days" style="transform: translate(-5.3vw,0);">
+              <g class="svg-days">
                 {
                   dayTexts.map(
                     ({
@@ -163,51 +160,51 @@ const {
         </svg>
       </div>
     </div>
-  </main>
-  <div class="scroll-top-fade"></div>
-  <header>
-    <div class="logo">
-      {enabler.name}
-    </div>
-    <div class="bio">
-      {enabler.bio}
-    </div>
-  </header>
-  <div class="posts">
-    {
-      posts.map((post, i) => (
-        <div class="post-wrapper">
-          <div
-            class="post"
-            data-dateval={post.dateValue}
-            style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s`}
-          >
-            <div class="post-card">
-              {post.text}
-              <div class="post-meta">
-                <div>{post.formattedDate}</div>
-                <div class="post-meta-type">
-                  <a href={post.href} target="_blank">
-                    <PostTypeIcon icon={post.type} />
-                  </a>
-                </div>
-                {enabler.image && (
-                  <div class="post-avatar">
-                    <img src={enabler.image} />
+    <div class="scroll-top-fade"></div>
+    <header>
+      <div class="logo">
+        {enabler.name}
+      </div>
+      <div class="bio">
+        {enabler.bio}
+      </div>
+    </header>
+    <div class="posts">
+      {
+        posts.map((post, i) => (
+          <div class="post-wrapper">
+            <div
+              class="post"
+              data-dateval={post.dateValue}
+              style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s`}
+            >
+              <div class="post-card">
+                {post.text}
+                <div class="post-meta">
+                  <div>{post.formattedDate}</div>
+                  <div class="post-meta-type">
+                    <a href={post.href} target="_blank">
+                      <PostTypeIcon icon={post.type} />
+                    </a>
                   </div>
-                )}
+                  {enabler.image && (
+                    <div class="post-avatar">
+                      <img src={enabler.image} />
+                    </div>
+                  )}
+                </div>
               </div>
+              {post.commentary && (
+                <div class="post-commentary">{post.commentary}</div>
+              )}
             </div>
-            {post.commentary && (
-              <div class="post-commentary">{post.commentary}</div>
-            )}
           </div>
-        </div>
-      ))
-    }
-  </div>
-  <div class="bottom-line"></div>
-  <div class="scroll-bottom-fade"></div>
+        ))
+      }
+    </div>
+    <div class="bottom-line"></div>
+    <div class="scroll-bottom-fade"></div>
+  </main>
 </Layout>
 
 <style define:vars={{ aspectRatio: svgDomain.aspectRatio }}>
@@ -311,12 +308,24 @@ const {
     fill: white;
   }
 
+  .svg-days-container {
+    transform: translate(0, 1.6vw);
+  }
+
+  .svg-days {
+    transform: translate(-5.3vw, 0);
+  }
+
   .svg-days text {
     fill: white;
     opacity: 0;
     font-size: 1.1vw;
     font-weight: 600;
     font-family: "Martian Mono", monospace;
+  }
+
+  .svg-days-bookends:first-of-type {
+    transform: translate(-5.6vw, 0);
   }
 
   .svg-days-bookends text {
@@ -411,6 +420,36 @@ const {
     }
   }
 
+  @media (min-aspect-ratio: 800/900) and (max-aspect-ratio: 950/900) {
+    .marker {
+      r: 4;
+    }
+
+    .svg-counts text {
+      font-size: 3vw;
+    }
+
+    .svg-days-container {
+      transform: translate(0, 2.2vw);
+    }
+
+    .svg-days-bookends:first-of-type {
+      transform: translate(-6.9vw, 0);
+    }
+
+    .svg-days {
+      transform: translate(-6.5vw, 0);
+    }
+
+    .svg-days text {
+      font-size: 1.3vw;
+    }
+
+    .svg-days-bookends text {
+      font-size: 1.4vw;
+    }
+  }
+
   @media (max-aspect-ratio: 800/900) {
     main {
       aspect-ratio: auto;
@@ -436,6 +475,34 @@ const {
     :global(path#chartpath) {
       stroke-width: 3;
       fill: rgba(100, 40, 40, 1);
+    }
+
+    .marker {
+      r: 8;
+    }
+
+    .svg-counts text {
+      font-size: 4vh;
+    }
+
+    .svg-days-container {
+      transform: translate(0, 3vh);
+    }
+
+    .svg-days {
+      transform: translate(-10.5vh, 0);
+    }
+
+    .svg-days text {
+      font-size: 2.2vh;
+    }
+
+    .svg-days-bookends:first-of-type {
+      transform: translate(-11.3vh, 0);
+    }
+
+    .svg-days-bookends text {
+      font-size: 2.3vh;
     }
 
     .posts {
