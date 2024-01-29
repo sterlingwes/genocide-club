@@ -51,10 +51,10 @@ const {
             graphConfig.steps.map(({ markerPoint, markerTooltip, postTime }) =>
               markerPoint ? (
                 <circle
+                  class="marker"
                   cx={markerPoint[0]}
                   cy={markerPoint[1]}
                   r={3}
-                  fill="rgba(168, 44, 44, 1)"
                   opacity="0"
                 >
                   <title>{markerTooltip}</title>
@@ -88,7 +88,7 @@ const {
             </clipPath>
           </defs>
           <g style="transform: translate(95%,70%)">
-            <g>
+            <g class="svg-counts">
               {
                 svgTexts.map(
                   ({
@@ -99,14 +99,7 @@ const {
                     countDuration,
                     lastCountAnimId,
                   }) => (
-                    <text
-                      text-anchor="end"
-                      font-family="Martian Mono, monospace"
-                      font-weight="600"
-                      font-size="2.4vw"
-                      opacity="0"
-                      fill="white"
-                    >
+                    <text text-anchor="end">
                       <tspan>{count}</tspan>
                       <animate
                         id={countAnimId}
@@ -126,19 +119,14 @@ const {
                 )
               }
             </g>
-            <g transform="translate(0,24)">
-              <g style="transform: translate(-5.6vw,0)">
-                <text
-                  text-anchor="end"
-                  font-weight="700"
-                  font-size="1.2vw"
-                  opacity="0.9"
-                  fill="white"
-                >
-                  killed in
-                </text>
+            <g style="transform: translate(0,1.6vw)">
+              <g
+                class="svg-days-bookends"
+                style="transform: translate(-5.6vw,0)"
+              >
+                <text text-anchor="end"> killed in </text>
               </g>
-              <g style="transform: translate(-5.3vw,0);">
+              <g class="svg-days" style="transform: translate(-5.3vw,0);">
                 {
                   dayTexts.map(
                     ({
@@ -149,13 +137,7 @@ const {
                       noOpacity,
                       freeze,
                     }) => (
-                      <text
-                        fill="white"
-                        opacity="0"
-                        font-size="1.1vw"
-                        font-weight="600"
-                        font-family="Martian Mono, monospace"
-                      >
+                      <text>
                         <tspan>{dayNumber}</tspan>
                         <animate
                           id={dayAnimId}
@@ -173,16 +155,8 @@ const {
                   )
                 }
               </g>
-              <g>
-                <text
-                  text-anchor="end"
-                  font-weight="700"
-                  font-size="1.2vw"
-                  opacity="0.9"
-                  fill="white"
-                >
-                  days
-                </text>
+              <g class="svg-days-bookends">
+                <text text-anchor="end"> days </text>
               </g>
             </g>
           </g>
@@ -329,6 +303,33 @@ const {
     left: 0;
   }
 
+  .svg-counts text {
+    font-family: "Martian Mono", monospace;
+    font-weight: 600;
+    font-size: 2.4vw;
+    opacity: 0;
+    fill: white;
+  }
+
+  .svg-days text {
+    fill: white;
+    opacity: 0;
+    font-size: 1.1vw;
+    font-weight: 600;
+    font-family: "Martian Mono", monospace;
+  }
+
+  .svg-days-bookends text {
+    font-weight: 700;
+    font-size: 1.2vw;
+    opacity: 0.9;
+    fill: white;
+  }
+
+  .marker {
+    fill: rgba(168, 44, 44, 1);
+  }
+
   .post {
     opacity: 0;
     position: relative;
@@ -412,7 +413,7 @@ const {
 
   @media (max-aspect-ratio: 800/900) {
     main {
-      aspect-ratio: none;
+      aspect-ratio: auto;
       height: 100vh;
     }
 
