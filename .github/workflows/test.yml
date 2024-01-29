@@ -9,6 +9,7 @@ on:
       - "**.tsx"
       - "**.astro"
       - "**.lockb"
+      - ".github/workflows/test.yml"
 
 jobs:
   deploy:
