@@ -22,7 +22,7 @@ jobs:
           bun-version: 1.0.22
       - name: install dependencies
         run: bun install
-      - name: pull latest data
-        run: bun run data
+      - name: stub generated data file
+        run: echo '{}' > site/src/generated/data.json
       - name: run unit tests
         run: bun run test
