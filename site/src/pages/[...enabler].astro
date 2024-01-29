@@ -12,7 +12,7 @@ import { getEnhancedPosts } from "../lib/server/posts";
 export async function getStaticPaths() {
   const enablerEntries = await getCollection("enabler");
   return enablerEntries.map((enabler) => ({
-    params: { slug: enabler.id },
+    params: { enabler: enabler.id },
     props: { enabler: enabler.data },
   }));
 }
