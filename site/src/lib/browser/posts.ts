@@ -1,5 +1,9 @@
 export const handlePostEvents = () => {
-  const postTopOffset = 200;
+  const mainElement = document.querySelector("main");
+  if (!mainElement) {
+    throw new Error("Need main element height for scroll logic");
+  }
+  const postTopOffset = mainElement.getBoundingClientRect().height * 0.333;
   const posts: NodeListOf<HTMLElement> = document.querySelectorAll(".post");
   const postContainer = document.querySelector(".posts");
   if (postContainer) {
