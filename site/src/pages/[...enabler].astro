@@ -114,7 +114,7 @@ const {
               </rect>
             </clipPath>
           </defs>
-          <g style="transform: translate(95%,70%)">
+          <g class="svg-labels">
             <g class="svg-counts">
               {
                 svgTexts.map(
@@ -154,7 +154,11 @@ const {
                 {
                   dayTexts.map(
                     ({
-                      dayNumber,
+                      dayNumber: [
+                        firstDayNumber,
+                        secondDayNumber,
+                        thirdDayNumber,
+                      ],
                       duration,
                       dayAnimId,
                       lastDayAnimId,
@@ -162,7 +166,28 @@ const {
                       freeze,
                     }) => (
                       <text>
-                        <tspan>{dayNumber}</tspan>
+                        <tspan text-anchor="middle" textLength="2.2em">
+                          <tspan
+                            style={{
+                              opacity:
+                                firstDayNumber === "0" ? "0.4" : undefined,
+                            }}
+                          >
+                            {firstDayNumber}
+                          </tspan>
+                          <tspan
+                            style={{
+                              opacity:
+                                firstDayNumber === "0" &&
+                                secondDayNumber === "0"
+                                  ? "0.4"
+                                  : undefined,
+                            }}
+                          >
+                            {secondDayNumber}
+                          </tspan>
+                          <tspan>{thirdDayNumber}</tspan>
+                        </tspan>
                         <animate
                           id={dayAnimId}
                           attributeName="opacity"
@@ -333,6 +358,10 @@ const {
     left: 0;
   }
 
+  .svg-labels {
+    transform: translate(95%, 70%);
+  }
+
   .svg-counts text {
     font-family: "Martian Mono", monospace;
     font-weight: 600;
@@ -342,11 +371,11 @@ const {
   }
 
   .svg-days-container {
-    transform: translate(0, 1.6vw);
+    transform: translate(0, 1.7vw);
   }
 
   .svg-days {
-    transform: translate(-5.3vw, 0);
+    transform: translate(-4.3vw, 0);
   }
 
   .svg-days text {
@@ -358,7 +387,7 @@ const {
   }
 
   .svg-days-bookends:first-of-type {
-    transform: translate(-5.6vw, 0);
+    transform: translate(-5.8vw, 0);
   }
 
   .svg-days-bookends text {
@@ -502,7 +531,11 @@ const {
     }
 
     .svg-days {
-      transform: translate(-6.5vw, 0);
+      transform: translate(-5.1vw, 0);
+    }
+
+    .svg-days > text > tspan {
+      text-length: 2.8vw;
     }
 
     .svg-days text {
@@ -556,20 +589,24 @@ const {
       r: 8;
     }
 
+    .svg-labels {
+      transform: translate(95%, 60%);
+    }
+
     .svg-counts text {
       font-size: 4vh;
     }
 
     .svg-days-container {
-      transform: translate(0, 3vh);
+      transform: translate(0, 3.5vh);
     }
 
     .svg-days {
-      transform: translate(-10.5vh, 0);
+      transform: translate(-8.2vh, 0);
     }
 
     .svg-days text {
-      font-size: 2.2vh;
+      font-size: 2.1vh;
     }
 
     .svg-days-bookends:first-of-type {

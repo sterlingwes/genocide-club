@@ -212,7 +212,7 @@ export const getTimeline = ({
   const clipPathTimes = keyTimes.join(";");
 
   const dayTexts: Array<{
-    dayNumber: string;
+    dayNumber: string[];
     duration: number;
     dayAnimId: string;
     lastDayAnimId: string;
