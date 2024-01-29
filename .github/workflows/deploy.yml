@@ -25,6 +25,8 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      pull-requests: "write"
     runs-on: ubuntu-latest
     name: Deploy
     steps:
