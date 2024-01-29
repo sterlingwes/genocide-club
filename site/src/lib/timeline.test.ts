@@ -10,4 +10,8 @@ test("timeline datamodel integration", () => {
   const svgDomain = getSvgDomain();
   const timeline = getTimeline({ svgDomain, posts });
   expect(timeline).toMatchSnapshot();
+
+  expect(timeline.clipPathTimes.split(";")).toHaveLength(
+    timeline.clipPathValues.split(";").length
+  );
 });

@@ -25,7 +25,15 @@ const { enabler } = Astro.props;
 
 const posts = getEnhancedPosts(enabler.posts);
 const svgDomain = getSvgDomain();
-const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
+const {
+  graphConfig,
+  svgTexts,
+  dayTexts,
+  clipPathTimes,
+  clipPathValues,
+  expectedDuration,
+  postDelayLookup,
+} = getTimeline({ svgDomain, posts });
 ---
 
 <Layout clip title={`genocide.club • ${enabler.name}`}>
@@ -51,7 +59,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                 >
                   <title>{markerTooltip}</title>
                   <animate
-                    begin={`${graphConfig.postDelayLookup[postTime]}s`}
+                    begin={`${postDelayLookup[postTime] / 1_000}s`}
                     attributeName="opacity"
                     from="0"
                     to="1"
@@ -73,15 +81,9 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                   from="0"
                   to="400"
                   fill="freeze"
-                  dur={`${graphConfig.totalDuration / 1_000}s`}
-                  values={"0;" +
-                    graphConfig.steps
-                      .map((step) => step.distance + step.distanceBefore)
-                      .join(";")}
-                  keyTimes={"0;" +
-                    graphConfig.steps
-                      .map((_, i) => (i + 1) / graphConfig.steps.length)
-                      .join(";")}></animate>
+                  dur={`${expectedDuration / 1_000}s`}
+                  values={clipPathValues}
+                  keyTimes={clipPathTimes}></animate>
               </rect>
             </clipPath>
           </defs>
@@ -92,6 +94,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                   ({
                     count,
                     freeze,
+                    noOpacity,
                     countAnimId,
                     countDuration,
                     lastCountAnimId,
@@ -111,7 +114,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                         from="0"
                         to={freeze ? "0.9" : "0"}
                         fill={freeze ? "freeze" : undefined}
-                        values="0;0.9;0.9"
+                        values={noOpacity ? "0.9;0.9;0.9" : "0;0.9;0.9"}
                         keyTimes="0;0.1;1"
                         dur={`${countDuration / 1_000}s`}
                         begin={
@@ -143,6 +146,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                       duration,
                       dayAnimId,
                       lastDayAnimId,
+                      noOpacity,
                       freeze,
                     }) => (
                       <text
@@ -159,7 +163,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
                           from="0"
                           to={freeze ? "0.9" : "0"}
                           fill={freeze ? "freeze" : undefined}
-                          values="0;0.9;0.9"
+                          values={noOpacity ? "0.9;0.9;0.9" : "0;0.9;0.9"}
                           keyTimes="0;0.1;1"
                           dur={`${duration / 1_000}s`}
                           begin={lastDayAnimId ? `${lastDayAnimId}.end` : "0s"}
@@ -202,7 +206,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
           <div
             class="post"
             data-dateval={post.dateValue}
-            style={`animation-delay: ${graphConfig.postDelayLookup[post.dateValue]}s`}
+            style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s`}
           >
             <div class="post-card">
               {post.text}
@@ -356,6 +360,7 @@ const { graphConfig, svgTexts, dayTexts } = getTimeline({ svgDomain, posts });
     border-radius: 3px;
     padding: 10px;
     color: white;
+    margin-top: 15px;
   }
 
   .post-avatar {

@@ -13,7 +13,9 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
     .filter((post) => !post.skip)
     .map((post) => ({
       ...post,
-      readTime: readingTime(post.text + (post.quote ? post.quote.text : "")),
+      readTime: readingTime(post.text + (post.quote ? post.quote.text : ""), {
+        wordsPerMinute: 300,
+      }),
       dateValue: parseISO(post.date).valueOf(),
       formattedDate: format(parseISO(post.date), "MMMM do yyyy"),
     }));
