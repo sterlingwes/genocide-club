@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import KilledGraph from "../generated/killed.astro";
 import PostTypeIcon from "../components/PostTypeIcon.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
-import { getTimeline } from "../lib/timeline";
+import { getTimeline } from "../lib/server/timeline";
 import { getSvgDomain } from "../lib/server/svg";
 import { getEnhancedPosts } from "../lib/server/posts";
 
@@ -591,4 +591,4 @@ const {
 
   handlePostEvents();
 </script>
-../lib/server/posts
+../lib/server/posts ../lib/server/timeline

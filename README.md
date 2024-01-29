@@ -27,7 +27,7 @@ The `bun data` command will pull the latest daily casualty time series from data
 
 ### Adding or Updating a Person or Group
 
-See the JSON files under `site/src/content/enabler` for an example of the format that gets used to render each visualization page.
+See the JSON files under [site/src/content/enabler](site/src/content/enabler) for an example of the format that gets used to render each visualization page.
 
 ### Changing the Site
 
@@ -37,6 +37,6 @@ Note the following guiding principles: the core animation (graph reveal, post ap
 
 Where to find / place things:
 
-- `site/src/pages/[...slug].astro` is the main template used to generate the visualization pages
-- `site/src/lib/timeline` is the core animation sequencing logic, run at build time and not included as client-side JS
-- `site/src/lib/browser` has any javascript we run in the browser or referenced in a script tag in the page template
+- [site/src/pages/[...slug].astro](site/src/pages/[...slug].astro) is the main template used to generate the visualization pages
+- [site/src/lib/server/timeline.ts](site/src/lib/timeline) is the core animation sequencing logic, run at build ("server") time
+- [site/src/lib/browser](site/src/lib/browser) has any javascript we run in the browser or referenced in a script tag in the page template

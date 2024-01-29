@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
 import { getTimeline } from "./timeline";
-import { getSvgDomain } from "./server/svg";
-import { getEnhancedPosts } from "./server/posts";
+import { getSvgDomain } from "./svg";
+import { getEnhancedPosts } from "./posts";
 
 test("timeline datamodel integration", () => {
   const posts = getEnhancedPosts(
-    require("../content/enabler/talbroda.json").posts
+    require("../../content/enabler/talbroda.json").posts
   );
   const svgDomain = getSvgDomain();
   const timeline = getTimeline({ svgDomain, posts });

@@ -1,8 +1,8 @@
-import generatedData from "../generated/data.json";
+import generatedData from "../../generated/data.json";
 import { endOfDay, format, parseISO, startOfDay } from "date-fns";
-import type { getEnhancedPosts } from "./server/posts";
-import { leftPadTwoDigits } from "./formatting";
-import type { getSvgDomain } from "./server/svg";
+import type { getEnhancedPosts } from "./posts";
+import { leftPadTwoDigits } from "../formatting";
+import type { getSvgDomain } from "./svg";
 
 // if posts presented in within this time period (in seconds)
 // just show them at the same time as the one(s) prior
