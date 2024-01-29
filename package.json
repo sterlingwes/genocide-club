@@ -11,7 +11,7 @@
     "start": "bun run dev",
     "build": "cd site && bun run build",
     "preview": "cd site && bun run preview",
-    "test": "vitest"
+    "test": "TZ=America/New_York vitest"
   },
   "devDependencies": {
     "@types/bun": "latest"

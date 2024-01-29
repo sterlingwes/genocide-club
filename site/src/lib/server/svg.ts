@@ -2,8 +2,10 @@
 import pathPoint from "point-at-length";
 import generatedData from "../../generated/data.json";
 
-export const getSvgDomain = () => {
-  const { pathData, svgViewbox } = generatedData;
+const getData = () => generatedData;
+
+export const getSvgDomain = (dataFetcher = getData) => {
+  const { pathData, svgViewbox } = dataFetcher();
   const aspectRatio = svgViewbox.width / svgViewbox.height;
 
   const pathPoints = pathPoint(pathData);

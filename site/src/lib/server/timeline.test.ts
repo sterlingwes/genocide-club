@@ -8,7 +8,7 @@ test("timeline datamodel integration", () => {
   const posts = getEnhancedPosts(
     require("../../content/enabler/talbroda.json").posts
   );
-  const svgDomain = getSvgDomain();
+  const svgDomain = getSvgDomain(() => dataFixture);
   const timeline = getTimeline({
     svgDomain,
     posts,

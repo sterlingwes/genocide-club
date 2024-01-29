@@ -10,6 +10,7 @@ on:
       - "**.tsx"
       - "**.astro"
       - "**.lockb"
+      - "!**.test.ts"
   push:
     branches:
       - main
@@ -22,6 +23,7 @@ on:
       - "**.tsx"
       - "**.astro"
       - "**.lockb"
+      - "!**.test.ts"
 
 jobs:
   deploy:
