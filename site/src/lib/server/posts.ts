@@ -69,6 +69,15 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
       structuredQuoteText: post.quote?.text
         ? parsePostText(post.quote.text)
         : [],
+      // prefix locally-hosted images with correct path if not absolute
+      ...(post.image && !post.image.startsWith("http")
+        ? { image: `/post_assets/${post.image}` }
+        : {}),
+      ...(post.quote?.image && !post.quote.image.startsWith("http")
+        ? {
+            quote: { ...post.quote, image: `/post_assets/${post.quote.image}` },
+          }
+        : {}),
       readTime: readingTime(post.text + (post.quote ? post.quote.text : ""), {
         wordsPerMinute: 300,
       }),
