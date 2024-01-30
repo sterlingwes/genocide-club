@@ -7,15 +7,16 @@ export const handlePostEvents = () => {
   const posts: NodeListOf<HTMLElement> = document.querySelectorAll(".post");
   const postContainer = document.querySelector(".posts");
   if (postContainer) {
-    // postContainer.addEventListener("scroll", () => {
-    // console.log('>', event)
-    // });
-
     posts.forEach((post) => {
       post.addEventListener("animationstart", (event) => {
         const postDiv = event.target as HTMLDivElement | null;
         if (!postDiv) {
           console.warn("no post div");
+          return;
+        }
+
+        if (postDiv.classList.contains("post") === false) {
+          // child events may bubble up
           return;
         }
 
