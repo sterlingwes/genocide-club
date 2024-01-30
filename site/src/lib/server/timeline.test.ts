@@ -6,7 +6,7 @@ import dataFixture from "./__fixtures__/data.json";
 
 test("timeline datamodel integration", () => {
   const posts = getEnhancedPosts(
-    require("../../content/enabler/talbroda.json").posts
+    require("../../content/enabler/tal-broda.json").posts
   );
   const svgDomain = getSvgDomain(() => dataFixture);
   const timeline = getTimeline({
