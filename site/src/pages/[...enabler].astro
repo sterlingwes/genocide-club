@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import KilledGraph from "../generated/killed.astro";
 import PostTypeIcon from "../components/PostTypeIcon.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
+import PlayerControls from "../components/PlayerControls.astro";
 import { getTimeline } from "../lib/server/timeline";
 import { getSvgDomain } from "../lib/server/svg";
 import { getEnhancedPosts } from "../lib/server/posts";
@@ -42,6 +43,7 @@ const {
     <div class="graph">
       <div style={{ position: "relative" }}>
         <svg
+          id="filledchart"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 400 235"
           style="width: 100vw; opacity: 0.9"
@@ -262,6 +264,7 @@ const {
     </div>
     <div class="bottom-line"></div>
     <div class="scroll-bottom-fade"></div>
+    <PlayerControls />
   </main>
 </Layout>
 
