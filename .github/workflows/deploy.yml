@@ -1,6 +1,6 @@
 on:
   pull_request:
-    types: [open, reopened, synchronize]
+    types: [opened, reopened, synchronize]
     paths:
       - "**.json"
       - "**.js"

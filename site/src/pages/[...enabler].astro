@@ -1,9 +1,9 @@
 ---
 import type { Enabler } from "../schemas/enabler";
 import { getCollection } from "astro:content";
+import Post from "../components/Post.astro";
 import Layout from "../layouts/Layout.astro";
 import KilledGraph from "../generated/killed.astro";
-import PostTypeIcon from "../components/PostTypeIcon.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
 import PlayerControls from "../components/PlayerControls.astro";
 import { getTimeline } from "../lib/server/timeline";
@@ -226,39 +226,9 @@ const {
     <div class="posts">
       {
         posts.map((post, i) => (
-          <div class="post-wrapper">
-            <div
-              class="post"
-              data-dateval={post.dateValue}
-              style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s`}
-            >
-              <div class="post-card">
-                <div class="post-load-bar">
-                  <div
-                    class="post-load-bar-fill"
-                    style={`animation-delay: ${postDelayLookup[post.dateValue] / 1_000}s; animation-duration: ${post.readTime.time / 1_000}s`}
-                  />
-                </div>
-                {post.text}
-                <div class="post-meta">
-                  <div>{post.formattedDate}</div>
-                  <div class="post-meta-type">
-                    <a href={post.href} target="_blank">
-                      <PostTypeIcon icon={post.type} />
-                    </a>
-                  </div>
-                  {enabler.image && (
-                    <div class="post-avatar">
-                      <img src={enabler.image} />
-                    </div>
-                  )}
-                </div>
-              </div>
-              {post.commentary && (
-                <div class="post-commentary">{post.commentary}</div>
-              )}
-            </div>
-          </div>
+          <Post
+            {...{ post, postDelayLookup, enablerImageUrl: enabler.image }}
+          />
         ))
       }
     </div>
@@ -404,118 +374,6 @@ const {
     fill: rgba(168, 44, 44, 1);
   }
 
-  .post {
-    opacity: 0;
-    position: relative;
-    left: -500px;
-    width: 400px;
-    max-width: 50%;
-
-    animation-duration: 1s;
-    animation-name: fadein;
-    animation-fill-mode: forwards;
-  }
-
-  .post-wrapper {
-    pointer-events: auto;
-    padding-bottom: 20px;
-  }
-
-  .post-card {
-    box-shadow: 0px 10px 10px rgba(10, 10, 10, 0.5);
-    position: relative;
-    background-color: #eee;
-    border-radius: 3px;
-
-    padding: 10px;
-  }
-
-  .post-load-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-
-  .post-load-bar-fill {
-    height: 4px;
-    width: 0%;
-    opacity: 1;
-    animation-name: post-load-fill;
-    animation-timing-function: ease-out;
-    background-color: rgba(168, 44, 44, 1);
-  }
-
-  @keyframes post-load-fill {
-    0% {
-      width: 0%;
-      opacity: 1;
-    }
-    80% {
-      width: 100%;
-      opacity: 1;
-    }
-    100% {
-      width: 100%;
-      opacity: 0;
-    }
-  }
-
-  .post-commentary {
-    border: 1px solid #eee;
-    border-radius: 3px;
-    padding: 10px;
-    color: white;
-    margin-top: 15px;
-  }
-
-  .post-avatar {
-    position: absolute;
-    left: -65px;
-    bottom: -1px;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    border-radius: 25px;
-    box-shadow: 0px 10px 10px rgba(10, 10, 10, 0.5);
-  }
-
-  .post-avatar > img {
-    width: 100%;
-    height: 100%;
-  }
-
-  .post-meta {
-    margin-top: 10px;
-    font-size: 0.8rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .post-meta > div {
-    align-self: center;
-  }
-
-  .post-meta-type {
-    text-align: right;
-  }
-
-  .post-meta-type > a {
-    display: inline-block;
-  }
-
-  @keyframes fadein {
-    from {
-      opacity: 0;
-      left: -500px;
-    }
-
-    to {
-      opacity: 0.8;
-      left: 0;
-    }
-  }
-
   @media (min-aspect-ratio: 800/900) and (max-aspect-ratio: 950/900) {
     .marker {
       r: 4;
@@ -558,6 +416,7 @@ const {
 
     .posts {
       z-index: 2;
+      padding-left: 60px;
       padding-right: 50px;
     }
 
