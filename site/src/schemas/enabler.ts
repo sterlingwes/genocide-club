@@ -11,12 +11,14 @@ export const enablerSchema = z.object({
       href: z.string(),
       text: z.string(),
       date: z.string(),
+      image: z.string().optional(),
       commentary: z.string().optional(),
       skip: z.boolean().optional(),
       quote: z
         .object({
           text: z.string(),
           author: z.string(),
+          image: z.string().optional(),
         })
         .optional(),
     })

@@ -25,7 +25,64 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
         >
         </div>
       </div>
-      {post.text}
+      {
+        post.structuredText.length && (
+          <div class="post-body">
+            {post.structuredText.map((part) =>
+              part.type === "url" ? (
+                <a href={part.href} title={part.href} target="_blank">
+                  {part.text}
+                </a>
+              ) : part.type === "space" ? (
+                <span>&nbsp;</span>
+              ) : part.type === "break" ? (
+                <div class="post-linebreak" />
+              ) : (
+                part.text
+              )
+            )}
+          </div>
+        )
+      }
+      {
+        !!post.image && (
+          <div class="post-image">
+            <img src={post.image} />
+          </div>
+        )
+      }
+      {!!post.text && !!post.quote && <div class="post-quoted-spacer" />}
+      {
+        post.quote && (
+          <div class="post-quoted">
+            <div class="post-quoted-meta">Post by {post.quote.author}</div>
+            <div class="post-quoted-body">
+              {post.structuredQuoteText.length && (
+                <div class="post-body">
+                  {post.structuredQuoteText.map((part) =>
+                    part.type === "url" ? (
+                      <a href={part.href} title={part.href} target="_blank">
+                        {part.text}
+                      </a>
+                    ) : part.type === "space" ? (
+                      <span>&nbsp;</span>
+                    ) : part.type === "break" ? (
+                      <div class="post-linebreak" />
+                    ) : (
+                      part.text
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+            {post.quote.image && (
+              <div class="post-quoted-image">
+                <img src={post.quote.image} />
+              </div>
+            )}
+          </div>
+        )
+      }
       <div class="post-meta">
         <div>{post.formattedDate}</div>
         <div class="post-meta-type">
@@ -103,6 +160,46 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
     }
   }
 
+  .post-quoted-spacer {
+    margin-top: 10px;
+  }
+
+  .post-quoted {
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 0.9em;
+    overflow: hidden;
+  }
+
+  .post-quoted-meta {
+    color: #555;
+    font-weight: bold;
+    padding: 6px;
+    padding-bottom: 10px;
+  }
+
+  .post-quoted-body {
+    padding: 6px;
+    padding-top: 0px;
+  }
+
+  .post-image {
+    margin-top: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .post-linebreak {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .post-image img,
+  .post-quoted-image img {
+    max-width: 100%;
+    margin-bottom: -4px;
+  }
+
   .post-commentary {
     border: 1px solid #eee;
     border-radius: 3px;
@@ -162,6 +259,12 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
     .post {
       max-width: none;
       width: 100%;
+    }
+
+    .post-avatar {
+      width: 35px;
+      height: 35px;
+      left: -48px;
     }
   }
 </style>
