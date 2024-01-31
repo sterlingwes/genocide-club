@@ -1,18 +1,13 @@
 import { parseISO, format } from "date-fns";
 import readingTime from "reading-time";
 import type { EnablerPost } from "../../schemas/enabler";
+import type { StructuredText } from "../shared/structured-text";
 
 const orderEarliestToLatest = (posts: EnablerPost[]) => {
   return posts.slice(0).sort((a, b) => {
     return parseISO(a.date).valueOf() - parseISO(b.date).valueOf();
   });
 };
-
-type StructuredText =
-  | { type: "text"; text: string }
-  | { type: "url"; text: string; href: string }
-  | { type: "space" }
-  | { type: "break" };
 
 const naiveSingleUrlMatcher = /\s+(http[^\s]+)\s+/;
 

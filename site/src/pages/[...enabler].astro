@@ -2,7 +2,7 @@
 import type { Enabler } from "../schemas/enabler";
 import { getCollection } from "astro:content";
 import Post from "../components/Post.astro";
-import Layout from "../layouts/Layout.astro";
+import PlayerLayout from "../layouts/PlayerLayout.astro";
 import KilledGraph from "../generated/killed.astro";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
 import PlayerControls from "../components/PlayerControls.astro";
@@ -37,7 +37,7 @@ const {
 } = getTimeline({ svgDomain, posts });
 ---
 
-<Layout clip title={`genocide.club • ${enabler.name}`}>
+<PlayerLayout clip title={`genocide.club • ${enabler.name}`}>
   <main>
     <OpacityOverlay />
     <div class="graph">
@@ -236,7 +236,7 @@ const {
     <div class="scroll-bottom-fade"></div>
     <PlayerControls />
   </main>
-</Layout>
+</PlayerLayout>
 
 <style define:vars={{ aspectRatio: svgDomain.aspectRatio }}>
   @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600;700&display=swap");
@@ -249,7 +249,7 @@ const {
     aspect-ratio: var(--aspectRatio);
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url("/gaza_wapo.jpeg");
+    background-image: url("/gaza-drone.jpeg");
     overflow: hidden;
   }
 

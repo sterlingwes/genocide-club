@@ -1,65 +1,14 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import OpacityOverlay from "../components/OpacityOverlay.astro";
+import ContentBox from "../components/ContentBox.astro";
+import ContentPageLayout from "../layouts/ContentPageLayout.astro";
+import StructuredText from "../components/StructuredText.astro";
+import { getString } from "../lib/constants/strings";
 ---
 
-<Layout title="genocide.club">
-  <main>
-    <OpacityOverlay />
-    <div class="content">
-      <h1>genocide club</h1>
-      <div class="about-text">
-        <p>
-          This website seeks to collect public statements from those supporting
-          Israel's strategy of mass displacement, starvation, and murder of the
-          Palestinian people, and to contrast those statements with the human
-          toll of that horrific campaign.
-        </p>
-        <p>
-          An individual or group does not have to explicitly call for these
-          specific brutal acts to be a member of the Genocide Club. Simple
-          indifference to the plight of Palestinians while unquestioningly
-          supporting Israel's campaign is enough to implicitly condone those
-          actions and the resulting effects.
-        </p>
-      </div>
-    </div>
-  </main>
-</Layout>
+<ContentPageLayout title="genocide.club">
+  <ContentBox>
+    <StructuredText parts={[getString("mission_statement")]} />
+  </ContentBox>
+</ContentPageLayout>
 
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-  .content {
-    position: relative;
-    z-index: 1;
-    color: rgba(255, 255, 255, 80%);
-  }
-  h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-  .about-text {
-    margin-bottom: 2rem;
-    border: 1px solid rgba(255, 255, 255, 25%);
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
-  .about-text p {
-    margin: 0;
-    margin-bottom: 2rem;
-  }
-  .about-text p:last-of-type {
-    margin-bottom: 0;
-  }
-</style>
+<style></style>

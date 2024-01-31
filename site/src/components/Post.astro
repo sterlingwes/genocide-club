@@ -1,5 +1,6 @@
 ---
 import PostTypeIcon from "../components/PostTypeIcon.astro";
+import StructuredText from "./StructuredText.astro";
 import type { getEnhancedPosts } from "../lib/server/posts";
 
 interface Props {
@@ -28,19 +29,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
       {
         post.structuredText.length > 0 && (
           <div class="post-body">
-            {post.structuredText.map((part) =>
-              part.type === "url" ? (
-                <a href={part.href} title={part.href} target="_blank">
-                  {part.text}
-                </a>
-              ) : part.type === "space" ? (
-                <span>&nbsp;</span>
-              ) : part.type === "break" ? (
-                <div class="post-linebreak" />
-              ) : (
-                part.text
-              )
-            )}
+            <StructuredText parts={post.structuredText} />
           </div>
         )
       }
@@ -59,19 +48,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
             <div class="post-quoted-body">
               {post.structuredQuoteText.length > 0 && (
                 <div class="post-body">
-                  {post.structuredQuoteText.map((part) =>
-                    part.type === "url" ? (
-                      <a href={part.href} title={part.href} target="_blank">
-                        {part.text}
-                      </a>
-                    ) : part.type === "space" ? (
-                      <span>&nbsp;</span>
-                    ) : part.type === "break" ? (
-                      <div class="post-linebreak" />
-                    ) : (
-                      part.text
-                    )
-                  )}
+                  <StructuredText parts={post.structuredQuoteText} />
                 </div>
               )}
             </div>
@@ -187,11 +164,6 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
     margin-top: 10px;
     border-radius: 4px;
     overflow: hidden;
-  }
-
-  .post-linebreak {
-    display: block;
-    margin-bottom: 10px;
   }
 
   .post-image img,

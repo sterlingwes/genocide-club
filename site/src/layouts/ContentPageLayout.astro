@@ -1,0 +1,72 @@
+---
+import OpacityOverlay from "../components/OpacityOverlay.astro";
+
+interface Props {
+  title: string;
+  clip?: boolean;
+}
+
+const { title, clip } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class={clip ? "clip" : undefined}>
+    <OpacityOverlay />
+    <main>
+      <div class="content">
+        <h1>{title}</h1>
+        <slot />
+      </div>
+    </main>
+  </body>
+</html>
+<style is:global>
+  html {
+    font-family: system-ui, sans-serif;
+    background: rgb(28, 14, 14);
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("/gaza-drone.jpeg");
+    background-attachment: fixed;
+  }
+  @font-face {
+    font-family: "PTSerif";
+    src: url("/fonts/PTSerif-Regular.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    color: rgba(255, 255, 255, 80%);
+  }
+  h1 {
+    font-family: "PTSerif";
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+</style>
