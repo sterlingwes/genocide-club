@@ -14,8 +14,15 @@ const render = async () => {
   const response = await fetch(
     "https://data.techforpalestine.org/api/v2/casualties_daily.json"
   );
-  const data: Record<string, any[]> = (await response.json()).reduce(
-    (acc, d, day) => ({
+  const data: {
+    chart: Array<{ date: string; value: number }>;
+    days: number[];
+    dates: string[];
+    killed: number[];
+    wcKilled: number[];
+    pathData: string;
+  } = (await response.json()).reduce(
+    (acc: any, d: any, day: number) => ({
       ...acc,
       svgViewbox: {
         width,
@@ -38,7 +45,7 @@ const render = async () => {
   var x = d3
     .scaleTime()
     .domain(
-      d3.extent(data.chart, function (d) {
+      d3.extent(data.chart, function (d: any) {
         return d.date;
       })
     )
@@ -48,7 +55,7 @@ const render = async () => {
     .scaleLinear()
     .domain([
       0,
-      d3.max(data.chart, function (d) {
+      d3.max(data.chart, function (d: any) {
         return +d.value;
       }),
     ])
@@ -56,11 +63,11 @@ const render = async () => {
 
   const pathData = d3
     .area()
-    .x(function (d) {
+    .x(function (d: any) {
       return x(d.date);
     })
     .y0(y(0))
-    .y1(function (d) {
+    .y1(function (d: any) {
       return y(d.value);
     });
 
@@ -89,8 +96,13 @@ const render = async () => {
   cp.execSync("mkdir -p site/src/generated");
   fs.writeFileSync("site/src/generated/killed.astro", astroDoc);
 
-  delete data.chart;
-  fs.writeFileSync("site/src/generated/data.json", JSON.stringify(data));
+  const dataWithoutChart: typeof data | Partial<Pick<typeof data, "chart">> =
+    data;
+  delete dataWithoutChart.chart;
+  fs.writeFileSync(
+    "site/src/generated/data.json",
+    JSON.stringify(dataWithoutChart)
+  );
 };
 
 render();

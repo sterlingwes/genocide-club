@@ -11,7 +11,8 @@
     "start": "bun run dev",
     "build": "cd site && bun run build",
     "preview": "cd site && bun run preview",
-    "test": "TZ=America/New_York vitest"
+    "test": "TZ=America/New_York vitest",
+    "types": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "latest"
