@@ -4,7 +4,6 @@ export const enablerSchema = z.object({
   name: z.string(),
   bio: z.string(),
   image: z.string().optional(),
-  playDurationSeconds: z.number().optional(),
   posts: z.array(
     z.object({
       type: z.enum(["twitter"]),
