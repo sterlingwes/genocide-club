@@ -30,6 +30,15 @@ const resumeAllAnimations = () => {
   (document.querySelector("#filledchart") as SVGSVGElement).unpauseAnimations();
 };
 
+export const listenForAnimationComplete = (listener: () => void) => {
+  // for some reason endEvent doesn't work, but this is close enough
+  (
+    document.querySelector(
+      ".svg-days text:last-of-type animate"
+    ) as SVGAnimateElement
+  ).addEventListener("beginEvent", listener);
+};
+
 export const toggleAnimationState = () => {
   const state = getAnimationState();
   switch (state) {

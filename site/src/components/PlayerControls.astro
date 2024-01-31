@@ -61,6 +61,7 @@
   import {
     toggleAnimationState,
     getAnimationState,
+    listenForAnimationComplete,
   } from "../lib/browser/animations";
 
   const controlContainer: HTMLDivElement | null =
@@ -69,11 +70,18 @@
   const pauseToggle: HTMLButtonElement | null =
     document.querySelector("#pausetoggle");
 
+  let replayable = false;
+
   if (!controlContainer || !pauseToggle) {
     console.warn("cannot setup controls, no selector match");
   } else {
     controlContainer.style.display = "block";
     pauseToggle.addEventListener("click", () => {
+      if (replayable) {
+        window.location.reload();
+        return;
+      }
+
       toggleAnimationState();
       if (getAnimationState() === "playing") {
         pauseToggle.classList.add("playing");
@@ -82,6 +90,11 @@
         pauseToggle.classList.remove("playing");
         pauseToggle.setAttribute("title", "Play");
       }
+    });
+
+    listenForAnimationComplete(() => {
+      replayable = true;
+      pauseToggle.classList.remove("playing");
     });
   }
 </script>
