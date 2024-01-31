@@ -65,7 +65,7 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
     .filter((post) => !post.skip)
     .map((post) => ({
       ...post,
-      structuredText: parsePostText(post.text),
+      structuredText: post.text ? parsePostText(post.text) : [],
       structuredQuoteText: post.quote?.text
         ? parsePostText(post.quote.text)
         : [],
@@ -78,9 +78,15 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
             quote: { ...post.quote, image: `/post_assets/${post.quote.image}` },
           }
         : {}),
-      readTime: readingTime(post.text + (post.quote ? post.quote.text : ""), {
-        wordsPerMinute: 300,
-      }),
+      readTime: readingTime(
+        post.text +
+          (post.quote ? " " + post.quote.text : "") +
+          (post.imageCaption ? " " + post.imageCaption : "") +
+          (post.quote?.imageCaption ? " " + post.quote.imageCaption : ""),
+        {
+          wordsPerMinute: 300,
+        }
+      ),
       dateValue: parseISO(post.date).valueOf(),
       formattedDate: format(parseISO(post.date), "MMMM do yyyy"),
     }));

@@ -233,13 +233,14 @@ export const getTimeline = ({
 
   graphConfig.steps.forEach((step, stepIdx) => {
     const countDuration = step.stepDurations[0] / step.killedCounts.length;
+    const stepId = stepIdx * 10;
 
     step.killedCounts.forEach((count, countIdx) => {
       const freeze =
         stepIdx + 1 === graphConfig.steps.length &&
         countIdx + 1 === step.killedCounts.length;
 
-      const dayAnimId = `dayanim${stepIdx}${countIdx}`;
+      const dayAnimId = `dayanim${stepId}${countIdx}`;
       dayNumber += 1;
       dayTexts.push({
         dayNumber: leftPadTwoDigits(dayNumber),
@@ -250,7 +251,7 @@ export const getTimeline = ({
       });
       lastDayAnimId = dayAnimId;
 
-      const countAnimId = `countanim${stepIdx}${countIdx}`;
+      const countAnimId = `countanim${stepId}${countIdx}`;
       svgTexts.push({
         count: new Intl.NumberFormat().format(count),
         freeze,
@@ -263,7 +264,7 @@ export const getTimeline = ({
 
     // "animation" for the last count before a post shows to hold
     // the current values
-    const dayAnimId = `dayanim${stepIdx}hold`;
+    const dayAnimId = `dayanim${stepId}hold`;
     dayTexts.push({
       ...dayTexts[dayTexts.length - 1],
       dayAnimId,
@@ -274,7 +275,7 @@ export const getTimeline = ({
       noOpacity: true,
     });
     lastDayAnimId = dayAnimId;
-    const countAnimId = `countanim${stepIdx}hold`;
+    const countAnimId = `countanim${stepId}hold`;
     svgTexts.push({
       ...svgTexts[svgTexts.length - 1],
       countAnimId,

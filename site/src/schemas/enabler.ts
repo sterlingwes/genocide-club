@@ -9,9 +9,10 @@ export const enablerSchema = z.object({
     z.object({
       type: z.enum(["twitter"]),
       href: z.string(),
-      text: z.string(),
+      text: z.string().optional(),
       date: z.string(),
       image: z.string().optional(),
+      imageCaption: z.string().optional(),
       commentary: z.string().optional(),
       skip: z.boolean().optional(),
       quote: z
@@ -19,6 +20,7 @@ export const enablerSchema = z.object({
           text: z.string(),
           author: z.string(),
           image: z.string().optional(),
+          imageCaption: z.string().optional(),
         })
         .optional(),
     })

@@ -26,7 +26,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
         </div>
       </div>
       {
-        post.structuredText.length && (
+        post.structuredText.length > 0 && (
           <div class="post-body">
             {post.structuredText.map((part) =>
               part.type === "url" ? (
@@ -47,7 +47,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
       {
         !!post.image && (
           <div class="post-image">
-            <img src={post.image} />
+            <img src={post.image} alt={post.imageCaption} />
           </div>
         )
       }
@@ -57,7 +57,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
           <div class="post-quoted">
             <div class="post-quoted-meta">Post by {post.quote.author}</div>
             <div class="post-quoted-body">
-              {post.structuredQuoteText.length && (
+              {post.structuredQuoteText.length > 0 && (
                 <div class="post-body">
                   {post.structuredQuoteText.map((part) =>
                     part.type === "url" ? (
@@ -77,7 +77,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
             </div>
             {post.quote.image && (
               <div class="post-quoted-image">
-                <img src={post.quote.image} />
+                <img src={post.quote.image} alt={post.quote.imageCaption} />
               </div>
             )}
           </div>
