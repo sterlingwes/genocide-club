@@ -11,9 +11,18 @@ const orderEarliestToLatest = (posts: EnablerPost[]) => {
 
 const naiveSingleUrlMatcher = /\s+(http[^\s]+)\s+/;
 
+const displayUrlPathMaxLen = 12;
+const shortPath = (path: string, prependDots = false) => {
+  if (path.length <= displayUrlPathMaxLen + 6) {
+    return path;
+  }
+
+  return `${prependDots ? "..." : ""}${path.slice(0, displayUrlPathMaxLen)}...`;
+};
+
 const formatDisplayUrl = (url: string) => {
   const [hostPart, ...rest] = url.replace(/https?:\/\//, "").split("/");
-  return `${hostPart}${rest.length ? `/...${rest[rest.length - 1]}` : ""}`;
+  return `${hostPart}${rest.length ? `/${shortPath(rest[rest.length - 1], rest.length > 1)}` : ""}`;
 };
 
 const splitLinebreaks = (part: StructuredText) => {
@@ -36,8 +45,10 @@ const splitLinebreaks = (part: StructuredText) => {
 };
 
 const parsePostText = (text: string): StructuredText[] => {
-  return text
+  // pad head & tail to ensure we capture any links at start or beginning given split regex
+  return ` ${text} `
     .split(naiveSingleUrlMatcher)
+    .filter((part) => !!part) // no empty strings
     .map(
       (part): StructuredText =>
         typeof part === "object"
