@@ -1,8 +1,11 @@
 ---
+import { getCollection } from "astro:content";
 import ContentBox from "../components/ContentBox.astro";
 import ContentPageLayout from "../layouts/ContentPageLayout.astro";
 import StructuredText from "../components/StructuredText.astro";
 import { getStrings } from "../lib/constants/strings";
+
+const enablers = await getCollection("enabler");
 ---
 
 <ContentPageLayout title="genocide.club">
@@ -14,6 +17,15 @@ import { getStrings } from "../lib/constants/strings";
       You can <a href="/docs/editorial">read our editorial guide</a> to learn more
       about how we decide who and what gets included in the club.
     </p>
+    <ul>
+      {
+        enablers.map((enabler) => (
+          <li>
+            <a href={`/${enabler.id}`}>{enabler.data.name}</a>
+          </li>
+        ))
+      }
+    </ul>
   </ContentBox>
 </ContentPageLayout>
 <style>
