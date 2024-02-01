@@ -3,65 +3,109 @@
 ---
 
 <div class="controls">
-  <button id="pausetoggle" class="playing" title="Pause"></button>
+  <button id="playtoggle" title="Play">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8.5 8.64L13.77 12L8.5 15.36V8.64ZM6.5 5V19L17.5 12L6.5 5Z"
+        fill="white"></path>
+    </svg>
+  </button>
+  <button id="pausetoggle" title="Pause">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M6 19H10V5H6V19ZM14 5V19H18V5H14Z" fill="white"></path>
+    </svg>
+  </button>
+  <button id="replay" title="Play">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 6V2L7 7L12 12V8C15.31 8 18 10.69 18 14C18 17.31 15.31 20 12 20C8.69 20 6 17.31 6 14H4C4 18.42 7.58 22 12 22C16.42 22 20 18.42 20 14C20 9.58 16.42 6 12 6Z"
+        fill="white"></path>
+    </svg>
+  </button>
+  <button id="fastforward" title="Fast Forward">
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.25 9.86L17.28 12L14.25 14.14V9.86ZM5.25 9.86L8.28 12L5.25 14.14V9.86ZM12.25 6V18L20.75 12L12.25 6ZM3.25 6V18L11.75 12L3.25 6Z"
+        fill="white"></path>
+    </svg>
+  </button>
 </div>
 <style>
   .controls {
     display: none;
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 20px;
+    right: 10px;
     z-index: 300;
+    flex-direction: row;
   }
 
-  /* The value content-box tells the div to place any border on the outside, increasing the width or height. If we change this value to border-box, the border is added to the inside of the box. */
   button {
-    position: relative;
+    width: 42px;
+    height: 42px;
     background-color: transparent;
-    box-sizing: border-box;
-    width: 0;
-    height: 22px;
     border-style: solid;
-    border-width: 10px 0 10px 18px;
-    border-color: transparent transparent transparent rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    will-change: border-width;
-    /* transition: all 0.2s ease; */
+    border-color: rgba(255, 255, 255, 0.7);
+    border-width: 1px;
+    border-radius: 22px;
+    margin-right: 10px;
+  }
 
-    &::after {
-      position: absolute;
-      top: -22px;
-      left: -33px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      width: 44px;
-      height: 44px;
-      border-radius: 30px;
-      content: "";
-    }
+  #playtoggle {
+    display: none;
+  }
 
-    &.playing {
-      border-style: double;
-      border-width: 0px 0 0px 20px;
+  #playtoggle > svg {
+    position: relative;
+    top: 1px;
+    left: 1px;
+  }
 
-      &::after {
-        top: -12px;
-      }
-    }
+  #pausetoggle > svg {
+    position: relative;
+    top: 1px;
+  }
 
-    &:hover {
-      border-color: transparent transparent transparent #fff;
+  #fastforward > svg {
+    position: relative;
+    top: 1px;
+    left: 1px;
+  }
 
-      &::after {
-        border-color: #fff;
-      }
-    }
+  #replay {
+    display: none;
   }
 </style>
 <script>
   import {
-    toggleAnimationState,
-    getAnimationState,
+    pauseAllAnimations,
+    resumeAllAnimations,
     listenForAnimationComplete,
+    fastForwardAnimations,
   } from "../lib/browser/animations";
 
   const controlContainer: HTMLDivElement | null =
@@ -70,31 +114,53 @@
   const pauseToggle: HTMLButtonElement | null =
     document.querySelector("#pausetoggle");
 
-  let replayable = false;
+  const playToggle: HTMLButtonElement | null =
+    document.querySelector("#playtoggle");
 
-  if (!controlContainer || !pauseToggle) {
+  const fastForward: HTMLButtonElement | null =
+    document.querySelector("#fastforward");
+
+  const replay: HTMLButtonElement | null = document.querySelector("#replay");
+
+  if (
+    !controlContainer ||
+    !pauseToggle ||
+    !playToggle ||
+    !replay ||
+    !fastForward
+  ) {
     console.warn("cannot setup controls, no selector match");
   } else {
-    controlContainer.style.display = "block";
+    controlContainer.style.display = "flex";
     pauseToggle.addEventListener("click", () => {
-      if (replayable) {
-        window.location.reload();
-        return;
-      }
+      pauseAllAnimations();
+      pauseToggle.style.display = "none";
+      playToggle.style.display = "block";
+    });
 
-      toggleAnimationState();
-      if (getAnimationState() === "playing") {
-        pauseToggle.classList.add("playing");
-        pauseToggle.setAttribute("title", "Pause");
-      } else {
-        pauseToggle.classList.remove("playing");
-        pauseToggle.setAttribute("title", "Play");
-      }
+    playToggle.addEventListener("click", () => {
+      resumeAllAnimations();
+      pauseToggle.style.display = "block";
+      playToggle.style.display = "none";
+    });
+
+    replay.addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    fastForward.addEventListener("click", () => {
+      fastForwardAnimations();
+      pauseToggle.style.display = "none";
+      playToggle.style.display = "none";
+      fastForward.style.display = "none";
+      replay.style.display = "block";
     });
 
     listenForAnimationComplete(() => {
-      replayable = true;
-      pauseToggle.classList.remove("playing");
+      replay.style.display = "block";
+      pauseToggle.style.display = "none";
+      replay.style.display = "block";
+      fastForward.style.display = "none";
     });
   }
 </script>

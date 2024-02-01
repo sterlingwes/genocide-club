@@ -1,9 +1,3 @@
-let paused = false;
-
-export const getAnimationState = () => {
-  return paused ? "paused" : "playing";
-};
-
 const updatePostAnimations = (playState: "paused" | "running") => {
   document.querySelectorAll(".post").forEach((post) => {
     (post as HTMLDivElement).style.animationPlayState = playState;
@@ -14,20 +8,23 @@ const updatePostAnimations = (playState: "paused" | "running") => {
   });
 };
 
-const pauseAllAnimations = () => {
-  paused = true;
-  // const animations = document.getAnimations();
-  // animations.forEach((anim) => anim.pause());
+export const pauseAllAnimations = () => {
   updatePostAnimations("paused");
   (document.querySelector("#filledchart") as SVGSVGElement).pauseAnimations();
 };
 
-const resumeAllAnimations = () => {
-  paused = false;
-  // const animations = document.getAnimations();
-  // animations.forEach((anim) => anim.play());
+export const resumeAllAnimations = () => {
   updatePostAnimations("running");
   (document.querySelector("#filledchart") as SVGSVGElement).unpauseAnimations();
+};
+
+export const fastForwardAnimations = () => {
+  document.getAnimations().forEach((anim) => {
+    anim.finish();
+  });
+  (document.querySelector("#filledchart") as SVGSVGElement).setCurrentTime(
+    (Date.now() + 30_000) / 1_000
+  );
 };
 
 export const listenForAnimationComplete = (listener: () => void) => {
@@ -37,16 +34,4 @@ export const listenForAnimationComplete = (listener: () => void) => {
       ".svg-days text:last-of-type animate"
     ) as SVGAnimateElement
   ).addEventListener("beginEvent", listener);
-};
-
-export const toggleAnimationState = () => {
-  const state = getAnimationState();
-  switch (state) {
-    case "paused":
-      resumeAllAnimations();
-      break;
-    case "playing":
-      pauseAllAnimations();
-      break;
-  }
 };
