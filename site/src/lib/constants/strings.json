@@ -1,6 +1,5 @@
 {
-  "mission_statement": {
-    "type": "text",
-    "text": "This website seeks to collect public statements from those supporting Israel's strategy of mass displacement, starvation, and murder of Palestinian people, and to contrast those statements with the human toll of that inhumane campaign."
-  }
+  "mission_statement": "This website seeks to collect public statements from those supporting Israel's strategy of mass displacement, starvation, and murder of Palestinian people, and to contrast those statements with the human toll of that campaign to put them in proper context.",
+  "editorial_intro": "In the process of collecting statements for an individual or group, we determine whether one or more of the following categories applies to their statement. If a category applies, that statement is a candidate for inclusion. If the person is sharing or boosting someone else's statement, we treat that as an endorsement of it and include it for the person doing the amplifying.",
+  "tag_discrimination": "Statements employing discrimination might include:"
 }

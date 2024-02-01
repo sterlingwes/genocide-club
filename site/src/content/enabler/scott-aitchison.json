@@ -4,10 +4,11 @@
   "image": "https://pbs.twimg.com/profile_images/1462652146067857413/9hxJ7epE_400x400.jpg",
   "posts": [
     {
-      "text": "We're witnessing the highest rise of antisemitism in 50 years: Irwin Cotler on the global evil  https://nationalpost.com/news/world/israel-middle-east/highest-rise-of-antisemitism-in-50-years-irwin-cotler via @nationalpost\n\nThe responsibility for ending antisemitism and hate in all it’s forms belongs to each of us.",
+      "text": "We're witnessing the highest rise of antisemitism in 50 years: Irwin Cotler on the global evil  https://nationalpost.com/news/world/israel-middle-east/highest-rise-of-antisemitism-in-50-years-irwin-cotler via @nationalpost\n\nThe responsibility for ending antisemitism and hate in all it's forms belongs to each of us.",
       "date": "2023-10-12",
       "type": "twitter",
-      "href": "https://x.com/ScottAAitchison/status/1712448595121852830?s=20"
+      "href": "https://x.com/ScottAAitchison/status/1712448595121852830?s=20",
+      "tags": ["polarisation"]
     },
     {
       "text": "",
@@ -17,17 +18,18 @@
         "author": "Avi Mayer"
       },
       "type": "twitter",
-      "href": "https://x.com/AviMayer/status/1713562347350958563?s=20"
+      "href": "https://x.com/AviMayer/status/1713562347350958563?s=20",
+      "tags": ["polarisation"]
     },
     {
-      "text": "",
       "date": "2023-10-17",
       "quote": {
         "text": "For all the misery, murder, and chaos across Israel & Gaza, Hamas is responsible.\n\nThere is no equivalence.\n\nWe stand with the reservists & security services bringing order to Israel by weeding out these terrorists and ensuring they're never capable of this again.",
         "author": "Shuv Majumdar"
       },
       "type": "twitter",
-      "href": "https://x.com/shuvmajumdar/status/1714412357940617250?s=20"
+      "href": "https://x.com/shuvmajumdar/status/1714412357940617250?s=20",
+      "tags": ["polarisation", "dehumanisation"]
     },
     {
       "text": "Honoured to attend Pierre's speech on behalf of Parry Sound-Muskoka.\n\nI have seen the beauty of Israel and the resilience of it's people firsthand.\n\nTerrorists must not win. Israel has the right to defend itself and respond against the attackers.",
@@ -37,10 +39,10 @@
         "author": "Pierre Poilievre"
       },
       "type": "twitter",
-      "href": "https://x.com/ScottAAitchison/status/1715035551835763031?s=20"
+      "href": "https://x.com/ScottAAitchison/status/1715035551835763031?s=20",
+      "tags": ["polarisation"]
     },
     {
-      "text": "",
       "date": "2023-10-26",
       "quote": {
         "text": "In Jerusalem tonight, 224 pillars of light for each child, woman and man being held hostage by #Hamas in Gaza.  💔\n\n📸 Arnon Bosanni #BringThemHome",
@@ -48,14 +50,16 @@
         "author": "CIJA"
       },
       "type": "twitter",
-      "href": "https://x.com/CIJAinfo/status/1717697691000406341?s=20"
+      "href": "https://x.com/CIJAinfo/status/1717697691000406341?s=20",
+      "tags": []
     },
     {
       "text": "Hamas cannot be trusted to respect any ceasefire.\n\nThey are a terrorist group.\n\nI continue to support Israel's right to defend itself and to take action to eliminate Hamas and bring home the hostages.",
       "image": "https://pbs.twimg.com/media/F_Y_-TPWcAEYOcS?format=jpg&name=small",
       "date": "2023-11-20",
       "type": "twitter",
-      "href": "https://x.com/ScottAAitchison/status/1726637851515711576?s=20"
+      "href": "https://x.com/ScottAAitchison/status/1726637851515711576?s=20",
+      "tags": ["polarisation", "dehumanisation", "discrimination"]
     }
   ]
 }

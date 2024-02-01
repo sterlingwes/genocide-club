@@ -10,7 +10,7 @@ const modules = zodFiles.stdout
   .map((line: string) => line.trim());
 
 modules.forEach((fileName: string) => {
-  if (fileName) {
+  if (fileName && fileName.endsWith(".ts")) {
     const { schema, name } = require(`../site/src/schemas/${fileName}`);
     const jsonSchema = zodToJsonSchema(schema, name);
     fs.writeFileSync(

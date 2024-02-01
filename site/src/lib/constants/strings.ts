@@ -1,9 +1,23 @@
 import type { StructuredText } from "../shared/structured-text";
 import strings from "./strings.json";
 
+const isStructuredText = (part: any): part is StructuredText => {
+  return typeof part === "object" && typeof part.type === "string";
+};
+
 export const getString = (key: keyof typeof strings) => {
-  if (!strings[key]) {
+  const value = strings[key];
+  if (!value) {
     throw new Error(`No match for string lookup by key: ${key}`);
   }
-  return strings[key] as StructuredText;
+
+  if (isStructuredText(value)) {
+    return value as StructuredText;
+  }
+
+  return { type: "text" as const, text: value };
+};
+
+export const getStrings = (...keys: Array<keyof typeof strings>) => {
+  return keys.map((key) => getString(key));
 };

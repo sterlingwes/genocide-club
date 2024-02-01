@@ -42,8 +42,18 @@
               "commentary": {
                 "type": "string"
               },
-              "skip": {
-                "type": "boolean"
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "dehumanisation",
+                    "discrimination",
+                    "incitement",
+                    "polarisation",
+                    "classification"
+                  ]
+                }
               },
               "quote": {
                 "type": "object",
@@ -71,7 +81,8 @@
             "required": [
               "type",
               "href",
-              "date"
+              "date",
+              "tags"
             ],
             "additionalProperties": false
           }

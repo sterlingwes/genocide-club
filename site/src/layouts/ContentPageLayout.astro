@@ -6,7 +6,11 @@ interface Props {
   clip?: boolean;
 }
 
+const basePageTitle = "genocide.club";
 const { title, clip } = Astro.props;
+const pageTitle = title.startsWith(basePageTitle)
+  ? title
+  : `${basePageTitle} • ${title}`;
 ---
 
 <!doctype html>
@@ -16,7 +20,7 @@ const { title, clip } = Astro.props;
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
   </head>
   <body class={clip ? "clip" : undefined}>
     <OpacityOverlay />
@@ -68,5 +72,11 @@ const { title, clip } = Astro.props;
     line-height: 1;
     text-align: center;
     margin-bottom: 1em;
+    opacity: 0.75;
+    letter-spacing: 0.05em;
+  }
+  a {
+    color: rgba(0, 174, 9, 0.8);
+    text-decoration: none;
   }
 </style>

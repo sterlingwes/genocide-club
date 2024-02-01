@@ -57,7 +57,7 @@ const parsePostText = (text: string): StructuredText[] => {
 
 export const getEnhancedPosts = (posts: EnablerPost[]) => {
   return orderEarliestToLatest(posts)
-    .filter((post) => !post.skip)
+    .filter((post) => !!post.tags.length)
     .map((post) => ({
       ...post,
       structuredText: post.text ? parsePostText(post.text) : [],

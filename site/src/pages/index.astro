@@ -2,13 +2,26 @@
 import ContentBox from "../components/ContentBox.astro";
 import ContentPageLayout from "../layouts/ContentPageLayout.astro";
 import StructuredText from "../components/StructuredText.astro";
-import { getString } from "../lib/constants/strings";
+import { getStrings } from "../lib/constants/strings";
 ---
 
 <ContentPageLayout title="genocide.club">
   <ContentBox>
-    <StructuredText parts={[getString("mission_statement")]} />
+    <p>
+      <StructuredText parts={getStrings("mission_statement")} />
+    </p>
+    <p>
+      You can <a href="/docs/editorial">read our editorial guide</a> to learn more
+      about how we decide who and what gets included in the club.
+    </p>
   </ContentBox>
 </ContentPageLayout>
-
-<style></style>
+<style>
+  p {
+    margin: 0;
+    margin-bottom: 2rem;
+  }
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+</style>
