@@ -2,7 +2,24 @@
 import ContentBox from "../../components/ContentBox.astro";
 import ContentPageLayout from "../../layouts/ContentPageLayout.astro";
 import StructuredText from "../../components/StructuredText.astro";
-import { getStrings } from "../../lib/constants/strings";
+import { editorialTags } from "../../lib/constants/editorial-tags";
+import { getString, getStrings } from "../../lib/constants/strings";
+import { getCollection } from "astro:content";
+
+const enablers = await getCollection("enabler");
+const tagCountLookup: Record<string, number> = {};
+enablers.forEach(({ data: { posts } }) =>
+  posts.forEach(({ tags }) =>
+    tags.forEach((tag) => {
+      tagCountLookup[tag] = (tagCountLookup[tag] ?? 0) + 1;
+    })
+  )
+);
+
+const tagOrder = editorialTags.sort((a, b) => {
+  return (tagCountLookup[b] ?? 0) - (tagCountLookup[a] ?? 0);
+});
+console.log({ tagCountLookup });
 ---
 
 <ContentPageLayout title="editorial guide">
@@ -10,57 +27,22 @@ import { getStrings } from "../../lib/constants/strings";
     <p>
       <StructuredText parts={getStrings("editorial_intro")} />
     </p>
-    <h2>Discrimination</h2>
     <p>
-      Discrimination often comes in the form of xenophobia or racism.
-      Islamophobia is closely related. A common example of this in recent days
-      is claiming pro-Palestinian protests are "hateful" or associating the
-      attendees as Hamas supporters by default.
+      For our classification approach, we've taken some guidance from the
+      work of Dr. Gregory H Stanton. You can read the Holocaust Memorial Day Trust's <a
+        href="https://www.hmd.org.uk/learn-about-the-holocaust-and-genocides/what-is-genocide/the-ten-stages-of-genocide/"
+        target="_blank">Summary of the Ten Stages of Genocide</a
+      > to learn more.
     </p>
-    <h2>Dehumanisation</h2>
-    <p>
-      This category is perhaps the most insidious, as it involves broad
-      generalisations about a group of people that take away their individual
-      humanity. The common claim of "human shields" is one. Israeli Defence
-      Minister Yoav Gallant's statement that Gazans are "human animals" is
-      another very clear example.
-    </p>
-    <h2>Incitement</h2>
-    <p>
-      This class of statements are hard to miss given their often aggressive
-      nature, and can come in the form of any of:
-      <ul>
-        <li>Calling for violence or persecution of a group</li>
-        <li>Supporting acts that could plausibly lead to a genocide</li>
-      </ul>
-    </p>
-    <h2>Classification</h2>
-    <p>
-      Similar to discrimination, though this is specifically about segregating
-      people. In the clearest case, it's the "us vs. them" environment that is
-      Israel-Palestine. Elsewhere and among supporter communities this can
-      involve assigning people to groups or excluding people who are perceived
-      to be different. Excluding people from making criticisms of Jewish
-      officials with misplaced accusations of antisemitism is another example.
-    </p>
-    <h2>Polarisation</h2>
-    <p>
-      Polarisation, or the effort to divide people into sharply contrasting sets
-      of opinions, is a common tool by those trying to enable a cause like
-      genocide. It has the effect of normalising what would otherwise be extreme
-      views. Some examples of what would be considered polarising statements:
-      <ul>
-        <li>Leveraging a biased perspective or making important omissions</li>
-        <li>Boosting or paraphrasing government propaganda</li>
-        <li>
-          Attempting to distract or draw attention away from inconvenient
-          truths, war crimes, or acts that would plausibly contribute towards a
-          genocide
-        </li>
-      </ul>
-    </p>
+    {
+      tagOrder.map(tag => (
+        <h2><StructuredText parts={getStrings(`tag_${tag}_head`)} /></h2>
+        <p><StructuredText parts={getStrings(`tag_${tag}_para`)} /></p>
+      ))
+    }
   </ContentBox>
 </ContentPageLayout>
+
 <style>
   p {
     margin: 0;

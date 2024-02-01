@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { editorialTags } from "../lib/constants/editorial-tags";
 
 /**
  * run "bun run gen-schemas" to update the matching JSON schema if changed
@@ -17,15 +18,7 @@ export const schema = z.object({
       image: z.string().optional(),
       imageCaption: z.string().optional(),
       commentary: z.string().optional(),
-      tags: z.array(
-        z.enum([
-          "dehumanisation",
-          "discrimination",
-          "incitement",
-          "polarisation",
-          "classification",
-        ])
-      ),
+      tags: z.array(z.enum(editorialTags as [string, ...string[]])),
       quote: z
         .object({
           text: z.string(),

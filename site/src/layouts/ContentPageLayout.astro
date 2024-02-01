@@ -8,9 +8,8 @@ interface Props {
 
 const basePageTitle = "genocide.club";
 const { title, clip } = Astro.props;
-const pageTitle = title.startsWith(basePageTitle)
-  ? title
-  : `${basePageTitle} • ${title}`;
+const homePage = title.startsWith(basePageTitle);
+const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
 ---
 
 <!doctype html>
@@ -25,6 +24,7 @@ const pageTitle = title.startsWith(basePageTitle)
   <body class={clip ? "clip" : undefined}>
     <OpacityOverlay />
     <main>
+      {!homePage && <div class="logo">genocide.club</div>}
       <div class="content">
         <h1>{title}</h1>
         <slot />
@@ -50,6 +50,13 @@ const pageTitle = title.startsWith(basePageTitle)
     font-style: normal;
     font-display: swap;
   }
+  @font-face {
+    font-family: "PTSerif-Bold";
+    src: url("/fonts/PTSerif-Bold.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
 
   main {
     margin: auto;
@@ -65,7 +72,8 @@ const pageTitle = title.startsWith(basePageTitle)
     z-index: 1;
     color: rgba(255, 255, 255, 80%);
   }
-  h1 {
+  h1,
+  .logo {
     font-family: "PTSerif";
     font-size: 3rem;
     font-weight: 700;
@@ -74,6 +82,11 @@ const pageTitle = title.startsWith(basePageTitle)
     margin-bottom: 1em;
     opacity: 0.75;
     letter-spacing: 0.05em;
+  }
+  .logo {
+    font-family: "PTSerif-Bold";
+    font-size: 1.2rem;
+    opacity: 0.5;
   }
   a {
     color: rgba(0, 174, 9, 0.8);
