@@ -39,6 +39,6 @@ Note the following guiding principles: the core animation (graph reveal, post ap
 
 Where to find / place things:
 
-- [site/src/pages/[...enabler].astro](site/src/pages/[...enabler].astro) is the main template used to generate the visualization pages
+- [site/src/pages/[...enablerPage].astro](site/src/pages/[...enablerPage].astro) is the main template used to generate the visualization pages
 - [site/src/lib/server/timeline](site/src/lib/server/timeline.ts) is the core animation sequencing logic, run at build ("server") time
 - [site/src/lib/browser](site/src/lib/browser) has any javascript we run in the browser or referenced in a script tag in the page template
