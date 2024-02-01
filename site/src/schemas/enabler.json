@@ -1,0 +1,89 @@
+{
+  "$ref": "#/definitions/enabler",
+  "definitions": {
+    "enabler": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "twitter"
+                ]
+              },
+              "href": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "imageCaption": {
+                "type": "string"
+              },
+              "commentary": {
+                "type": "string"
+              },
+              "skip": {
+                "type": "boolean"
+              },
+              "quote": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "imageCaption": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text",
+                  "author"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "href",
+              "date"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "name",
+        "bio",
+        "posts"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

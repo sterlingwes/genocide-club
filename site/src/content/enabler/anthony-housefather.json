@@ -10,8 +10,10 @@
       "href": ""
     },
     {
-      "text": "Marking 100 days since Hamas attacked Israel and brutally murdered 1200 people, including eight Canadians. 100 days since Hamas took 240 hostages, and still holds over 130 in captivity. The world may have moved on since October 7, but we will #NeverForget. #BringThemHomeNow",
-      "author": "@marcomendicino",
+      "quote": {
+        "text": "Marking 100 days since Hamas attacked Israel and brutally murdered 1200 people, including eight Canadians. 100 days since Hamas took 240 hostages, and still holds over 130 in captivity. The world may have moved on since October 7, but we will #NeverForget. #BringThemHomeNow",
+        "author": "@marcomendicino"
+      },
       "date": "2024-01-14T17:19:00.000Z",
       "type": "twitter",
       "href": ""

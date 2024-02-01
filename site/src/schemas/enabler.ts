@@ -1,6 +1,10 @@
-import { z } from "astro:content";
+import { z } from "zod";
 
-export const enablerSchema = z.object({
+/**
+ * run "bun run gen-schemas" to update the matching JSON schema if changed
+ */
+
+export const schema = z.object({
   name: z.string(),
   bio: z.string(),
   image: z.string().optional(),
@@ -26,5 +30,7 @@ export const enablerSchema = z.object({
   ),
 });
 
-export type Enabler = z.infer<typeof enablerSchema>;
+export const name = "enabler";
+
+export type Enabler = z.infer<typeof schema>;
 export type EnablerPost = Enabler["posts"][0];

@@ -1,0 +1,8 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["/site/src/content/enabler/*.json"],
+      "url": "./site/src/schemas/enabler.json"
+    }
+  ]
+}
