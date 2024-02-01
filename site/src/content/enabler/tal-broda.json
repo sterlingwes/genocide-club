@@ -55,7 +55,7 @@
       },
       "type": "twitter",
       "href": "https://twitter.com/StopArabHate/status/1734923782949568711/photo/4",
-      "tags": ["denial", "polarisation"]
+      "tags": ["denial", "classification"]
     },
     {
       "text": "More. Don't stop.",
@@ -101,7 +101,7 @@
       "date": "2023-11-04T15:18:28.000Z",
       "type": "twitter",
       "href": "https://twitter.com/StopArabHate/status/1736029519050330489/photo/1",
-      "tags": ["polarisation"]
+      "tags": ["classification"]
     }
   ]
 }
