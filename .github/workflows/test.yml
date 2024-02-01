@@ -23,11 +23,11 @@ jobs:
           bun-version: 1.0.22
       - name: install dependencies
         run: bun install
+      - name: setup data fixture
+        run: mkdir -p site/src/generated && cp site/src/lib/server/__fixtures__/data.json site/src/generated/data.json
       - name: run type check
         run: bun run types
       - name: run schema scheck
         run: bun run schemas
-      - name: setup data fixture
-        run: mkdir -p site/src/generated && cp site/src/lib/server/__fixtures__/data.json site/src/generated/data.json
       - name: run unit tests
         run: bun run test
