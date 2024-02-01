@@ -25,6 +25,8 @@ jobs:
         run: bun install
       - name: setup data fixture
         run: mkdir -p site/src/generated && cp site/src/lib/server/__fixtures__/data.json site/src/generated/data.json
+      - name: sync astro content types
+        run: bun run astrosync
       - name: run type check
         run: bun run types
       - name: run schema scheck
