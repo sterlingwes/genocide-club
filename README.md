@@ -1,3 +1,5 @@
+[![Ceasefire Now](https://badge.techforpalestine.org/default)](https://techforpalestine.org/learn-more)
+
 # genocide-club
 
 A time-based way to visualize the statements of pro-Israel people (who defend or ignore murder & displacement), by superimposing their statements on a graph showing the cumulative toll of Israel's actions in Gaza since October 7.
