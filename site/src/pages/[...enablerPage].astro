@@ -156,11 +156,7 @@ const {
                 {
                   dayTexts.map(
                     ({
-                      dayNumber: [
-                        firstDayNumber,
-                        secondDayNumber,
-                        thirdDayNumber,
-                      ],
+                      dayNumber,
                       duration,
                       dayAnimId,
                       lastDayAnimId,
@@ -168,28 +164,7 @@ const {
                       freeze,
                     }) => (
                       <text>
-                        <tspan text-anchor="middle" textLength="2.2em">
-                          <tspan
-                            style={{
-                              opacity:
-                                firstDayNumber === "0" ? "0.4" : undefined,
-                            }}
-                          >
-                            {firstDayNumber}
-                          </tspan>
-                          <tspan
-                            style={{
-                              opacity:
-                                firstDayNumber === "0" &&
-                                secondDayNumber === "0"
-                                  ? "0.4"
-                                  : undefined,
-                            }}
-                          >
-                            {secondDayNumber}
-                          </tspan>
-                          <tspan>{thirdDayNumber}</tspan>
-                        </tspan>
+                        <tspan text-anchor="middle">{dayNumber}</tspan>
                         <animate
                           id={dayAnimId}
                           attributeName="opacity"
@@ -348,7 +323,7 @@ const {
   }
 
   .svg-days {
-    transform: translate(-4.3vw, 0);
+    transform: translate(-4.1vw, 0);
   }
 
   .svg-days text {
@@ -360,7 +335,7 @@ const {
   }
 
   .svg-days-bookends:first-of-type {
-    transform: translate(-5.8vw, 0);
+    transform: translate(-5.5vw, 0);
   }
 
   .svg-days-bookends text {
