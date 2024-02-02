@@ -1,5 +1,4 @@
 import fs from "fs";
-// @ts-expect-error bun types not up to date on alpha api (?)
 import { $ } from "bun";
 import { zodToJsonSchema } from "zod-to-json-schema";
 

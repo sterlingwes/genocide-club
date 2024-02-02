@@ -15,7 +15,8 @@
     "types": "tsc --noEmit",
     "gen-schemas": "bun run scripts/zod-json-schema.ts",
     "schemas": "bun run ajv validate -s site/src/schemas/enabler -d \"site/src/content/enabler/*.json\"",
-    "astrosync": "cd site && bun run astro sync"
+    "astro": "cd site && bun run astro",
+    "check": "cd site && bun run astro check"
   },
   "devDependencies": {
     "@types/bun": "latest"
