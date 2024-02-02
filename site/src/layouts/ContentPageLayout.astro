@@ -24,7 +24,15 @@ const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
   <body class={clip ? "clip" : undefined}>
     <OpacityOverlay />
     <main>
-      {!homePage && <div class="logo">genocide.club</div>}
+      {
+        !homePage && (
+          <div class="logo">
+            <a href="/" title="genocide.club home">
+              genocide.club
+            </a>
+          </div>
+        )
+      }
       <div class="content">
         <h1>{title}</h1>
         <slot />
@@ -86,7 +94,15 @@ const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
   .logo {
     font-family: "PTSerif-Bold";
     font-size: 1.2rem;
-    opacity: 0.5;
+
+    a {
+      color: white;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
   a {
     color: rgba(0, 174, 9, 0.8);
