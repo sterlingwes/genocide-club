@@ -5,6 +5,10 @@ const isStructuredText = (part: any): part is StructuredText => {
   return typeof part === "object" && typeof part.type === "string";
 };
 
+export const getRawString = (key: keyof typeof strings) => {
+  return strings[key];
+};
+
 export const getString = (key: keyof typeof strings) => {
   const value = strings[key];
   if (!value) {

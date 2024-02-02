@@ -51,9 +51,15 @@ const {
   expectedDuration,
   postDelayLookup,
 } = getTimeline({ svgDomain, posts });
+
+const enablerAboutMessage = `${enabler.name} is a member of the genocide club due to the statements he's made since October 7th and through the duration of Israel's aggression.`;
 ---
 
-<PlayerLayout clip title={`genocide.club • ${enabler.name}`}>
+<PlayerLayout
+  clip
+  title={`genocide.club • ${enabler.name}`}
+  description={enablerAboutMessage}
+>
   <main>
     <OpacityOverlay />
     <div class="graph">
@@ -216,7 +222,7 @@ const {
     </header>
     <div class="posts">
       {
-        posts.map((post, i) => (
+        posts.map((post) => (
           <Post
             {...{ post, postDelayLookup, enablerImageUrl: enabler.image }}
           />
@@ -232,8 +238,7 @@ const {
       <h2>about genocide.club</h2>
       <p><StructuredText parts={getStrings("mission_statement")} /></p>
       <p>
-        {enabler.name} is a member of the genocide club due to the statements he's
-        made since October 7th and through the duration of Israel's aggression.
+        {enablerAboutMessage}
       </p>
       <p>
         {properCase(getPossessivePronoun(enabler.gender))} statements were assigned

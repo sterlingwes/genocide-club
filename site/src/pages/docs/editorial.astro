@@ -3,7 +3,7 @@ import ContentBox from "../../components/ContentBox.astro";
 import ContentPageLayout from "../../layouts/ContentPageLayout.astro";
 import StructuredText from "../../components/StructuredText.astro";
 import { editorialTags } from "../../lib/constants/editorial-tags";
-import { getString, getStrings } from "../../lib/constants/strings";
+import { getStrings } from "../../lib/constants/strings";
 import { getCollection } from "astro:content";
 
 const enablers = await getCollection("enabler");
@@ -21,7 +21,10 @@ const tagOrder = editorialTags.sort((a, b) => {
 });
 ---
 
-<ContentPageLayout title="editorial guide">
+<ContentPageLayout
+  title="editorial guide"
+  description="Detail on how we determine who and which statements are feature on genocide.club."
+>
   <ContentBox>
     <p>
       <StructuredText parts={getStrings("editorial_intro")} />

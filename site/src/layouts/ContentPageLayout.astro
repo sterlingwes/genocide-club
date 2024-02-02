@@ -3,11 +3,11 @@ import OpacityOverlay from "../components/OpacityOverlay.astro";
 
 interface Props {
   title: string;
-  clip?: boolean;
+  description: string;
 }
 
 const basePageTitle = "genocide.club";
-const { title, clip } = Astro.props;
+const { title, description } = Astro.props;
 const homePage = title.startsWith(basePageTitle);
 const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
 ---
@@ -16,12 +16,12 @@ const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
   </head>
-  <body class={clip ? "clip" : undefined}>
+  <body>
     <OpacityOverlay />
     <main>
       {

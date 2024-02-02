@@ -3,12 +3,15 @@ import { getCollection } from "astro:content";
 import ContentBox from "../components/ContentBox.astro";
 import ContentPageLayout from "../layouts/ContentPageLayout.astro";
 import StructuredText from "../components/StructuredText.astro";
-import { getStrings } from "../lib/constants/strings";
+import { getRawString, getStrings } from "../lib/constants/strings";
 
 const enablers = await getCollection("enabler");
 ---
 
-<ContentPageLayout title="genocide.club">
+<ContentPageLayout
+  title="genocide.club"
+  description={getRawString("mission_short")}
+>
   <ContentBox>
     <p>
       <StructuredText parts={getStrings("mission_statement")} />
