@@ -5,3 +5,5 @@ export const editorialTags = [
   "classification" as const,
   "denial" as const,
 ];
+
+export type EditorialTags = typeof editorialTags;

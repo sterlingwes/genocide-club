@@ -1,6 +1,8 @@
 {
   "name": "Anthony Housefather",
   "bio": "Canadian Federal Member of Parliament",
+  "gender": "m",
+  "tags": ["politician", "canada"],
   "image": "https://pbs.twimg.com/profile_images/1557520337780211713/jYIi7EbS_400x400.jpg",
   "posts": [
     {
@@ -30,7 +32,7 @@
       "date": "2024-01-12T06:41:00.000Z",
       "type": "twitter",
       "image": "https://pbs.twimg.com/media/GDrgAviWkAATkfn?format=jpg&name=medium",
-      "tags": ["incitement", "classification", "denial"]
+      "tags": ["classification", "denial"]
     },
     {
       "text": "Jews throughout the world, including Canada, are facing levels of antisemitism that we have not seen in our lifetime. Many are scared. Angry. Depressed. All consumed. Anyone endorsing a claim that antisemitism is being weaponized denies the truth of what Jews are experiencing.",

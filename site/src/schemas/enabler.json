@@ -10,6 +10,28 @@
         "bio": {
           "type": "string"
         },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "politician",
+              "tech",
+              "canada",
+              "usa",
+              "israel",
+              "capital"
+            ]
+          }
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "m",
+            "f",
+            "nb"
+          ]
+        },
         "image": {
           "type": "string"
         },
@@ -91,6 +113,8 @@
       "required": [
         "name",
         "bio",
+        "tags",
+        "gender",
         "posts"
       ],
       "additionalProperties": false

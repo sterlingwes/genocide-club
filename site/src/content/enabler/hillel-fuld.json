@@ -1,6 +1,8 @@
 {
   "name": "Hillel Fuld",
   "bio": "American Israeli tech business personality",
+  "gender": "m",
+  "tags": ["tech", "usa"],
   "image": "https://pbs.twimg.com/profile_images/1679121273421541376/gOt7Lgmy_400x400.jpg",
   "posts": [
     {

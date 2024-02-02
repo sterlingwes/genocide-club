@@ -19,7 +19,6 @@ enablers.forEach(({ data: { posts } }) =>
 const tagOrder = editorialTags.sort((a, b) => {
   return (tagCountLookup[b] ?? 0) - (tagCountLookup[a] ?? 0);
 });
-console.log({ tagCountLookup });
 ---
 
 <ContentPageLayout title="editorial guide">
@@ -28,16 +27,22 @@ console.log({ tagCountLookup });
       <StructuredText parts={getStrings("editorial_intro")} />
     </p>
     <p>
-      For our classification approach, we've taken some guidance from the
-      work of Dr. Gregory H Stanton. You can read the Holocaust Memorial Day Trust's <a
+      For our classification approach, we've taken some guidance from the work
+      of Dr. Gregory H Stanton. You can read the Holocaust Memorial Day Trust's <a
         href="https://www.hmd.org.uk/learn-about-the-holocaust-and-genocides/what-is-genocide/the-ten-stages-of-genocide/"
         target="_blank">Summary of the Ten Stages of Genocide</a
       > to learn more.
     </p>
     {
-      tagOrder.map(tag => (
-        <h2><StructuredText parts={getStrings(`tag_${tag}_head`)} /></h2>
-        <p><StructuredText parts={getStrings(`tag_${tag}_para`)} /></p>
+      tagOrder.map((tag) => (
+        <>
+          <h2>
+            <StructuredText parts={getStrings(`tag_${tag}_head`)} />
+          </h2>
+          <p>
+            <StructuredText parts={getStrings(`tag_${tag}_para`)} />
+          </p>
+        </>
       ))
     }
   </ContentBox>

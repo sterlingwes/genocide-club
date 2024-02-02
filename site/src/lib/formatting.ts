@@ -9,3 +9,17 @@ export const leftPadTwoDigits = (n: number): string => {
 
   return `${n}`;
 };
+
+export const properCase = (str: string) =>
+  `${str[0].toUpperCase()}${str.slice(1)}`;
+
+export const getPossessivePronoun = (gender: "m" | "f" | "nb") => {
+  switch (gender) {
+    case "m":
+      return "his";
+    case "f":
+      return "her";
+    default:
+      return "their";
+  }
+};

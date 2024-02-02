@@ -1,6 +1,8 @@
 {
   "name": "Tal Broda",
   "bio": "Head of Research Platform at OpenAI",
+  "gender": "m",
+  "tags": ["tech", "usa"],
   "image": "https://pbs.twimg.com/profile_images/1599598218047881216/U45uXUkS_400x400.jpg",
   "posts": [
     {

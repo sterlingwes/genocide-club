@@ -8,6 +8,10 @@ import { editorialTags } from "../lib/constants/editorial-tags";
 export const schema = z.object({
   name: z.string(),
   bio: z.string(),
+  tags: z.array(
+    z.enum(["politician", "tech", "canada", "usa", "israel", "capital"])
+  ),
+  gender: z.enum(["m", "f", "nb"]),
   image: z.string().optional(),
   posts: z.array(
     z.object({

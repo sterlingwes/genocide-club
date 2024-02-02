@@ -3,6 +3,19 @@
 ---
 
 <div class="controls">
+  <button id="moreinfo" title="More Info">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.0688 12.35C11.8388 10.96 13.3188 10.14 14.1788 8.91C15.0888 7.62 14.5788 5.21 11.9988 5.21C10.3088 5.21 9.47876 6.49 9.12876 7.55L6.53876 6.46C7.24876 4.33 9.17876 2.5 11.9888 2.5C14.3388 2.5 15.9488 3.57 16.7688 4.91C17.4688 6.06 17.8788 8.21 16.7988 9.81C15.5988 11.58 14.4488 12.12 13.8288 13.26C13.5788 13.72 13.4788 14.02 13.4788 15.5H10.5888C10.5788 14.72 10.4588 13.45 11.0688 12.35ZM13.9988 19.5C13.9988 20.6 13.0988 21.5 11.9988 21.5C10.8988 21.5 9.99876 20.6 9.99876 19.5C9.99876 18.4 10.8988 17.5 11.9988 17.5C13.0988 17.5 13.9988 18.4 13.9988 19.5Z"
+        fill="white"></path>
+    </svg>
+  </button>
   <button id="playtoggle" title="Play">
     <svg
       width="24"
@@ -65,6 +78,7 @@
   }
 
   button {
+    cursor: pointer;
     width: 42px;
     height: 42px;
     background-color: transparent;
@@ -73,6 +87,11 @@
     border-width: 1px;
     border-radius: 22px;
     margin-right: 10px;
+  }
+
+  #moreinfo > svg {
+    position: relative;
+    top: 2px;
   }
 
   #playtoggle {
@@ -87,12 +106,12 @@
 
   #pausetoggle > svg {
     position: relative;
-    top: 1px;
+    top: 2px;
   }
 
   #fastforward > svg {
     position: relative;
-    top: 1px;
+    top: 2px;
     left: 1px;
   }
 
@@ -110,6 +129,11 @@
 
   const controlContainer: HTMLDivElement | null =
     document.querySelector(".controls");
+
+  const moreInfo: HTMLButtonElement | null =
+    document.querySelector("#moreinfo");
+  const overlayModal: HTMLButtonElement | null =
+    document.querySelector("#overlay-modal");
 
   const pauseToggle: HTMLButtonElement | null =
     document.querySelector("#pausetoggle");
@@ -132,13 +156,32 @@
     console.warn("cannot setup controls, no selector match");
   } else {
     controlContainer.style.display = "flex";
-    pauseToggle.addEventListener("click", () => {
+
+    let playing = true;
+
+    const pause = () => {
+      playing = false;
       pauseAllAnimations();
       pauseToggle.style.display = "none";
       playToggle.style.display = "block";
-    });
+    };
+
+    if (moreInfo && overlayModal) {
+      moreInfo.addEventListener("click", () => {
+        if (playing) {
+          pause();
+        }
+        overlayModal.classList.add("modal-setup");
+        requestAnimationFrame(() => {
+          overlayModal.classList.add("modal-visible");
+        });
+      });
+    }
+
+    pauseToggle.addEventListener("click", pause);
 
     playToggle.addEventListener("click", () => {
+      playing = true;
       resumeAllAnimations();
       pauseToggle.style.display = "block";
       playToggle.style.display = "none";
@@ -149,6 +192,7 @@
     });
 
     fastForward.addEventListener("click", () => {
+      playing = false;
       fastForwardAnimations();
       pauseToggle.style.display = "none";
       playToggle.style.display = "none";
@@ -157,6 +201,7 @@
     });
 
     listenForAnimationComplete(() => {
+      playing = false;
       replay.style.display = "block";
       pauseToggle.style.display = "none";
       replay.style.display = "block";
