@@ -23,7 +23,7 @@ export const handlePostEvents = () => {
         (postBoundingRect.height / viewportHeight > 0.75
           ? topHeaderAvoidanceTall
           : topHeaderAvoidanceShort);
-      post.addEventListener("animationstart", (event) => {
+      post.addEventListener("animationstart", () => {
         if (postDiv.classList.contains("post") === false) {
           // child events may bubble up
           return;

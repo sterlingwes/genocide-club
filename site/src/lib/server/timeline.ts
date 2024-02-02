@@ -73,7 +73,7 @@ export const getTimeline = ({
 
   let startIndex = 0;
   const markerGroupStats = sortedMarkerTimes.reduce(
-    (acc, postTime, i) => {
+    (acc, postTime) => {
       const lastIndex = allDates.findIndex((dateVal) => dateVal > postTime);
       const dates = allDates
         .slice(startIndex, lastIndex)
@@ -107,7 +107,7 @@ export const getTimeline = ({
   );
 
   const graphConfig = sortedMarkerTimes.reduce(
-    (acc, postTime, postIndex) => {
+    (acc, postTime) => {
       const currentTimeInterval = acc.lastPostTime
         ? postTime - acc.lastPostTime
         : postTime - firstDateVal;
