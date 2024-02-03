@@ -34,7 +34,7 @@ const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
         )
       }
       <div class="content">
-        <h1>{title}</h1>
+        <h1 class="page-title">{title}</h1>
         <slot />
       </div>
     </main>
@@ -80,7 +80,7 @@ const pageTitle = homePage ? title : `${basePageTitle} • ${title}`;
     z-index: 1;
     color: rgba(255, 255, 255, 80%);
   }
-  h1,
+  h1.page-title,
   .logo {
     font-family: "PTSerif";
     font-size: 3rem;

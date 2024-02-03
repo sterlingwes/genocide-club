@@ -13,7 +13,6 @@ import { getEnhancedPosts } from "../lib/server/posts";
 import OverlayScreenModal from "../components/OverlayScreenModal.astro";
 import ContentBox from "../components/ContentBox.astro";
 import { getStrings } from "../lib/constants/strings";
-import type { EditorialTags } from "../lib/constants/editorial-tags";
 import { properCase, getPossessivePronoun } from "../lib/formatting";
 
 export async function getStaticPaths() {
@@ -31,15 +30,6 @@ interface Props {
 const { enabler } = Astro.props;
 
 const posts = getEnhancedPosts(enabler.posts);
-const tagCounts: Record<string, number> = {};
-posts.forEach(({ tags }) =>
-  tags.forEach((tag) => {
-    tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
-  })
-);
-const tagOrder = Object.keys(tagCounts).sort(
-  (a, b) => tagCounts[b] - tagCounts[a]
-);
 
 const svgDomain = getSvgDomain();
 const {
@@ -241,22 +231,8 @@ const enablerAboutMessage = `${enabler.name} is a member of the genocide club du
         {enablerAboutMessage}
       </p>
       <p>
-        {properCase(getPossessivePronoun(enabler.gender))} statements were assigned
-        the following qualifying categories which you can read more about in <a
-          href="/docs/editorial">our editorial guide</a
-        >:
-        <ul>
-          {
-            tagOrder.map((tag) => (
-              <li>
-                <StructuredText
-                  parts={getStrings(`tag_${tag as EditorialTags[0]}_head`)}
-                />
-                ({tagCounts[tag]})
-              </li>
-            ))
-          }
-        </ul>
+        {properCase(getPossessivePronoun(enabler.gender))} statements qualified for
+        inclusion based on <a href="/docs/editorial">our editorial guide</a>
       </p>
     </ContentBox>
   </OverlayScreenModal>

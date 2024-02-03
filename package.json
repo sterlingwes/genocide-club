@@ -16,7 +16,8 @@
     "gen-schemas": "bun run scripts/zod-json-schema.ts",
     "schemas": "bun run ajv validate -s site/src/schemas/enabler -d \"site/src/content/enabler/*.json\"",
     "astro": "cd site && bun run astro",
-    "check": "cd site && bun run astro check"
+    "check": "cd site && bun run astro check",
+    "fc": "bun run check && bun run types && bun run schemas && bun run test"
   },
   "devDependencies": {
     "@types/bun": "latest"

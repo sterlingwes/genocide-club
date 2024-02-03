@@ -1,24 +1,6 @@
 ---
 import ContentBox from "../../components/ContentBox.astro";
 import ContentPageLayout from "../../layouts/ContentPageLayout.astro";
-import StructuredText from "../../components/StructuredText.astro";
-import { editorialTags } from "../../lib/constants/editorial-tags";
-import { getStrings } from "../../lib/constants/strings";
-import { getCollection } from "astro:content";
-
-const enablers = await getCollection("enabler");
-const tagCountLookup: Record<string, number> = {};
-enablers.forEach(({ data: { posts } }) =>
-  posts.forEach(({ tags }) =>
-    tags.forEach((tag) => {
-      tagCountLookup[tag] = (tagCountLookup[tag] ?? 0) + 1;
-    })
-  )
-);
-
-const tagOrder = editorialTags.sort((a, b) => {
-  return (tagCountLookup[b] ?? 0) - (tagCountLookup[a] ?? 0);
-});
 ---
 
 <ContentPageLayout
@@ -27,36 +9,170 @@ const tagOrder = editorialTags.sort((a, b) => {
 >
   <ContentBox>
     <p>
-      <StructuredText parts={getStrings("editorial_intro")} />
+      This document looks to both provide insight into what we look for and a
+      template for our editors to reference when archiving.
     </p>
+    <h2>Historical Lessons</h2>
     <p>
-      For our classification approach, we've taken some guidance from the work
-      of Dr. Gregory H Stanton. You can read the Holocaust Memorial Day Trust's <a
-        href="https://www.hmd.org.uk/learn-about-the-holocaust-and-genocides/what-is-genocide/the-ten-stages-of-genocide/"
-        target="_blank">Summary of the Ten Stages of Genocide</a
-      > to learn more.
+      The Holocaust - the worst genocide in history - is one of the most
+      well-studied events in modern times. Looking back to the period of time
+      leading up to the Holocaust and its early days, we have a prototype for
+      understanding what's happening now in Gaza. We can look to the types of
+      individuals that were involved in enabling it to happen and likewise
+      understand who has a hand in the unfolding events in Gaza today.
     </p>
-    {
-      tagOrder.map((tag) => (
-        <>
-          <h2>
-            <StructuredText parts={getStrings(`tag_${tag}_head`)} />
-          </h2>
-          <p>
-            <StructuredText parts={getStrings(`tag_${tag}_para`)} />
-          </p>
-        </>
-      ))
-    }
+    <h2>Classifying the Enablers</h2>
+    <p>
+      Individuals or groups on genocide.club will fall into one of the following
+      categories.
+    </p>
+    <h3>Perpetrators</h3>
+    <p>
+      Those directly involved in planning, executing, or facilitating genocide.
+      This includes high-ranking government officials, military officers, and
+      others who actively participate in the planning and execution of attacks
+      on, or deprivation of, civilians and their critical infrastructure.
+    </p>
+    <h3>Collaborators</h3>
+    <p>
+      Individuals or groups who, while not part of an official regime or agency,
+      actively collaborated with the perpetrators. This could include local
+      authorities, police, and certain political or societal groups that
+      assisted in the persecution of civilians.
+    </p>
+    <h3>Bystanders</h3>
+    <p>
+      Those who were aware of the atrocities but did not actively participate.
+      Bystanders may have witnessed or heard about the persecution, but either
+      chose not to intervene or were unable to do so due to fear or other
+      constraints. Those who were aware of the events but remained passive or
+      indifferent. This category includes people who may not have actively
+      supported the genocide but did little or nothing to resist or oppose it.
+    </p>
+    <h3>Beneficiaries</h3>
+    <p>
+      Individuals or groups who benefited from the persecution and exploitation
+      of those targeted for murder or displacement. This could include people
+      who seized property, businesses, or wealth confiscated from victims.
+    </p>
+    <h2>Our Premise</h2>
+    <p>
+      It's important to acknowledge that by doing this archiving work, we're
+      accepting the opinion of a number of academics and scholars on the subject
+      of genocide who have said they believe Israel's actions qualify. We also
+      note the interim ruling by the International Court of Justice that
+      Israel's actions to date make a plausible case for genocide.
+    </p>
+    <h2>Subject Inclusion Guide</h2>
+    <p>At a high level, we aim to include individuals or groups that:</p>
+    <ul>
+      <li>are of influence; and</li>
+      <li>
+        have made unqualified statements of support or encouragement of Israel's
+        actions against Palestinians
+      </li>
+    </ul>
+    <h3>Person of influence</h3>
+    <p>
+      The person or group holds a position with influence over a population and
+      can sway opinion or influence policy or shape acceptable discourse.
+      Typical candidates that meet this criteria are:
+    </p>
+    <ul>
+      <li>Active politicians or past heads of state</li>
+      <li>Industry or corporate leaders</li>
+      <li>Prominent media figures or pundits</li>
+      <li>Military or other state officials</li>
+    </ul>
+    <h3>Unqualified statements of support or encouragement</h3>
+    <p>
+      If the person or group has made consistent statements in support of
+      Israel's actions in Gaza without calling into question the methods being
+      used, their impacts on civilians, or incitement by Israeli officials,
+      they're - at best - a willing bystander to an unfolding genocide.
+    </p>
+    <h2>Statement Inclusion Guide</h2>
+    <p>
+      To support our subject's inclusion on genocide.club under one of the
+      primary categories above, we include statements they've made in a
+      timeline. Those statements will generally fit one or more of the following
+      categories:
+    </p>
+    <ul class="statement-list">
+      <li>
+        <strong>Dehumanization</strong> - any statement that dehumanizes Palestinians
+        or their supporters, portraying them as less worthy of equal treatment, subhuman,
+        threatening, or evil. By reducing the humanity of the victims, it becomes
+        easier for the perpetrators and their supporters to justify acts of violence
+        and cruelty.
+      </li>
+      <li>
+        <strong>Creating a False Narrative</strong> - any statement that distorts
+        or revises historical facts, manipulates information, or creates a false
+        narrative that justifies the persecution of Palestinians or their supporters.
+        This false narrative can be used to legitimize discriminatory policies and
+        violent actions.
+      </li>
+      <li>
+        <strong>Fostering Fear and Paranoia</strong> - statements can instill fear
+        and paranoia among the population, making them more susceptible to accepting
+        extreme measures against Palestinians or their supporters. It may exaggerate
+        threats, real or imagined, posed by Palestinians or their supporters to manipulate
+        public sentiment.
+      </li>
+      <li>
+        <strong>Building Support for Persecution</strong> - any statement that aims
+        to garner support for discriminatory laws, policies, or actions against Palestinians.
+        It often exploits existing prejudices and fears, turning them into widespread
+        public sentiment in favor of harsh measures.
+      </li>
+      <li>
+        <strong>Creating a Sense of National Crisis</strong> - any statement that
+        may portray Palestinians or their supporters as a threat to a nation, creating
+        a false sense of crisis that requires drastic measures for the preservation
+        of a state and its people. This narrative can be used to justify extreme
+        actions, including genocide in the case of Palestinians, or heavy-handed
+        police action in the case of supporters abroad.
+      </li>
+      <li>
+        <strong>Promoting Solidarity with the IDF or Israeli Government</strong>
+        - statements that foster a sense of unity among the perpetrators and their
+        supporters, creating an "us versus them" mentality. This sense of solidarity
+        can lead to the dehumanization and scapegoating of Palestinians, making it
+        easier to commit atrocities.
+      </li>
+      <li>
+        <strong>Normalizing Violence</strong> - statements that normalize violence
+        against Palestinians by portraying such actions as necessary for the greater
+        good, national security, or the preservation of a particular ideology. This
+        normalization desensitizes people to the brutality of genocide.
+      </li>
+    </ul>
+    <p>
+      It's important to note that it's the collective impact of these statements
+      over time that need to be considered in determining whether an individual
+      or group should be included. In some cases what's left unsaid is just as
+      important as an explicit statement.
+    </p>
   </ContentBox>
 </ContentPageLayout>
 
 <style>
+  h2:first-of-type {
+    margin-top: 0;
+  }
   p {
     margin: 0;
     margin-bottom: 2rem;
   }
   p:last-of-type {
     margin-bottom: 0;
+  }
+  ul.statement-list {
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 20px;
+    }
   }
 </style>
