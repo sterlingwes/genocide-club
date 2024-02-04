@@ -176,11 +176,26 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
   }
 
   .post-commentary {
+    position: relative;
     border: 1px solid #eee;
     border-radius: 3px;
     padding: 10px;
     color: white;
     margin-top: 15px;
+    font-size: 0.9em;
+    line-height: 1.25em;
+
+    &::after {
+      height: 0px;
+      width: 0px;
+      position: absolute;
+      top: -10px;
+      left: 6px;
+      content: "";
+      border-right: solid 10px transparent;
+      border-left: solid 10px transparent;
+      border-bottom: solid 10px #eee;
+    }
   }
 
   .post-avatar {
