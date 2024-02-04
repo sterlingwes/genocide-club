@@ -24,6 +24,12 @@
             ]
           }
         },
+        "editorialNote": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "gender": {
           "type": "string",
           "enum": [

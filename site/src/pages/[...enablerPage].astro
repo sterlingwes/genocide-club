@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import Post from "../components/Post.astro";
 import PlayerLayout from "../layouts/PlayerLayout.astro";
 import KilledGraph from "../generated/killed.astro";
+import apiData from "../generated/data.json";
 import OpacityOverlay from "../components/OpacityOverlay.astro";
 import PlayerControls from "../components/PlayerControls.astro";
 import StructuredText from "../components/StructuredText.astro";
@@ -12,7 +13,7 @@ import { getSvgDomain } from "../lib/server/svg";
 import { getEnhancedPosts } from "../lib/server/posts";
 import OverlayScreenModal from "../components/OverlayScreenModal.astro";
 import ContentBox from "../components/ContentBox.astro";
-import { getStrings } from "../lib/constants/strings";
+import { getReplacedString, getStrings } from "../lib/constants/strings";
 import { properCase, getPossessivePronoun, imgUrl } from "../lib/formatting";
 
 export async function getStaticPaths() {
@@ -43,6 +44,15 @@ const {
 } = getTimeline({ svgDomain, posts });
 
 const enablerAboutMessage = `${enabler.name} is a member of the genocide club due to the statements he's made since October 7th and through the duration of Israel's aggression.`;
+const { latest } = apiData;
+const formatter = new Intl.NumberFormat();
+const latestApiData = Object.entries(latest).reduce(
+  (acc, [key, value]) => ({
+    ...acc,
+    [key]: typeof value === "number" ? formatter.format(value) : value,
+  }),
+  {}
+);
 ---
 
 <PlayerLayout
@@ -229,14 +239,42 @@ const enablerAboutMessage = `${enabler.name} is a member of the genocide club du
   </main>
   <OverlayScreenModal>
     <ContentBox>
+      <h2>about this archive entry</h2>
+      {
+        enabler.editorialNote && (
+          <p>
+            {enabler.name}'s membership in genocide.club is due to the
+            following:
+          </p>
+        )
+      }
+      {
+        enabler.editorialNote?.length && (
+          <ul class="about-editorial-notes">
+            {enabler.editorialNote.map((note) => (
+              <li>{note}</li>
+            ))}
+          </ul>
+        )
+      }
+      {!enabler.editorialNote && <p>{enablerAboutMessage}</p>}
+      <p>
+        {properCase(getPossessivePronoun(enabler.gender))} statements & this entry
+        qualified for inclusion in our archive based on <a
+          href="/docs/editorial">our editorial guide</a
+        >.
+      </p>
       <h2>about genocide.club</h2>
       <p><StructuredText parts={getStrings("mission_statement")} /></p>
       <p>
-        {enablerAboutMessage}
+        <StructuredText
+          parts={[getReplacedString("hamas_acknowledge", latestApiData)]}
+        />
       </p>
       <p>
-        {properCase(getPossessivePronoun(enabler.gender))} statements qualified for
-        inclusion based on <a href="/docs/editorial">our editorial guide</a>
+        <StructuredText
+          parts={[getReplacedString("acknowledge_reason", latestApiData)]}
+        />
       </p>
     </ContentBox>
   </OverlayScreenModal>
@@ -302,6 +340,16 @@ const enablerAboutMessage = `${enabler.name} is a member of the genocide club du
     bottom: 0;
     padding-bottom: 700px;
     overflow-y: scroll;
+  }
+
+  .about-editorial-notes {
+    padding-left: 18px;
+
+    > li {
+      margin-left: 0;
+      padding-left: 8px;
+      margin-bottom: 10px;
+    }
   }
 
   .scroll-top-fade {

@@ -10,6 +10,7 @@ export const schema = z.object({
   tags: z.array(
     z.enum(["politician", "tech", "canada", "usa", "israel", "capital"])
   ),
+  editorialNote: z.array(z.string()).optional(),
   gender: z.enum(["m", "f", "nb"]),
   image: z.string().optional(),
   posts: z.array(

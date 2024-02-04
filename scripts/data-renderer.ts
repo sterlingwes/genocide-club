@@ -21,9 +21,17 @@ const render = async () => {
     killed: number[];
     wcKilled: number[];
     pathData: string;
+    latest: Record<string, number | string>;
   } = (await response.json()).reduce(
     (acc: any, d: any, day: number) => ({
       ...acc,
+      latest: {
+        lastReportDate: d.report_date,
+        gazaKilled: d.ext_killed_cum,
+        gazaInjured: d.ext_injured_cum,
+        gazaChildren: d.ext_killed_children_cum,
+        gazaWomen: d.ext_killed_women_cum,
+      },
       svgViewbox: {
         width,
         height,
@@ -39,7 +47,14 @@ const render = async () => {
         value: d.ext_killed_cum,
       }),
     }),
-    { chart: [], days: [], dates: [], killed: [], wcKilled: [] }
+    {
+      chart: [],
+      days: [],
+      dates: [],
+      killed: [],
+      wcKilled: [],
+      latest: {},
+    }
   );
 
   var x = d3
