@@ -23,3 +23,11 @@ export const getPossessivePronoun = (gender: "m" | "f" | "nb") => {
       return "their";
   }
 };
+
+export const imgUrl = (url: string) => {
+  if (url.startsWith("agc://")) {
+    return url.replace(/^agc:\/\/\/?/, "https://assets.genocide.club/");
+  }
+
+  return url;
+};

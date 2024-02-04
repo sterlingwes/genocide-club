@@ -3,7 +3,7 @@
   "bio": "Canadian Federal Member of Parliament",
   "gender": "m",
   "tags": ["politician", "canada"],
-  "image": "https://pbs.twimg.com/profile_images/1462652146067857413/9hxJ7epE_400x400.jpg",
+  "image": "agc://scottaitchison-avatar.jpeg",
   "posts": [
     {
       "text": "We're witnessing the highest rise of antisemitism in 50 years: Irwin Cotler on the global evil  https://nationalpost.com/news/world/israel-middle-east/highest-rise-of-antisemitism-in-50-years-irwin-cotler via @nationalpost\n\nThe responsibility for ending antisemitism and hate in all it's forms belongs to each of us.",
@@ -47,7 +47,7 @@
       "date": "2023-10-26",
       "quote": {
         "text": "In Jerusalem tonight, 224 pillars of light for each child, woman and man being held hostage by #Hamas in Gaza.  💔\n\n📸 Arnon Bosanni #BringThemHome",
-        "image": "https://pbs.twimg.com/media/F9Z88crXMAAyWYx?format=jpg&name=small",
+        "image": "agc://scottaitchison-cija-lights.jpeg",
         "author": "CIJA"
       },
       "type": "twitter",
@@ -56,7 +56,7 @@
     },
     {
       "text": "Hamas cannot be trusted to respect any ceasefire.\n\nThey are a terrorist group.\n\nI continue to support Israel's right to defend itself and to take action to eliminate Hamas and bring home the hostages.",
-      "image": "https://pbs.twimg.com/media/F_Y_-TPWcAEYOcS?format=jpg&name=small",
+      "image": "agc://scottaitchison-dopplerscreen.jpeg",
       "date": "2023-11-20",
       "type": "twitter",
       "href": "https://x.com/ScottAAitchison/status/1726637851515711576?s=20",

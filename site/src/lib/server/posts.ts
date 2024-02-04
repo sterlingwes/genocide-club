@@ -78,10 +78,14 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
         ? parsePostText(post.quote.text)
         : [],
       // prefix locally-hosted images with correct path if not absolute
-      ...(post.image && !post.image.startsWith("http")
+      ...(post.image &&
+      !post.image.startsWith("http") &&
+      !post.image.startsWith("agc://")
         ? { image: `/post_assets/${post.image}` }
         : {}),
-      ...(post.quote?.image && !post.quote.image.startsWith("http")
+      ...(post.quote?.image &&
+      !post.quote.image.startsWith("http") &&
+      !post.quote.image.startsWith("agc://")
         ? {
             quote: { ...post.quote, image: `/post_assets/${post.quote.image}` },
           }

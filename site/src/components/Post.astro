@@ -2,6 +2,7 @@
 import PostTypeIcon from "../components/PostTypeIcon.astro";
 import StructuredText from "./StructuredText.astro";
 import type { getEnhancedPosts } from "../lib/server/posts";
+import { imgUrl } from "../lib/formatting";
 
 interface Props {
   enablerImageUrl?: string;
@@ -36,7 +37,7 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
       {
         !!post.image && (
           <div class="post-image">
-            <img src={post.image} alt={post.imageCaption} />
+            <img src={imgUrl(post.image)} alt={post.imageCaption} />
           </div>
         )
       }
@@ -54,7 +55,10 @@ const { post, postDelayLookup, enablerImageUrl } = Astro.props;
             </div>
             {post.quote.image && (
               <div class="post-quoted-image">
-                <img src={post.quote.image} alt={post.quote.imageCaption} />
+                <img
+                  src={imgUrl(post.quote.image)}
+                  alt={post.quote.imageCaption}
+                />
               </div>
             )}
           </div>

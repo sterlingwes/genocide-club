@@ -3,7 +3,7 @@
   "bio": "Head of Research Platform at OpenAI",
   "gender": "m",
   "tags": ["tech", "usa"],
-  "image": "https://pbs.twimg.com/profile_images/1599598218047881216/U45uXUkS_400x400.jpg",
+  "image": "agc://talbroda-avatar.jpeg",
   "posts": [
     {
       "text": "Accomplices should be rewarded exactly the same way as Hamas.",
@@ -64,7 +64,7 @@
       "date": "2023-10-09T07:30:00.000Z",
       "quote": {
         "text": "To the citizens of Gaza. Listen to the IDF.\nHamas wants you to stay because they need you as human shields.\nYou do not want to be in the building when this happens. And it will.",
-        "image": "themossadil-20231009.png",
+        "image": "agc://themossadil-20231009.png",
         "author": "The Mossad: Satirical, Yet Aweso..."
       },
       "type": "twitter",
@@ -76,7 +76,7 @@
       "date": "2023-10-10T10:57:14.000Z",
       "quote": {
         "text": "This is the Beverly Hills of Gaza. This is where all the leaders of Hamas have their palaces. Or should I say, had their palaces.\nAnd let there be no doubt, the IDF is just getting started.",
-        "image": "hilzfuld-20231010.png",
+        "image": "agc://hilzfuld-20231010.png",
         "author": "Hillel Fuld"
       },
       "type": "twitter",

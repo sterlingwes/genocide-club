@@ -13,7 +13,7 @@ import { getEnhancedPosts } from "../lib/server/posts";
 import OverlayScreenModal from "../components/OverlayScreenModal.astro";
 import ContentBox from "../components/ContentBox.astro";
 import { getStrings } from "../lib/constants/strings";
-import { properCase, getPossessivePronoun } from "../lib/formatting";
+import { properCase, getPossessivePronoun, imgUrl } from "../lib/formatting";
 
 export async function getStaticPaths() {
   const enablerEntries = await getCollection("enabler");
@@ -214,7 +214,11 @@ const enablerAboutMessage = `${enabler.name} is a member of the genocide club du
       {
         posts.map((post) => (
           <Post
-            {...{ post, postDelayLookup, enablerImageUrl: enabler.image }}
+            {...{
+              post,
+              postDelayLookup,
+              enablerImageUrl: enabler.image ? imgUrl(enabler.image) : "",
+            }}
           />
         ))
       }
