@@ -43,7 +43,8 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "twitter"
+                  "twitter",
+                  "quote"
                 ]
               },
               "href": {

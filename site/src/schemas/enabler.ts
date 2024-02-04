@@ -14,7 +14,7 @@ export const schema = z.object({
   image: z.string().optional(),
   posts: z.array(
     z.object({
-      type: z.enum(["twitter"]),
+      type: z.enum(["twitter", "quote"]),
       href: z.string(),
       text: z.string().optional(),
       date: z.string(),

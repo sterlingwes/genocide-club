@@ -66,6 +66,8 @@ const parsePostText = (text: string): StructuredText[] => {
     );
 };
 
+const wordsPerMinute = 250;
+
 export const getEnhancedPosts = (posts: EnablerPost[]) => {
   return orderEarliestToLatest(posts)
     .filter((post) => !!post.tags.length)
@@ -88,9 +90,10 @@ export const getEnhancedPosts = (posts: EnablerPost[]) => {
         post.text +
           (post.quote ? " " + post.quote.text : "") +
           (post.imageCaption ? " " + post.imageCaption : "") +
-          (post.quote?.imageCaption ? " " + post.quote.imageCaption : ""),
+          (post.quote?.imageCaption ? " " + post.quote.imageCaption : "") +
+          (post.commentary ? " " + post.commentary : ""),
         {
-          wordsPerMinute: 300,
+          wordsPerMinute,
         }
       ),
       dateValue: parseISO(post.date).valueOf(),
