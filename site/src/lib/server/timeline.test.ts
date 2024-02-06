@@ -8,11 +8,14 @@ test("timeline datamodel integration", () => {
   const posts = getEnhancedPosts(
     require("../../content/enabler/tal-broda.json").posts
   );
-  const svgDomain = getSvgDomain(() => dataFixture);
+
+  const dataFetcher = () => dataFixture;
+
+  const svgDomain = getSvgDomain();
   const timeline = getTimeline({
     svgDomain,
     posts,
-    dataFetcher: () => dataFixture,
+    dataFetcher,
   });
   expect(timeline).toMatchSnapshot();
 
