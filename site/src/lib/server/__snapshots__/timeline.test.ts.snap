@@ -2,7 +2,7 @@
 
 exports[`timeline datamodel integration 1`] = `
 {
-  "clipPathTimes": "0;0.20133111480865223;0.2096505823627288;0.33943427620632277;0.34775374376039936;0.4908485856905158;0.49916805324459235;0.5524126455906821;0.5607321131447587;0.757071547420965;0.7653910149750416;0.7920133111480865;0.800332778702163;0.8402662229617305;0.848585690515807;0.8718801996672213;0.8801996672212978;0.8868552412645591;0.8951747088186356;0.9284525790349417;0.9367720465890182;0.9833610648918469;0.9916805324459235;1",
+  "clipPathTimes": "0;0.19502299161482284;0.20178523126859615;0.3283743575872329;0.3351365972410062;0.47470922369488777;0.4814714633486611;0.5334054638896403;0.5401677035434136;0.7316743305382742;0.7384365701920476;0.7644035704625372;0.7711658101163105;0.8101163105220449;0.8168785501758182;0.8395996754124966;0.8463619150662699;0.8528536651338924;0.8596159047876657;0.8920746551257777;0.898836894779551;0.9864755206924534;0.9932377603462267;1",
   "clipPathValues": "9.714285715592453;9.714285715592453;9.975786926281383;9.975786926281383;15.293731505958267;15.293731505958267;23.9935431832114;23.9935431832114;28.70702179562914;28.70702179562914;72.26472963038266;72.26472963038266;116.66424537485395;116.66424537485395;132.35986012003764;132.35986012003764;132.5746569992702;132.5746569992702;150.78288944724008;150.78288944724008;331.7901533941068;331.7901533941068;400;400",
   "dayTexts": [
     {
@@ -29,7 +29,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim0hold",
       "dayNumber": "003",
-      "duration": 11600,
+      "duration": 13920,
       "freeze": false,
       "lastDayAnimId": "dayanim02",
       "noOpacity": true,
@@ -37,7 +37,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim10hold",
       "dayNumber": "003",
-      "duration": 8300,
+      "duration": 9860,
       "freeze": false,
       "lastDayAnimId": "dayanim0hold",
       "noOpacity": true,
@@ -52,7 +52,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim20hold",
       "dayNumber": "004",
-      "duration": 8600,
+      "duration": 10320,
       "freeze": false,
       "lastDayAnimId": "dayanim200",
       "noOpacity": true,
@@ -74,7 +74,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim30hold",
       "dayNumber": "006",
-      "duration": 3200,
+      "duration": 3840,
       "freeze": false,
       "lastDayAnimId": "dayanim301",
       "noOpacity": true,
@@ -89,7 +89,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim40hold",
       "dayNumber": "007",
-      "duration": 11800,
+      "duration": 14160,
       "freeze": false,
       "lastDayAnimId": "dayanim400",
       "noOpacity": true,
@@ -160,7 +160,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim50hold",
       "dayNumber": "016",
-      "duration": 1600,
+      "duration": 1920,
       "freeze": false,
       "lastDayAnimId": "dayanim508",
       "noOpacity": true,
@@ -238,7 +238,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim60hold",
       "dayNumber": "026",
-      "duration": 2400,
+      "duration": 2880,
       "freeze": false,
       "lastDayAnimId": "dayanim609",
       "noOpacity": true,
@@ -267,7 +267,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim70hold",
       "dayNumber": "029",
-      "duration": 1400,
+      "duration": 1680,
       "freeze": false,
       "lastDayAnimId": "dayanim702",
       "noOpacity": true,
@@ -275,7 +275,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim80hold",
       "dayNumber": "029",
-      "duration": 900,
+      "duration": 980,
       "freeze": false,
       "lastDayAnimId": "dayanim70hold",
       "noOpacity": true,
@@ -311,7 +311,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim90hold",
       "dayNumber": "033",
-      "duration": 2000,
+      "duration": 2400,
       "freeze": false,
       "lastDayAnimId": "dayanim903",
       "noOpacity": true,
@@ -592,7 +592,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "dayAnimId": "dayanim100hold",
       "dayNumber": "072",
-      "duration": 2800,
+      "duration": 6480,
       "freeze": false,
       "lastDayAnimId": "dayanim10038",
       "noOpacity": true,
@@ -704,7 +704,7 @@ exports[`timeline datamodel integration 1`] = `
       "noOpacity": true,
     },
   ],
-  "expectedDuration": 60100,
+  "expectedDuration": 73940,
   "graphConfig": {
     "lastPostTime": 1702817520000,
     "steps": [
@@ -729,7 +729,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1696831740000,
         "stepDurations": [
           500,
-          11600,
+          13920,
         ],
       },
       {
@@ -745,7 +745,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1696836600000,
         "stepDurations": [
           500,
-          7800,
+          9360,
         ],
       },
       {
@@ -765,7 +765,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1696935434000,
         "stepDurations": [
           500,
-          8600,
+          10320,
         ],
       },
       {
@@ -787,7 +787,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1697097120000,
         "stepDurations": [
           500,
-          3200,
+          3840,
         ],
       },
       {
@@ -807,7 +807,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1697184720000,
         "stepDurations": [
           500,
-          11800,
+          14160,
         ],
       },
       {
@@ -843,7 +843,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1697994240000,
         "stepDurations": [
           500,
-          1600,
+          1920,
         ],
       },
       {
@@ -881,7 +881,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1698819405000,
         "stepDurations": [
           500,
-          2400,
+          2880,
         ],
       },
       {
@@ -905,7 +905,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1699111108000,
         "stepDurations": [
           500,
-          1400,
+          1680,
         ],
       },
       {
@@ -921,7 +921,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1699115100000,
         "stepDurations": [
           500,
-          400,
+          480,
         ],
       },
       {
@@ -947,7 +947,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1699453500000,
         "stepDurations": [
           500,
-          2000,
+          2400,
         ],
       },
       {
@@ -1043,7 +1043,7 @@ exports[`timeline datamodel integration 1`] = `
         "postTime": 1702817520000,
         "stepDurations": [
           500,
-          2800,
+          6480,
         ],
       },
       {
@@ -1091,18 +1091,18 @@ exports[`timeline datamodel integration 1`] = `
     "totalDistance": 331.7901533941068,
   },
   "postDelayLookup": {
-    "0": 59600,
+    "0": 73440,
     "1696831740000": 500,
-    "1696836600000": 12600,
-    "1696935434000": 20900,
-    "1697097120000": 30000,
-    "1697184720000": 33700,
-    "1697994240000": 46000,
-    "1698819405000": 48100,
-    "1699111108000": 51000,
-    "1699115100000": 52900,
-    "1699453500000": 53800,
-    "1702817520000": 56300,
+    "1696836600000": 14920,
+    "1696935434000": 24780,
+    "1697097120000": 35600,
+    "1697184720000": 39940,
+    "1697994240000": 54600,
+    "1698819405000": 57020,
+    "1699111108000": 60400,
+    "1699115100000": 62580,
+    "1699453500000": 63560,
+    "1702817520000": 66460,
   },
   "svgTexts": [
     {
@@ -1129,7 +1129,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "436",
       "countAnimId": "countanim0hold",
-      "countDuration": 11600,
+      "countDuration": 13920,
       "freeze": false,
       "lastCountAnimId": "countanim02",
       "noOpacity": true,
@@ -1137,7 +1137,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "436",
       "countAnimId": "countanim10hold",
-      "countDuration": 8300,
+      "countDuration": 9860,
       "freeze": false,
       "lastCountAnimId": "countanim0hold",
       "noOpacity": true,
@@ -1152,7 +1152,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "765",
       "countAnimId": "countanim20hold",
-      "countDuration": 8600,
+      "countDuration": 10320,
       "freeze": false,
       "lastCountAnimId": "countanim200",
       "noOpacity": true,
@@ -1174,7 +1174,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "1,203",
       "countAnimId": "countanim30hold",
-      "countDuration": 3200,
+      "countDuration": 3840,
       "freeze": false,
       "lastCountAnimId": "countanim301",
       "noOpacity": true,
@@ -1189,7 +1189,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "1,709",
       "countAnimId": "countanim40hold",
-      "countDuration": 11800,
+      "countDuration": 14160,
       "freeze": false,
       "lastCountAnimId": "countanim400",
       "noOpacity": true,
@@ -1260,7 +1260,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "4,651",
       "countAnimId": "countanim50hold",
-      "countDuration": 1600,
+      "countDuration": 1920,
       "freeze": false,
       "lastCountAnimId": "countanim508",
       "noOpacity": true,
@@ -1338,7 +1338,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "8,805",
       "countAnimId": "countanim60hold",
-      "countDuration": 2400,
+      "countDuration": 2880,
       "freeze": false,
       "lastCountAnimId": "countanim609",
       "noOpacity": true,
@@ -1367,7 +1367,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "9,488",
       "countAnimId": "countanim70hold",
-      "countDuration": 1400,
+      "countDuration": 1680,
       "freeze": false,
       "lastCountAnimId": "countanim702",
       "noOpacity": true,
@@ -1375,7 +1375,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "9,488",
       "countAnimId": "countanim80hold",
-      "countDuration": 900,
+      "countDuration": 980,
       "freeze": false,
       "lastCountAnimId": "countanim70hold",
       "noOpacity": true,
@@ -1411,7 +1411,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "10,569",
       "countAnimId": "countanim90hold",
-      "countDuration": 2000,
+      "countDuration": 2400,
       "freeze": false,
       "lastCountAnimId": "countanim903",
       "noOpacity": true,
@@ -1692,7 +1692,7 @@ exports[`timeline datamodel integration 1`] = `
     {
       "count": "19,235",
       "countAnimId": "countanim100hold",
-      "countDuration": 2800,
+      "countDuration": 6480,
       "freeze": false,
       "lastCountAnimId": "countanim10038",
       "noOpacity": true,
